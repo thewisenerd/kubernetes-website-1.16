@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+	
+	<sitemap>
+	   	<loc>https://kubernetes.io/en/sitemap.xml</loc>
+		
+	   	<lastmod>2020-12-31T08:12:05+00:00</lastmod>
+		
+	</sitemap>
+	
+	<sitemap>
+	   	<loc>https://kubernetes.io/zh/sitemap.xml</loc>
+		
+	   	<lastmod>2020-12-11T15:37:11+08:00</lastmod>
+		
+	</sitemap>
+	
+	<sitemap>
+	   	<loc>https://kubernetes.io/ko/sitemap.xml</loc>
+		
+	   	<lastmod>2020-01-07T07:04:17+09:00</lastmod>
+		
+	</sitemap>
+	
+	<sitemap>
+	   	<loc>https://kubernetes.io/ja/sitemap.xml</loc>
+		
+	   	<lastmod>2019-12-01T22:01:04-06:00</lastmod>
+		
+	</sitemap>
+	
+	<sitemap>
+	   	<loc>https://kubernetes.io/fr/sitemap.xml</loc>
+		
+	   	<lastmod>2019-12-09T21:12:02+00:00</lastmod>
+		
+	</sitemap>
+	
+	<sitemap>
+	   	<loc>https://kubernetes.io/de/sitemap.xml</loc>
+		
+	   	<lastmod>2019-10-23T08:22:16-07:00</lastmod>
+		
+	</sitemap>
+	
+	<sitemap>
+	   	<loc>https://kubernetes.io/es/sitemap.xml</loc>
+		
+	   	<lastmod>2019-11-22T16:57:29+01:00</lastmod>
+		
+	</sitemap>
+	
+	<sitemap>
+	   	<loc>https://kubernetes.io/pt/sitemap.xml</loc>
+		
+	   	<lastmod>2019-10-22T09:31:24-03:00</lastmod>
+		
+	</sitemap>
+	
+	<sitemap>
+	   	<loc>https://kubernetes.io/id/sitemap.xml</loc>
+		
+	   	<lastmod>2019-12-05T11:40:31+07:00</lastmod>
+		
+	</sitemap>
+	
+	<sitemap>
+	   	<loc>https://kubernetes.io/ru/sitemap.xml</loc>
+		
+	   	<lastmod>2019-11-15T00:15:14+02:00</lastmod>
+		
+	</sitemap>
+	
+	<sitemap>
+	   	<loc>https://kubernetes.io/vi/sitemap.xml</loc>
+		
+	   	<lastmod>2019-11-29T16:43:04+07:00</lastmod>
+		
+	</sitemap>
+	
+</sitemapindex>

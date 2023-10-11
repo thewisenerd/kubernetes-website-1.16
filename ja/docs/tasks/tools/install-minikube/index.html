@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html id="docs" lang="ja" class="">
+	<head>
+	
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-36037335-10"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-36037335-10');
+</script>
+<meta charset="utf-8">
+<title>Minikubeのインストール - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/style.03896868dcf2dd803b1af07e10dc058b63ac620a0915c37b5add3dd59431555f.css" integrity="sha256-A4loaNzy3YA7GvB&#43;ENwFi2OsYgoJFcN7Wt091ZQxVV8=">
+
+
+<link rel="stylesheet" href="/css/base_fonts.css">
+<link rel="stylesheet" href="/css/jquery-ui.min.css">
+<link rel="stylesheet" href="/css/callouts.css">
+<link rel="stylesheet" href="/css/custom-jekyll/tags.css">
+
+
+
+<meta name="description" content="クリーンアップし、新たに始める場合 もし以前に　Minikubeをインストールしていたら、以下のコマンドを実行します。
+minikube start このエラーが返ってきます。
+machine does not exist 以下のファイルを消去する必要があります。
+rm -rf ~/.">
+<meta property="og:description" content="クリーンアップし、新たに始める場合 もし以前に　Minikubeをインストールしていたら、以下のコマンドを実行します。
+minikube start このエラーが返ってきます。
+machine does not exist 以下のファイルを消去する必要があります。
+rm -rf ~/.">
+<meta name="twitter:description" content="クリーンアップし、新たに始める場合 もし以前に　Minikubeをインストールしていたら、以下のコマンドを実行します。
+minikube start このエラーが返ってきます。
+machine does not exist 以下のファイルを消去する必要があります。
+rm -rf ~/.">
+<meta property="og:url" content="https://kubernetes.io/ja/docs/tasks/tools/install-minikube/">
+<meta property="og:title" content="Minikubeのインストール">
+<meta name="twitter:title" content="Minikubeのインストール">
+<meta name="twitter:image" content="https://kubernetes.io/images/favicon.png" />
+
+<meta name="twitter:image:alt" content="Kubernetes">
+
+<meta property="og:image" content="/images/kubernetes-horizontal-color.png">
+
+<meta property="og:type" content="article">
+<script src="/js/anchor-4.1.1.min.js"></script>
+<script src="/js/jquery-3.2.1.min.js"></script>
+<script src="/js/jquery-ui-1.12.1.min.js"></script>
+<script src="/js/bootstrap-4.3.1.min.js"></script>
+<script src="/js/sweetalert-2.1.2.min.js"></script>
+
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/ja/" class="logo" title="Production-Grade Container Orchestration - Kubernetes" aria-label="Kubernetes website"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/ja/docs/" class="active">ドキュメント</a></li>
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/ja/case-studies/">ケーススタディ</a></li>
+            
+            
+            
+             <li>
+                <a href="#">
+                    日本語 Japanese <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/docs/tasks/tools/install-minikube/">English</a></li>
+                
+                    <li><a href="/zh/docs/tasks/tools/install-minikube/">中文 Chinese</a></li>
+                
+                    <li><a href="/ko/docs/tasks/tools/install-minikube/">한국어 Korean</a></li>
+                
+                    <li><a href="/fr/docs/tasks/tools/install-minikube/">Français</a></li>
+                
+                    <li><a href="/de/docs/tasks/tools/install-minikube/">Deutsch</a></li>
+                
+                    <li><a href="/es/docs/tasks/tools/install-minikube/">Español</a></li>
+                
+                    <li><a href="/vi/docs/tasks/tools/install-minikube/">Vietnamese</a></li>
+                
+                </ul>
+            </li>
+
+            <li>
+                <a href="#">
+                    v1.16 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io/ja/docs/tasks/tools/install-minikube/">v1.20</a></li>
+                
+                    <li><a href="https://v1-19.docs.kubernetes.io/ja/docs/tasks/tools/install-minikube/">v1.19</a></li>
+                
+                    <li><a href="https://v1-18.docs.kubernetes.io/ja/docs/tasks/tools/install-minikube/">v1.18</a></li>
+                
+                    <li><a href="https://v1-17.docs.kubernetes.io/ja/docs/tasks/tools/install-minikube/">v1.17</a></li>
+                
+                    <li><a href="https://v1-16.docs.kubernetes.io/ja/docs/tasks/tools/install-minikube/">v1.16</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/ja/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Kubernetesの基本を学ぶ</a>
+        
+
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <div class="main-section" data-auto-burger="primary">
+         
+           <div class="nav-box">
+            <h3><a href="/ja/docs/tutorials/hello-minikube/">Get Started</a></h3>
+           <p>手を動かす準備はできていますか？本チュートリアルでは、Node.jsを使った簡単な"Hello World"を実行するKubernetesクラスタをビルドします。</p>
+
+            </div>
+         
+           <div class="nav-box">
+            <h3><a href="/ja/docs/home/">ドキュメント</a></h3>
+           <p>チュートリアル、サンプルやドキュメントのリファレンスを使って Kubernetes の利用方法を学んでください。あなたは<a href="/editdocs/" data-auto-burger-exclude>ドキュメントへコントリビュートをする</a>こともできます!</p>
+
+            </div>
+         
+        </div>
+        <div class="main-section" data-auto-burger="primary">
+            <div class="left">
+                <h5 class="github-invite">Kubernetesのコードを編集することに興味がありますか？</h5>
+                <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>GitHubで参照する</a>
+            </div>
+
+            <div class="right">
+                <h5 class="github-invite">コミュニティを探す</h5>
+                <div class="social">
+                    <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                    <a href="https://github.com/kubernetes/kubernetes" class="github"><span>GitHub</span></a>
+                    <a href="http://slack.k8s.io/" class="slack"><span>Slack Slack</span></a>
+                    <a href="https://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                    <a href="https://www.youtube.com/kubernetescommunity" class="youtube"><span>YouTube</span></a>
+                    <a href="https://discuss.kubernetes.io" class="mailing-list"><span>フォーラム</span></a>
+                    <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>イベントカレンダー</span></a>
+                </div>
+            </div>
+            <div class="clear" style="clear: both"></div>
+        </div>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/ja/docs/home/">ホーム</a></li>
+		
+		
+		<li><a href="/ja/docs/setup/">はじめに</a></li>
+		
+		
+		<li><a href="/ja/docs/concepts/">コンセプト</a></li>
+		
+		
+		<li><a href="/ja/docs/tutorials/">チュートリアル</a></li>
+		
+		
+		<li><a href="/ja/docs/reference/">REFERENCE</a></li>
+		
+		
+		<li><a href="/ja/docs/contribute/">貢献</a></li>
+		
+	</ul>
+	<form id="searchBox" action="/docs/search/" role="search">
+		<input type="text" id="search" name="q" placeholder="検索" aria-label="Search">
+	</form>
+</div>
+
+		</section>
+		
+    
+		
+<section id="deprecationWarning">
+  <main>
+    <div class="content deprecation-warning">
+      <h3>
+	 Kubernetes v1.16
+	  のドキュメントは積極的にメンテナンスされていません。現在表示されているバージョンはスナップショットです。最新のドキュメントはこちらです: 
+	 <a href="https://kubernetes.io/docs/home/">最新バージョン</a>
+      </h3>
+    </div>
+  </main>
+</section>
+
+
+    <main>
+        <section id="encyclopedia">
+          
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="Install Tools" href="/ja/docs/tasks/tools/"></a>
+
+	
+	
+			
+			
+			
+			
+			
+		
+	
+	
+	
+		
+			
+
+<a class="item" data-title="kubectlのインストールおよびセットアップ" href="/ja/docs/tasks/tools/install-kubectl/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Minikubeのインストール" href="/ja/docs/tasks/tools/install-minikube/"></a>
+
+		
+	
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+
+          <div id="docsContent">
+            
+
+<p>
+  <a href="https://github.com/kubernetes/website/edit/master/content/ja/docs/tasks/tools/install-minikube.md" id="editPageButton" target="_blank">
+    Edit This Page
+  </a>
+</p>
+
+<h1>Minikubeのインストール</h1>
+
+
+
+
+<p>このページでは<a href="/ja/docs/tutorials/hello-minikube">Minikube</a>のインストール方法を説明し、コンピューターの仮想マシン上で単一ノードのKubernetesクラスターを実行します。</p>
+
+
+
+
+
+
+
+
+
+
+
+<ul id="markdown-toc">
+
+
+
+
+
+
+
+
+
+
+<li><a href="#%e5%a7%8b%e3%82%81%e3%82%8b%e5%89%8d%e3%81%ab">始める前に</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#%e3%83%8f%e3%82%a4%e3%83%91%e3%83%bc%e3%83%90%e3%82%a4%e3%82%b6%e3%83%bc%e3%81%ae%e3%82%a4%e3%83%b3%e3%82%b9%e3%83%88%e3%83%bc%e3%83%ab">ハイパーバイザーのインストール</a></li>
+
+
+
+
+<li><a href="#kubectl%e3%81%ae%e3%82%a4%e3%83%b3%e3%82%b9%e3%83%88%e3%83%bc%e3%83%ab">kubectlのインストール</a></li>
+
+
+
+
+<li><a href="#minikube%e3%81%ae%e3%82%a4%e3%83%b3%e3%82%b9%e3%83%88%e3%83%bc%e3%83%ab">Minikubeのインストール</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#%e3%82%af%e3%83%aa%e3%83%bc%e3%83%b3%e3%82%a2%e3%83%83%e3%83%97%e3%81%97-%e6%96%b0%e3%81%9f%e3%81%ab%e5%a7%8b%e3%82%81%e3%82%8b%e5%a0%b4%e5%90%88">クリーンアップし、新たに始める場合</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#%e6%ac%a1%e3%81%ae%e9%a0%85%e7%9b%ae">次の項目</a></li>
+
+
+
+</ul>
+
+
+
+<h2 id="始める前に">始める前に</h2>
+<p>コンピューターのBIOS上でVT-xもしくはAMD-vの仮想化が使用可能でなければなりません。Linux上で確認するために以下のコマンドを実行し、出力されることを確認してください。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">egrep --color <span style="color:#b44">&#39;vmx|svm&#39;</span> /proc/cpuinfo</code></pre></div>
+
+
+
+<h2 id="ハイパーバイザーのインストール">ハイパーバイザーのインストール</h2>
+
+<p>ハイパーバイザーがインストールされていなかったら、OSにいずれかをインストールしてください。</p>
+
+<table>
+<thead>
+<tr>
+<th align="left">Operating system</th>
+<th align="left">サポートしているハイパーバイザー</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left">macOS</td>
+<td align="left"><a href="https://www.virtualbox.org/wiki/Downloads" target="_blank">VirtualBox</a>, <a href="https://www.vmware.com/products/fusion" target="_blank">VMware Fusion</a>, <a href="https://github.com/moby/hyperkit" target="_blank">HyperKit</a></td>
+</tr>
+
+<tr>
+<td align="left">Linux</td>
+<td align="left"><a href="https://www.virtualbox.org/wiki/Downloads" target="_blank">VirtualBox</a>, <a href="http://www.linux-kvm.org/" target="_blank">KVM</a></td>
+</tr>
+
+<tr>
+<td align="left">Windows</td>
+<td align="left"><a href="https://www.virtualbox.org/wiki/Downloads" target="_blank">VirtualBox</a>, <a href="https://msdn.microsoft.com/en-us/virtualization/hyperv_on_windows/quick_start/walkthrough_install" target="_blank">Hyper-V</a></td>
+</tr>
+</tbody>
+</table>
+
+<blockquote class="note">
+  <div><strong>備考:</strong> MinikubeはVMの中ではなくホスト上のKubernetesのコンポーネントの一部として実行する<code>--vm-driver=none</code>をサポートしています。このドライバーはハイパーバイザーではなく、DockerやLinuxの環境を必要とします。</div>
+</blockquote>
+
+<h2 id="kubectlのインストール">kubectlのインストール</h2>
+
+<ul>
+<li>kubectlのインストールは<a href="/ja/docs/tasks/tools/install-kubectl/">kubectlのインストールと設定</a>を確認してください。</li>
+</ul>
+
+<h2 id="minikubeのインストール">Minikubeのインストール</h2>
+
+<h3 id="macos">macOS</h3>
+
+<p><a href="https://brew.sh" target="_blank">Homebrew</a>を使うことでmacOSにMinikubeを簡単にインストールできます。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">brew cask install minikube</code></pre></div>
+<p>バイナリファイルを使用してmacOSにインストールすることも可能です。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-darwin-amd64 <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>  <span style="color:#666">&amp;&amp;</span> chmod +x minikube</code></pre></div>
+<p>以下のコマンドを入力して、Minikubeを実行可能にしてください。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo mv minikube /usr/local/bin</code></pre></div>
+<h3 id="linux">Linux</h3>
+
+<blockquote class="note">
+  <div><strong>備考:</strong> ここではバイナリを使ってLinux上にMinikubeをインストールする方法を示します。</div>
+</blockquote>
+
+<p>バイナリファイルを使用してLinuxにインストールできます。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>  <span style="color:#666">&amp;&amp;</span> chmod +x minikube</code></pre></div>
+<p>以下のコマンドを入力して、Minikubeを実行可能にしてください。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo cp minikube /usr/local/bin <span style="color:#666">&amp;&amp;</span> rm minikube</code></pre></div>
+<h3 id="windows">Windows</h3>
+
+<blockquote class="note">
+  <div><strong>備考:</strong> MinikubeをWindowsで実行するために、<a href="https://docs.microsoft.com/en-us/virtualization/hyper-v-on-windows/quick-start/enable-hyper-v" target="_blank">Hyper-V</a>もしくは<a href="https://www.virtualbox.org/" target="_blank">VirtualBox</a>をインストールする必要があります。Hyper-VはWindows 10 Enterprise、Windows 10 Professional、Windows 10 Educationで実行できます。より詳しいインストールについてのドキュメントはMinikube公式の<a href="https://github.com/kubernetes/minikube/#installation" target="_blank">GitHub</a>のリポジトリを参照してください。</div>
+</blockquote>
+
+<p><a href="https://chocolatey.org/" target="_blank">Chocolatey</a>を使うことでWindowsにMinikubeを簡単にインストールできます(管理者権限で実行する必要があります)。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">choco install minikube kubernetes-cli</code></pre></div>
+<p>Minikubeのインストールが終わったら、現在のCLIのセッションを終了して再起動します。Minikubeは自動的にパスに追加されます。</p>
+
+<h4 id="手動でwindowsにインストールする方法">手動でWindowsにインストールする方法</h4>
+
+<p>Windowsに手動でMinikubeをダウンロードする場合、<a href="https://github.com/kubernetes/minikube/releases/latest" target="_blank"><code>minikube-windows-amd64</code></a>をダウンロードし、名前を<code>minikube.exe</code>に変更してこれをパスに加えます。</p>
+
+<h4 id="windowsのインストーラー">Windowsのインストーラー</h4>
+
+<p><a href="https://docs.microsoft.com/en-us/windows/desktop/msi/windows-installer-portal" target="_blank">Windows Installer</a>を使ってWindowsに手動でインストールする場合、<a href="https://github.com/kubernetes/minikube/releases/latest" target="_blank"><code>minikube-installer.exe</code></a>をインストールし、インストーラーを実行します。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 id="クリーンアップし-新たに始める場合">クリーンアップし、新たに始める場合</h2>
+
+<p>もし以前に　Minikubeをインストールしていたら、以下のコマンドを実行します。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">minikube start</code></pre></div>
+<p>このエラーが返ってきます。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">machine does not exist</code></pre></div>
+<p>以下のファイルを消去する必要があります。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">rm -rf ~/.minikube</code></pre></div>
+
+
+
+<h2 id="次の項目">次の項目</h2>
+<ul>
+<li><a href="/ja/docs/setup/learning-environment/minikube/">Minikubeを使ってローカルでKubernetesを実行する</a></li>
+</ul>
+
+
+
+
+
+
+
+    
+            
+  <h2>フィードバック</h2>
+  <p class="feedback--prompt">このページは役に立ちましたか？ </p>
+  <button class="button feedback--yes">はい</button>
+  <button class="button feedback--no">いいえ</button>
+  <p class="feedback--response feedback--response__hidden">
+    Thanks for the feedback. If you have a specific, answerable question about how to use Kubernetes, ask it on
+    <a target="_blank" rel="noopener"
+      href="https://stackoverflow.com/questions/tagged/kubernetes">
+      Stack Overflow</a>.
+    Open an issue in the GitHub repo if you want to 
+    <a class="feedback--link" target="_blank" rel="noopener"
+      href="https://github.com/kubernetes/website/issues/new?title=Issue%20with%20k8s.io">
+      問題を報告する</a>
+    or
+    <a class="feedback--link" target="_blank" rel="noopener"
+      href="https://github.com/kubernetes/website/issues/new?title=Improvement%20for%20k8s.io">
+      改善を提案</a>.
+  </p>
+  <script>
+    const yes = document.querySelector('.feedback--yes');
+    const no = document.querySelector('.feedback--no');
+    document.querySelectorAll('.feedback--link').forEach(link => {
+      link.href = link.href + window.location.pathname;
+    });
+    const sendFeedback = (value) => {
+      if (!gtag) { console.log('!gtag'); }
+      gtag('event', 'click', {
+        'event_category': 'Helpful',
+        'event_label': window.location.pathname,
+        value
+      });
+    };
+    const disableButtons = () => {
+      yes.disabled = true;
+      yes.classList.add('feedback--button__disabled');
+      no.disabled = true;
+      no.classList.add('feedback--button__disabled');
+    };
+    yes.addEventListener('click', () => {
+      sendFeedback(1);
+      disableButtons();
+      document.querySelector('.feedback--response').classList.remove('feedback--response__hidden');
+    });
+    no.addEventListener('click', () => {
+      sendFeedback(0);
+      disableButtons();
+      document.querySelector('.feedback--response').classList.remove('feedback--response__hidden');
+    });
+  </script>
+
+
+    
+            <div id="pre-footer"> 
+  <hr />
+
+  <div class="issue-button-container">
+    <p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/tasks/tools/install-minikube.md?pixel" alt="Analytics" /></a></p>
+    
+    
+    <script type="text/javascript">
+    PDRTJS_settings_8345992 = {
+    "id" : "8345992",
+    "unique_id" : "\/ja\/docs\/tasks\/tools\/install-minikube\/",
+    "title" : "Minikubeのインストール",
+    "permalink" : "https:\/\/kubernetes.io\/ja\/docs\/tasks\/tools\/install-minikube\/"
+    };
+    (function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+    </script>
+    <a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?template=bug-report.md&title=Issue%20with%20' +
+    'k8s.io'+window.location.pathname)" class="button issue">Issue作成</a>
+    
+    
+    
+    <a href="https://github.com/kubernetes/website/edit/master/content/ja/docs/tasks/tools/install-minikube.md" class="button issue">ページ編集</a>
+    
+  </div>
+  
+
+  <div id="lastedit" class="lastedit issue-button-container">
+    ページの最終更新 November 23, 2019 at 6:39 PM PST by
+    <a href="https://github.com/kubernetes/website/commit/ef00b57e7bef567acb376e311eb7f770a4b987ee/">ja-docs: fixes for broken links. (#17781)</a> (<a href="https://github.com/kubernetes/website/commits/master/content/en/docs/tasks/tools/install-minikube.md">ページ履歴</a>)
+  </div>
+  
+</div>
+
+          </div>
+        </section>
+    </main>
+		<footer>
+    <div class="light-text main-section">
+        <nav>
+            
+            
+            
+            <a href="/ja/docs/home/">ホーム</a>
+            
+            
+            
+            
+            
+            
+            
+            <a href="/ja/case-studies/">ケーススタディ</a>
+            
+        </nav>
+        <div class="social" role="region" aria-label="Social hyperlinks">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>GitHub</span></a>
+                <a href="https://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="https://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://www.youtube.com/kubernetescommunity" class="youtube"><span>YouTube</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>フォーラム</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>イベントカレンダー</span></a>
+            </div>
+            <div>
+                
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">コントリビュート</a>
+            </div>
+        </div>
+        <div class="miceType center">
+            &copy; 2023 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a></a>
+        </div>
+        <div class="miceType center">
+            Copyright &copy; 2023 The Linux Foundation &reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+        <div class="miceType center">
+            ICP license: 京ICP备17074266号-3
+        </div>
+    </div>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()" aria-label="Toggle table of contents visibility"></button>
+
+<script>
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+    <script language="application/javascript">
+      
+      (function addHeadingLinks(){
+        var article = document.getElementById('docsContent');
+        var headings = article.querySelectorAll('h1, h2, h3, h4, h5, h6');
+        headings.forEach(function(heading){
+          if(heading.id){
+            var a = document.createElement('a');
+            a.innerHTML = heading.innerHTML;
+            a.href = '#'+heading.id;
+            a.classList.add('inpage_heading');
+            heading.innerHTML = '';
+            heading.appendChild(a);
+          }
+        });
+      })();
+    </script>
+	</body>
+</html>

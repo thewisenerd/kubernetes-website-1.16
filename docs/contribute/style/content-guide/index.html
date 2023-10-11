@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-36037335-10"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-36037335-10');
+</script>
+<meta charset="utf-8">
+<title>Documentation Content Guide - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/style.03896868dcf2dd803b1af07e10dc058b63ac620a0915c37b5add3dd59431555f.css" integrity="sha256-A4loaNzy3YA7GvB&#43;ENwFi2OsYgoJFcN7Wt091ZQxVV8=">
+
+
+<link rel="stylesheet" href="/css/base_fonts.css">
+<link rel="stylesheet" href="/css/jquery-ui.min.css">
+<link rel="stylesheet" href="/css/callouts.css">
+<link rel="stylesheet" href="/css/custom-jekyll/tags.css">
+
+
+
+<meta name="description" content="">
+<meta property="og:description" content="">
+<meta name="twitter:description" content="">
+<meta property="og:url" content="https://kubernetes.io/docs/contribute/style/content-guide/">
+<meta property="og:title" content="Documentation Content Guide">
+<meta name="twitter:title" content="Documentation Content Guide">
+<meta name="twitter:image" content="https://kubernetes.io/images/favicon.png" />
+
+<meta name="twitter:image:alt" content="Kubernetes">
+
+<meta property="og:image" content="/images/kubernetes-horizontal-color.png">
+
+<meta property="og:type" content="article">
+<script src="/js/anchor-4.1.1.min.js"></script>
+<script src="/js/jquery-3.2.1.min.js"></script>
+<script src="/js/jquery-ui-1.12.1.min.js"></script>
+<script src="/js/bootstrap-4.3.1.min.js"></script>
+<script src="/js/sweetalert-2.1.2.min.js"></script>
+
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo" title="Production-Grade Container Orchestration - Kubernetes" aria-label="Kubernetes website"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/" class="active">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/zh/docs/contribute/style/content-guide/">中文 Chinese</a></li>
+                
+                </ul>
+            </li>
+
+            <li>
+                <a href="#">
+                    v1.16 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io/docs/contribute/style/content-guide/">v1.20</a></li>
+                
+                    <li><a href="https://v1-19.docs.kubernetes.io/docs/contribute/style/content-guide/">v1.19</a></li>
+                
+                    <li><a href="https://v1-18.docs.kubernetes.io/docs/contribute/style/content-guide/">v1.18</a></li>
+                
+                    <li><a href="https://v1-17.docs.kubernetes.io/docs/contribute/style/content-guide/">v1.17</a></li>
+                
+                    <li><a href="https://v1-16.docs.kubernetes.io/docs/contribute/style/content-guide/">v1.16</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Learn Kubernetes Basics</a>
+        
+
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <div class="main-section" data-auto-burger="primary">
+         
+           <div class="nav-box">
+            <h3><a href="/docs/tutorials/hello-minikube/">Get Started</a></h3>
+           <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+
+            </div>
+         
+           <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+           <p>Learn how to use Kubernetes with conceptual, tutorial, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+
+            </div>
+         
+           <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+           <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+
+            </div>
+         
+        </div>
+        <div class="main-section" data-auto-burger="primary">
+            <div class="left">
+                <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+                <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On GitHub</a>
+            </div>
+
+            <div class="right">
+                <h5 class="github-invite">Explore the community</h5>
+                <div class="social">
+                    <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                    <a href="https://github.com/kubernetes/kubernetes" class="github"><span>GitHub</span></a>
+                    <a href="http://slack.k8s.io/" class="slack"><span>Slack Slack</span></a>
+                    <a href="https://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                    <a href="https://www.youtube.com/kubernetescommunity" class="youtube"><span>YouTube</span></a>
+                    <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                    <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+                </div>
+            </div>
+            <div class="clear" style="clear: both"></div>
+        </div>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h1>Contribute to Kubernetes docs</h1>
+<h5></h5>
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/docs/home/">HOME</a></li>
+		
+		
+		<li><a href="/docs/setup/">GETTING STARTED</a></li>
+		
+		
+		<li><a href="/docs/concepts/">CONCEPTS</a></li>
+		
+		
+		<li><a href="/docs/tasks/">TASKS</a></li>
+		
+		
+		<li><a href="/docs/tutorials/">TUTORIALS</a></li>
+		
+		
+		<li><a href="/docs/reference/">REFERENCE</a></li>
+		
+		
+		<li><a href="/docs/contribute/" class="YAH">CONTRIBUTE</a></li>
+		
+	</ul>
+	<form id="searchBox" action="/docs/search/" role="search">
+		<input type="text" id="search" name="q" placeholder="Search" aria-label="Search">
+	</form>
+</div>
+
+		</section>
+		
+    
+		
+<section id="deprecationWarning">
+  <main>
+    <div class="content deprecation-warning">
+      <h3>
+	 Kubernetes v1.16
+	  documentation is no longer actively maintained. The version you are currently viewing is a static snapshot. For up-to-date documentation, see the 
+	 <a href="https://kubernetes.io/docs/home/">latest version.</a>
+      </h3>
+    </div>
+  </main>
+</section>
+
+
+    <main>
+        <section id="encyclopedia">
+          
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+         
+        
+        <a class="item" data-title="Contribute" href="/docs/contribute/"></a>
+
+	
+	
+	
+	
+		
+			
+
+<a class="item" data-title="Start contributing" href="/docs/contribute/start/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Intermediate contributing" href="/docs/contribute/intermediate/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Advanced contributing" href="/docs/contribute/advanced/"></a>
+
+		
+	
+		
+			
+<div class="item" data-title="Documentation style overview">
+	<div class="container">
+		
+		
+		
+		<a class="item" data-title="Documentation style overview" href="/docs/contribute/style/"></a>
+		
+		
+	
+	
+	
+	
+		
+			
+
+<a class="item" data-title="Content guide" href="/docs/contribute/style/content-guide/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Style guide" href="/docs/contribute/style/style-guide/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Writing a new topic" href="/docs/contribute/style/write-new-topic/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Using Page Templates" href="/docs/contribute/style/page-templates/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Content organization" href="/docs/contribute/style/content-organization/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Custom Hugo Shortcodes" href="/docs/contribute/style/hugo-shortcodes/"></a>
+
+		
+	
+
+	</div>
+</div>
+
+		
+	
+		
+			
+<div class="item" data-title="Reference docs overview">
+	<div class="container">
+		
+		
+		
+		<a class="item" data-title="Reference docs overview" href="/docs/contribute/generate-ref-docs/"></a>
+		
+		
+	
+	
+	
+	
+		
+			
+
+<a class="item" data-title="Contributing to the Upstream Kubernetes Code" href="/docs/contribute/generate-ref-docs/contribute-upstream/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Generating Reference Documentation for kubectl Commands" href="/docs/contribute/generate-ref-docs/kubectl/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Generating Reference Documentation for the Kubernetes API" href="/docs/contribute/generate-ref-docs/kubernetes-api/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Generating Reference Pages for Kubernetes Components and Tools" href="/docs/contribute/generate-ref-docs/kubernetes-components/"></a>
+
+		
+	
+
+	</div>
+</div>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Localizing Kubernetes Documentation" href="/docs/contribute/localization/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Participating in SIG Docs" href="/docs/contribute/participating/"></a>
+
+		
+	
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+
+          <div id="docsContent">
+            
+
+<p>
+  <a href="https://github.com/kubernetes/website/edit/master/content/en/docs/contribute/style/content-guide.md" id="editPageButton" target="_blank">
+    Edit This Page
+  </a>
+</p>
+
+<h1>Documentation Content Guide</h1>
+
+
+
+<p>This page contains guidelines for adding content to the Kubernetes documentation.
+If you have questions about allowed content, join the <a href="http://slack.k8s.io/" target="_blank">Kubernetes Slack</a> #sig-docs channel and ask! Use your best judgment, and feel free to
+propose changes to this document in a pull request.</p>
+
+<p>For additional information on creating new content for the Kubernetes
+docs, follow the instructions in the <a href="/docs/contribute/style/style-guide">Style guide</a>.</p>
+
+
+
+
+
+
+
+
+
+<ul id="markdown-toc">
+
+
+
+
+
+
+
+
+
+
+<li><a href="#contributing-content">Contributing content</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#what-s-next">What's next</a></li>
+
+
+
+</ul>
+
+
+<h2 id="contributing-content">Contributing content</h2>
+
+<p>The Kubernetes documentation comprises the content of the
+<a href="https://github.com/kubernetes/website" target="_blank">kubernetes/website</a> source repository.
+Located in the <code>kubernetes/website/content/&lt;language_code&gt;/docs</code> folder, the
+majority of the Kubernetes documentation is specific to the <a href="https://github.com/kubernetes/kubernetes" target="_blank">Kubernetes
+project</a>. The Kubernetes
+documentation may also include content from projects in the
+<a href="https://github.com/kubernetes" target="_blank">kubernetes</a> and
+<a href="https://github.com/kubernetes-sigs" target="_blank">kubernetes-sigs</a> GitHub organizations if
+those projects do not have their own documentation. Linking to active kubernetes,
+kubernetes-sigs, and (<a class='glossary-tooltip' href='https://cncf.io/' target='_blank'>CNCF<span class='tooltip-text'>Cloud Native Computing Foundation</span>
+</a>) projects from the Kubernetes documentation is always
+allowed, but linking to vendor-specific products is not. Check the CNCF project lists
+(<a href="https://www.cncf.io/projects/" target="_blank">Graduated/Incubating</a>,
+<a href="https://www.cncf.io/sandbox-projects/" target="_blank">Sandbox</a>,
+<a href="https://www.cncf.io/archived-projects/" target="_blank">Archived</a>) if you are unsure of a
+project&rsquo;s CNCF status.</p>
+
+<h3 id="dual-sourced-content">Dual-sourced content</h3>
+
+<p>Kubernetes documentation does not include duplicate content sourced from multiple
+locations (<em>dual-sourced</em> content). Dual-sourced content requires duplicated
+effort from project maintainers and tends to become outdated more quickly.
+Before adding content, ask yourself this:</p>
+
+<ul>
+<li>Is the content about an active CNCF project OR a project in the kubernetes or kubernetes-sigs GitHub organizations?
+
+<ul>
+<li>If yes, then:
+
+<ul>
+<li>Does the project have its own documentation?
+
+<ul>
+<li>if yes, link to the project&rsquo;s documention from the Kubernetes documentation</li>
+<li>if no, add the content to the project&rsquo;s repository if possible and then link to it from the Kubernetes documentation</li>
+</ul></li>
+</ul></li>
+<li>If no, then:
+
+<ul>
+<li>Stop!
+
+<ul>
+<li>Adding content about vendor-specific products is not allowed</li>
+<li>Linking to vendor-specific documentation and websites is not allowed</li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+
+<h3 id="what-is-and-isn-t-allowed">What is and isn&rsquo;t allowed</h3>
+
+<p>There are some scenarios in which the Kubernetes documentation includes content from non-Kubernetes projects.
+Below are general categories of non-Kubernetes project content along with guidelines of what is and is not allowed:</p>
+
+<ol>
+<li>Instructional content involving non-Kubernetes projects during setup or operation of Kubernetes
+
+<ul>
+<li>Allowed:
+
+<ul>
+<li>Referring to or linking to existing documentation about a CNCF project or a project in the kubernetes or kubernetes-sigs GitHub organizations
+
+<ul>
+<li>Example: for installating Kubernetes in a learning environment, including a prerequisite stating that successful installation and configuration of minikube is required and linking to the relevant minikube documentation</li>
+</ul></li>
+<li>Adding content for kubernetes or kubernetes-sigs projects that don&rsquo;t have their own instructional content
+
+<ul>
+<li>Example: including <a href="https://github.com/kubernetes/kubeadm" target="_blank">kubadm</a> installation and troubleshooting instructions<br /></li>
+</ul></li>
+</ul></li>
+<li>Not Allowed:
+
+<ul>
+<li>Adding content that duplicates documentation in another repository
+
+<ul>
+<li>Examples:
+
+<ul>
+<li>Including minikube installation and configuration instructions; minikube has its own <a href="https://minikube.sigs.k8s.io/docs/" target="_blank">documentation</a> that provides those instructions</li>
+<li>Including instructions for installing Docker, CRI-O, containerd, and other container runtimes on various operating systems</li>
+<li>Including instructions for installing Kubernetes on production environments using various projects:
+
+<ul>
+<li>Kubernetes Rebar Integrated Bootstrap (KRIB) is a vendor-specific project and content belongs in the vendor&rsquo;s documentation</li>
+<li><a href="https://github.com/kubernetes/kops" target="_blank">Kubernetes Operations (kops)</a> has installation instructions and tutorials in its GitHub repository</li>
+<li><a href="https://kubespray.io" target="_blank">Kubespray</a> has its own documenation<br /></li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li>Adding a tutorial that explains how to perform a task using a vendor-specific product or an open source project that is not a CNCF project or a project in the kubernetes or kubnetes-sigs GitHub organizations</li>
+<li>Adding a tutorial on how to use a CNCF project or a project in the kubernetes or kubnetes-sigs GitHub organizations if the project has its own documentation</li>
+</ul></li>
+</ul></li>
+
+<li><p>Detailed technical content about how to use a non-Kubernetes project or how that project is designed</p>
+
+<p>Adding this type of content to the Kubernetes documentation is not allowed.</p></li>
+
+<li><p>Content that describes a non-Kubernetes project</p>
+
+<ul>
+<li>Allowed:<br />
+
+<ul>
+<li>Adding a brief introductory paragraph about a CNCF project or a project in the kubernetes or kubernetes-sigs GitHub organizations; the paragraph may contain links to the project<br /></li>
+</ul></li>
+<li>Not Allowed:<br />
+
+<ul>
+<li>Adding content describing a vendor-specific product</li>
+<li>Adding content describing an open source project that is not a CNCF project or a project in the kubernetes or kubnetes-sigs GitHub organizations</li>
+<li>Adding content that duplicates documentation from another project, regardless of source repository
+
+<ul>
+<li>Example: adding <a href="https://kind.sigs.k8s.io" target="_blank">Kubernetes in Docker (KinD)</a> documentation to the Kubernetes documentation</li>
+</ul></li>
+</ul></li>
+</ul></li>
+
+<li><p>Content that simply links to information about a non-Kubernetes project</p>
+
+<ul>
+<li>Allowed:<br />
+
+<ul>
+<li>Linking to projects in the kubernetes and kubernetes-sigs GitHub organizations
+
+<ul>
+<li>Example: linking to Kubernetes in Docker (KinD) <a href="https://kind.sigs.k8s.io/docs/user/quick-start" target="_blank">documentation</a>, which resides in the kubernetes-sigs GitHub organization</li>
+</ul></li>
+<li>Linking to active CNCF projects
+
+<ul>
+<li>Example: linking to the Prometheus <a href="https://prometheus.io/docs/introduction/overview/" target="_blank">documentation</a>; Prometheus is an active CNCF project</li>
+</ul></li>
+</ul></li>
+<li>Not Allowed:<br />
+
+<ul>
+<li>Linking to vendor-specific products</li>
+<li>Linking to archived CNCF projects</li>
+<li>Linking to inactive projects in the kubernetes and kubernetes-sigs GitHub organizations</li>
+<li>Linking to open source projects that are not CNCF projects or do not reside in the kubernetes or kubernetes-sigs GitHub organizations</li>
+</ul></li>
+</ul></li>
+
+<li><p>Content about training courses</p>
+
+<ul>
+<li>Allowed:<br />
+
+<ul>
+<li>Linking to vendor-neutral Kubernetes training courses offered by the <a href="https://www.cncf.io/" target="_blank">CNCF</a>, the <a href="https://www.linuxfoundation.org/" target="_blank">Linux Foundation</a>, and the <a href="https://linuxacademy.com/" target="_blank">Linux Academy</a>, which is a partner of the Linux Foundation
+
+<ul>
+<li>Example: linking to Linux Academy courses such as <a href="https://linuxacademy.com/course/kubernetes-quick-start/" target="_blank">Kubernetes Quick Start</a> and <a href="https://linuxacademy.com/course/kubernetes-security/" target="_blank">Kubernetes Security</a><br /></li>
+</ul></li>
+</ul></li>
+<li>Not Allowed:<br />
+
+<ul>
+<li>Linking to online training outside of the CNCF, the Linux Foundation, or the Linux Academy; the Kubernetes documentation does not link to third-party content
+
+<ul>
+<li>Example: linking to Kubernetes tutorials or courses on Medium, KodeKloud, Udacity, Coursera, learnk8s, and similar websites</li>
+</ul></li>
+<li>Linking to vendor-specific tutorials regardless of the training provider
+
+<ul>
+<li>Example: linking to Linux Academy courses such as <a href="https://linuxacademy.com/google-cloud-platform/training/course/name/google-kubernetes-engine-deep-dive" target="_blank">Google Kubernetes Engine Deep Dive</a> and <a href="https://linuxacademy.com/course/amazon-eks-deep-dive/" target="_blank">Amazon EKS Deep Dive</a></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ol>
+
+<p>If you have questions about allowed content, join the <a href="http://slack.k8s.io/" target="_blank">Kubernetes Slack</a> #sig-docs channel and ask!</p>
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 id="what-s-next">What&#39;s next</h2>
+<ul>
+<li>Read the <a href="/docs/contribute/style/style-guide">Style guide</a>.</li>
+</ul>
+
+
+
+
+
+
+
+    
+            
+  <h2>Feedback</h2>
+  <p class="feedback--prompt">Was this page helpful? </p>
+  <button class="button feedback--yes">Yes</button>
+  <button class="button feedback--no">No</button>
+  <p class="feedback--response feedback--response__hidden">
+    Thanks for the feedback. If you have a specific, answerable question about how to use Kubernetes, ask it on
+    <a target="_blank" rel="noopener"
+      href="https://stackoverflow.com/questions/tagged/kubernetes">
+      Stack Overflow</a>.
+    Open an issue in the GitHub repo if you want to 
+    <a class="feedback--link" target="_blank" rel="noopener"
+      href="https://github.com/kubernetes/website/issues/new?title=Issue%20with%20k8s.io">
+      report a problem</a>
+    or
+    <a class="feedback--link" target="_blank" rel="noopener"
+      href="https://github.com/kubernetes/website/issues/new?title=Improvement%20for%20k8s.io">
+      suggest an improvement</a>.
+  </p>
+  <script>
+    const yes = document.querySelector('.feedback--yes');
+    const no = document.querySelector('.feedback--no');
+    document.querySelectorAll('.feedback--link').forEach(link => {
+      link.href = link.href + window.location.pathname;
+    });
+    const sendFeedback = (value) => {
+      if (!gtag) { console.log('!gtag'); }
+      gtag('event', 'click', {
+        'event_category': 'Helpful',
+        'event_label': window.location.pathname,
+        value
+      });
+    };
+    const disableButtons = () => {
+      yes.disabled = true;
+      yes.classList.add('feedback--button__disabled');
+      no.disabled = true;
+      no.classList.add('feedback--button__disabled');
+    };
+    yes.addEventListener('click', () => {
+      sendFeedback(1);
+      disableButtons();
+      document.querySelector('.feedback--response').classList.remove('feedback--response__hidden');
+    });
+    no.addEventListener('click', () => {
+      sendFeedback(0);
+      disableButtons();
+      document.querySelector('.feedback--response').classList.remove('feedback--response__hidden');
+    });
+  </script>
+
+
+    
+            <div id="pre-footer"> 
+  <hr />
+
+  <div class="issue-button-container">
+    <p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/contribute/style/content-guide.md?pixel" alt="Analytics" /></a></p>
+    
+    
+    <script type="text/javascript">
+    PDRTJS_settings_8345992 = {
+    "id" : "8345992",
+    "unique_id" : "\/docs\/contribute\/style\/content-guide\/",
+    "title" : "Documentation Content Guide",
+    "permalink" : "https:\/\/kubernetes.io\/docs\/contribute\/style\/content-guide\/"
+    };
+    (function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+    </script>
+    <a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?template=bug-report.md&title=Issue%20with%20' +
+    'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+    
+    
+    
+    <a href="https://github.com/kubernetes/website/edit/master/content/en/docs/contribute/style/content-guide.md" class="button issue">Edit This Page</a>
+    
+  </div>
+  
+
+  <div id="lastedit" class="lastedit issue-button-container">
+    Page last modified on August 26, 2019 at 7:56 PM PST by
+    <a href="https://github.com/kubernetes/website/commit/c9d9e1be141c822aaf8e02d5ca25f61853b6220e/">Add Content Guide to clarify allowed content (#15892)</a> (<a href="https://github.com/kubernetes/website/commits/master/content/en/docs/contribute/style/content-guide.md">Page History</a>)
+  </div>
+  
+</div>
+
+          </div>
+        </section>
+    </main>
+		<footer>
+    <div class="light-text main-section">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Home</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social" role="region" aria-label="Social hyperlinks">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>GitHub</span></a>
+                <a href="https://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="https://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://www.youtube.com/kubernetescommunity" class="youtube"><span>YouTube</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div class="miceType center">
+            &copy; 2023 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a></a>
+        </div>
+        <div class="miceType center">
+            Copyright &copy; 2023 The Linux Foundation &reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+        <div class="miceType center">
+            ICP license: 京ICP备17074266号-3
+        </div>
+    </div>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()" aria-label="Toggle table of contents visibility"></button>
+
+<script>
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+    <script language="application/javascript">
+      
+      (function addHeadingLinks(){
+        var article = document.getElementById('docsContent');
+        var headings = article.querySelectorAll('h1, h2, h3, h4, h5, h6');
+        headings.forEach(function(heading){
+          if(heading.id){
+            var a = document.createElement('a');
+            a.innerHTML = heading.innerHTML;
+            a.href = '#'+heading.id;
+            a.classList.add('inpage_heading');
+            heading.innerHTML = '';
+            heading.appendChild(a);
+          }
+        });
+      })();
+    </script>
+	</body>
+</html>

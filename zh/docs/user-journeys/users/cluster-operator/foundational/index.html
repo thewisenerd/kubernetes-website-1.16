@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html id="docs" lang="zh" class="">
+	<head>
+	
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-36037335-10"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-36037335-10');
+</script>
+<meta charset="utf-8">
+<title>基础知识 - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/style.03896868dcf2dd803b1af07e10dc058b63ac620a0915c37b5add3dd59431555f.css" integrity="sha256-A4loaNzy3YA7GvB&#43;ENwFi2OsYgoJFcN7Wt091ZQxVV8=">
+
+
+<link rel="stylesheet" href="/css/base_fonts.css">
+<link rel="stylesheet" href="/css/jquery-ui.min.css">
+<link rel="stylesheet" href="/css/callouts.css">
+<link rel="stylesheet" href="/css/custom-jekyll/tags.css">
+<link rel="stylesheet" href="/css/style_user_journeys.css">
+
+
+
+<meta name="description" content="">
+<meta property="og:description" content="">
+<meta name="twitter:description" content="">
+<meta property="og:url" content="https://kubernetes.io/zh/docs/user-journeys/users/cluster-operator/foundational/">
+<meta property="og:title" content="基础知识">
+<meta name="twitter:title" content="基础知识">
+<meta name="twitter:image" content="https://kubernetes.io/images/favicon.png" />
+
+<meta name="twitter:image:alt" content="Kubernetes">
+
+<meta property="og:image" content="/images/kubernetes-horizontal-color.png">
+
+<meta property="og:type" content="article">
+<script src="/js/anchor-4.1.1.min.js"></script>
+<script src="/js/jquery-3.2.1.min.js"></script>
+<script src="/js/jquery-ui-1.12.1.min.js"></script>
+<script src="/js/bootstrap-4.3.1.min.js"></script>
+<script src="/js/sweetalert-2.1.2.min.js"></script>
+
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+<script src="https://use.fontawesome.com/4bcc658a89.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/zh/" class="logo" title="Production-Grade Container Orchestration - Kubernetes" aria-label="Kubernetes website"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/zh/docs/" class="active">文档</a></li>
+            
+            <li><a href="/zh/blog/">博客</a></li>
+            
+            <li><a href="/zh/partners/">合作伙伴</a></li>
+            
+            <li><a href="/zh/community/">社区</a></li>
+            
+            <li><a href="/zh/case-studies/">案例分析</a></li>
+            
+            
+            
+             <li>
+                <a href="#">
+                    中文 Chinese <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/docs/user-journeys/users/cluster-operator/foundational/">English</a></li>
+                
+                </ul>
+            </li>
+
+            <li>
+                <a href="#">
+                    v1.16 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io/zh/docs/user-journeys/users/cluster-operator/foundational/">v1.20</a></li>
+                
+                    <li><a href="https://v1-19.docs.kubernetes.io/zh/docs/user-journeys/users/cluster-operator/foundational/">v1.19</a></li>
+                
+                    <li><a href="https://v1-18.docs.kubernetes.io/zh/docs/user-journeys/users/cluster-operator/foundational/">v1.18</a></li>
+                
+                    <li><a href="https://v1-17.docs.kubernetes.io/zh/docs/user-journeys/users/cluster-operator/foundational/">v1.17</a></li>
+                
+                    <li><a href="https://v1-16.docs.kubernetes.io/zh/docs/user-journeys/users/cluster-operator/foundational/">v1.16</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/zh/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>学习 Kubernetes 基础知识</a>
+        
+
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <div class="main-section" data-auto-burger="primary">
+         
+           <div class="nav-box">
+            <h3><a href="/zh/docs/tutorials/hello-minikube/">Get Started</a></h3>
+           <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+
+            </div>
+         
+           <div class="nav-box">
+            <h3><a href="/zh/docs/home/">文档</a></h3>
+           <p>通过演练，示例和参考文档了解如何使用 Kubernetes。你甚至可以<a href="/editdocs/" data-auto-burger-exclude>帮助贡献文档</a>！</p>
+
+            </div>
+         
+           <div class="nav-box">
+            <h3><a href="/zh/blog/">博客</a></h3>
+           <p>阅读关于 kubernetes 和容器规范的最新信息,以及获取最新的技术。</p>
+
+            </div>
+         
+        </div>
+        <div class="main-section" data-auto-burger="primary">
+            <div class="left">
+                <h5 class="github-invite">想要修改 Kubernetes 的核心源代码？</h5>
+                <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>在 GitHub 上查看</a>
+            </div>
+
+            <div class="right">
+                <h5 class="github-invite">了解社区</h5>
+                <div class="social">
+                    <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                    <a href="https://github.com/kubernetes/kubernetes" class="github"><span>GitHub</span></a>
+                    <a href="http://slack.k8s.io/" class="slack"><span>Slack Slack</span></a>
+                    <a href="https://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                    <a href="https://www.youtube.com/kubernetescommunity" class="youtube"><span>YouTube</span></a>
+                    <a href="https://discuss.kubernetes.io" class="mailing-list"><span>论坛</span></a>
+                    <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>事件日历</span></a>
+                </div>
+            </div>
+            <div class="clear" style="clear: both"></div>
+        </div>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/zh/docs/home/">主页</a></li>
+		
+		
+		<li><a href="/zh/docs/setup/">入门</a></li>
+		
+		
+		<li><a href="/zh/docs/concepts/">概念</a></li>
+		
+		
+		<li><a href="/zh/docs/tasks/">任务</a></li>
+		
+		
+		<li><a href="/zh/docs/tutorials/">教程</a></li>
+		
+		
+		<li><a href="/zh/docs/reference/">参考</a></li>
+		
+		
+		<li><a href="/zh/docs/contribute/">贡献</a></li>
+		
+	</ul>
+	<form id="searchBox" action="/docs/search/" role="search">
+		<input type="text" id="search" name="q" placeholder="搜索" aria-label="Search">
+	</form>
+</div>
+
+		</section>
+		
+    
+		
+<section id="deprecationWarning">
+  <main>
+    <div class="content deprecation-warning">
+      <h3>
+	 Kubernetes v1.16
+	  版本的文档已不再维护。您现在看到的版本来自于一份静态的快照。如需查阅最新文档，请点击
+	 <a href="https://kubernetes.io/docs/home/">最新版本。</a>
+      </h3>
+    </div>
+  </main>
+</section>
+
+
+    <main>
+        <section id="encyclopedia">
+          <div id="docsToc" style="display:none;"></div>
+          <div id="content">
+            
+	
+	  <h1>基础知识</h1>
+	
+	<!--
+---
+reviewers:
+- chenopis
+layout: docsportal
+css: /css/style_user_journeys.css
+js: https://use.fontawesome.com/4bcc658a89.js, https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js
+title: Foundational
+track: "USERS › CLUSTER OPERATOR › FOUNDATIONAL"
+content_template: templates/user-journey-content
+---
+-->
+
+
+
+<!-- Foundational
+Nodes, Pods, Networks, Deployments, Services, ConfigMaps, Secrets
+Labels, Selectors, Annotations
+Metrics
+-->
+
+
+
+	
+	<div class="track">USERS › CLUSTER OPERATOR › FOUNDATIONAL</div>
+<div class="topheader">
+   Introduction
+</div>
+<div class="sections">sections in this doc</div>
+<div id="user-journeys-toc" class="tablebar">
+
+</div>
+
+<div class="docsection1">
+
+<!--
+If you want to learn how to get started managing and operating a Kubernetes cluster, this page and the linked topics introduce you to the foundational concepts and tasks.
+This page introduces you to a Kubernetes cluster and key concepts to understand and manage it. The content focuses primarily on the cluster itself rather than the software running within the cluster.
+-->
+
+<p>如果您想学习如何开始管理和操作 Kubernetes 集群，本页面和链接主题将向您介绍基础概念和任务。本页面向您介绍 Kubernetes 集群以及理解和管理它的关键概念。内容主要关注集群本身，而不是集群中运行的软件。</p>
+
+<!--
+## Get an overview of Kubernetes
+-->
+
+</div><h2 id="kubernetes-概要">Kubernetes 概要</h2><div class="docsection1">
+
+<!--
+If you have not already done so, start your understanding by reading through [What is Kubernetes?](/docs/concepts/overview/what-is-kubernetes/), which introduces a number of basic concepts and terms.
+-->
+
+<p>如果你还没有这样做，请通过阅读<a href="/docs/concepts/overview/what-is-kubernetes/">什么是 Kubernetes?</a>开始理解，其中介绍了许多基本概念和术语。</p>
+
+<!--
+Kubernetes is quite flexible, and a cluster can be run in a wide variety of places. You can interact with Kubernetes entirely on your own laptop or local development machine with it running within a virtual machine. Kubernetes can also run on virtual machines hosted either locally or in a cloud provider, and you can run a Kubernetes cluster on bare metal.
+-->
+
+<p>Kubernetes 非常灵活，集群可以在各种各样的地方运行。您可以在自己的笔记本电脑或本地开发机器上完全与 Kubernetes 交互，并在虚拟机中运行。Kubernetes 还可以在本地或云提供商托管的虚拟机上运行，并且您也可以在裸机上运行 Kubernetes 集群。</p>
+
+<!--
+A cluster is made up of one or more [Nodes](/docs/concepts/architecture/nodes/); where a node is a physical or virtual machine.
+If there is more than one node in your cluster then the nodes are connected with a [cluster network](/docs/concepts/cluster-administration/networking/).
+Regardless of how many nodes, all Kubernetes clusters generally have the same components, which are described in [Kubernetes Components](/docs/concepts/overview/components).
+-->
+
+<p>集群由一个或多个<a href="/docs/concepts/architecture/nodes/">节点</a>组成；节点是物理机或虚拟机的位置。
+如果集群中有多个节点，则节点将与<a href="/docs/concepts/cluster-administration/networking/">集群网络</a>连接。
+无论有多少个节点，所有 Kubernetes 集群通常具有相同的组件，这些组件在<a href="/docs/concepts/overview/components">Kubernetes 组件</a>中有所描述。</p>
+
+<!--
+## Learn about Kubernetes basics
+-->
+
+</div><h2 id="了解-kubernetes-基础知识">了解 Kubernetes 基础知识</h2><div class="docsection1">
+
+<!--
+A good way to become familiar with how to manage and operate a Kubernetes cluster is by setting one up.
+One of the most compact ways to experiment with a cluster is [Installing and using Minikube](/docs/tasks/tools/install-minikube/).
+Minikube is a command line tool for setting up and running a single-node cluster within a virtual machine on your local laptop or development computer. Minikube is even available through your browser at the [Katacoda Kubernetes Playground](https://www.katacoda.com/courses/kubernetes/playground).
+Katacoda provides a browser-based connection to a single-node cluster, using minikube behind the scenes, to support a number of tutorials to explore Kubernetes. You can also leverage the web-based [Play with Kubernetes](http://labs.play-with-k8s.com/) to the same ends - a temporary cluster to play with on the web.
+-->
+
+<p>一个熟悉如果管理和操作 Kubernetes 集群的好方法就是设置一个。
+实验集群最紧凑的方法之一是<a href="/docs/tasks/tools/install-minikube/">安装和使用 Minikube</a>。
+Minikube 是一个命令行工具，用于在笔记本电脑或开发计算机上的虚拟机中设置和运行单节点集群。甚至可以通过<a href="https://www.katacoda.com/courses/kubernetes/playground" target="_blank">Katacoda Kubernetes Playground</a>的浏览器获取 Minikube。
+Katacoda 提供一个基于浏览器的连接到单节点集群，在幕后使用 minikube，支持一些教程来探索 Kubernetes。您还可以利用基于网络的<a href="http://labs.play-with-k8s.com/" target="_blank">Play with Kubernetes</a>来实现相同目的——在网络上使用的临时集群。</p>
+
+<!--
+You interact with Kubernetes either through a dashboard, an API, or using a command-line tool (such as `kubectl`) that interacts with the Kubernetes API.
+Be familiar with [Organizing Cluster Access](/docs/concepts/configuration/organize-cluster-access-kubeconfig/) by using configuration files.
+The Kubernetes API exposes a number of resources that provide the building blocks and abstractions that are used to run software on Kubernetes.
+Learn more about these resources at [Understanding Kubernetes Objects](/docs/concepts/overview/working-with-objects/kubernetes-objects).
+These resources are covered in a number of articles within the Kubernetes documentation.
+-->
+
+<p>您可以通过 dashboard，API 或者使用命令行工具（例如<code>kubectl</code>）与 Kubernetes API 进行交互。
+通过使用配置文件熟悉<a href="/docs/concepts/configuration/organize-cluster-access-kubeconfig/">组织群集访问</a> 。
+Kubernetes API 公开了许多资源，这些资源提供了在 Kubernetes 上运行软件的构建块和抽象。
+在<a href="/docs/concepts/overview/working-with-objects/kubernetes-objects">Understanding Kubernetes Objects</a>中了解有关这些资源的更多信息。
+Kubernetes 文档中的许多文章都涵盖了这些资源。</p>
+
+<!--
+* [Pod Overview](/docs/concepts/workloads/pods/pod-overview/)
+  * [Pods](/docs/concepts/workloads/pods/pod/)
+  * [ReplicaSets](/docs/concepts/workloads/controllers/replicaset/)
+  * [Deployments](/docs/concepts/workloads/controllers/deployment/)
+  * [Garbage Collection](/docs/concepts/workloads/controllers/garbage-collection/)
+  * [Container Images](/docs/concepts/containers/images/)
+  * [Container Environment Variables](/docs/concepts/containers/container-environment-variables/)
+* [Labels and Selectors](/docs/concepts/overview/working-with-objects/labels/)
+* [Namespaces](/docs/concepts/overview/working-with-objects/namespaces/)
+  * [Namespaces Walkthrough](/docs/tasks/administer-cluster/namespaces-walkthrough/)
+* [Services](/docs/concepts/services-networking/service/)
+* [Annotations](/docs/concepts/overview/working-with-objects/annotations/)
+* [ConfigMaps](/docs/tasks/configure-pod-container/configure-pod-configmap/)
+* [Secrets](/docs/concepts/configuration/secret/)
+-->
+
+<ul>
+<li><a href="/docs/concepts/workloads/pods/pod-overview/">Pod Overview</a>
+
+<ul>
+<li><a href="/docs/concepts/workloads/pods/pod/">Pods</a></li>
+<li><a href="/docs/concepts/workloads/controllers/replicaset/">ReplicaSets</a></li>
+<li><a href="/docs/concepts/workloads/controllers/deployment/">Deployments</a></li>
+<li><a href="/docs/concepts/workloads/controllers/garbage-collection/">垃圾收集</a></li>
+<li><a href="/docs/concepts/containers/images/">容器镜像</a></li>
+<li><a href="/docs/concepts/containers/container-environment-variables/">容器环境变量</a></li>
+</ul></li>
+<li><a href="/docs/concepts/overview/working-with-objects/labels/">标签和选择器</a></li>
+<li><a href="/docs/concepts/overview/working-with-objects/namespaces/">Namespaces</a>
+
+<ul>
+<li><a href="/docs/tasks/administer-cluster/namespaces-walkthrough/">Namespaces 演练</a></li>
+</ul></li>
+<li><a href="/docs/concepts/services-networking/service/">服务</a></li>
+<li><a href="/docs/concepts/overview/working-with-objects/annotations/">注解</a></li>
+<li><a href="/docs/tasks/configure-pod-container/configure-pod-configmap/">ConfigMaps</a></li>
+<li><a href="/docs/concepts/configuration/secret/">Secrets</a></li>
+</ul>
+
+<!--
+As a cluster operator you may not need to use all these resources, although you should be familiar with them to understand how the cluster is being used.
+There are a number of additional resources that you should be aware of, some listed under [Intermediate Resources](/docs/user-journeys/users/cluster-operator/intermediate#section-1).
+You should also be familiar with [how to manage kubernetes resources](/docs/concepts/cluster-administration/manage-deployment/)
+and [supported versions and version skew between cluster components](/docs/setup/release/version-skew-policy/).
+-->
+
+<p>作为集群运算符，您可能不需要使用所有这些资源，尽管您应该熟悉它们以了解集群的使用方式。
+您应该了解许多其他资源，其中一些列在<a href="/docs/user-journeys/users/cluster-operator/intermediate#section-1">中间资源</a>下。
+您还应该熟悉<a href="/docs/concepts/cluster-administration/manage-deployment/">如何管理 kubernetes 资源</a>
+和<a href="/docs/setup/release/version-skew-policy/">支持的版本和集群组件之间的版本偏差</a>。</p>
+
+<!--
+## Get information about your cluster
+-->
+
+</div><h2 id="获取有关集群的信息">获取有关集群的信息</h2><div class="docsection1">
+
+<!--
+You can [access clusters using the Kubernetes API](/docs/tasks/administer-cluster/access-cluster-api/).
+If you are not already familiar with how to do this, you can review the [introductory tutorial](/docs/tutorials/kubernetes-basics/explore-intro/).
+Using `kubectl`, you can retrieve information about your Kubernetes cluster very quickly.
+To get basic information about the nodes in your cluster run the command `kubectl get nodes`.
+You can get more detailed information for the same nodes with the command `kubectl describe nodes`.
+You can see the status of the core of kubernetes with the command `kubectl get componentstatuses`.
+-->
+
+<p>您可以<a href="/docs/tasks/administer-cluster/access-cluster-api/">使用 Kubernetes API 访问集群</a>。
+如果您还不熟悉如何执行此操作，可以查看<a href="/docs/tutorials/kubernetes-basics/explore-intro/">入门教程</a>。
+使用<code>kubectl</code>，您可以快速检索有关 Kubernetes 集群的信息。
+要获取有关集群中节点的基本信息，请运行命令<code>kubectl get nodes</code>。
+您可以使用命令<code>kubectl describe nodes</code>获取相同节点的更多详细信息。
+您可以使用命令<code>kubectl get componentstatuses</code>查看 kubernetes 的核心状态。</p>
+
+<!--
+Some additional resources for getting information about your cluster and how it is operating include:
+
+* [Tools for Monitoring Compute, Storage, and Network Resources](/docs/tasks/debug-application-cluster/resource-usage-monitoring/)
+* [Resource metrics pipeline](/docs/tasks/debug-application-cluster/resource-metrics-pipeline/)
+  * [Metrics](/docs/concepts/cluster-administration/controller-metrics/)
+-->
+
+<p>用于获取有关集群及其运行方式信息的一些其他资源包括：</p>
+
+<ul>
+<li><a href="/docs/tasks/debug-application-cluster/resource-usage-monitoring/">用于监控计算，存储和网络资源的工具</a></li>
+<li><a href="/docs/tasks/debug-application-cluster/resource-metrics-pipeline/">资源指标管道</a>
+
+<ul>
+<li><a href="/docs/concepts/cluster-administration/controller-metrics/">指标</a></li>
+</ul></li>
+</ul>
+
+<!--
+## Explore additional resources
+-->
+
+</div><h2 id="探索其他资源">探索其他资源</h2><div class="docsection1">
+
+<!--
+### Tutorials
+-->
+
+<h3 id="教程">教程</h3>
+
+<!--
+* [Kubernetes Basics](/docs/tutorials/kubernetes-basics/)
+* [Configuring Redis with a ConfigMap](/docs/tutorials/configuration/configure-redis-using-configmap/)
+* Stateless Applications
+  * [Deploying PHP Guestbook with Redis](/docs/tutorials/stateless-application/guestbook/)
+  * [Expose an External IP address to access an application](/docs/tutorials/stateless-application/expose-external-ip-address/)
+-->
+
+<ul>
+<li><a href="/docs/tutorials/kubernetes-basics/">Kubernetes 基础</a></li>
+<li><a href="/docs/tutorials/configuration/configure-redis-using-configmap/">使用 ConfigMap 配置 Redis</a></li>
+<li>无国籍申请
+
+<ul>
+<li><a href="/docs/tutorials/stateless-application/guestbook/">使用 Redis 部署 PHP 留言薄</a></li>
+<li><a href="/docs/tutorials/stateless-application/expose-external-ip-address/">公开外部 IP 地址以访问应用程序</a></li>
+</ul></li>
+</ul>
+</div>
+
+<script src="/js/user-journeys/toc.js"></script>
+
+	
+
+    
+            
+  <h2>反馈</h2>
+  <p class="feedback--prompt">此页是否对您有帮助？ </p>
+  <button class="button feedback--yes">是</button>
+  <button class="button feedback--no">否</button>
+  <p class="feedback--response feedback--response__hidden">
+    感谢反馈。如果您有一个关于如何使用 Kubernetes 的特定的、需要答案的问题，可以访问
+    <a target="_blank" rel="noopener"
+      href="https://stackoverflow.com/questions/tagged/kubernetes">
+      Stack Overflow</a>.
+    在 GitHub 仓库上登记新的问题
+    <a class="feedback--link" target="_blank" rel="noopener"
+      href="https://github.com/kubernetes/website/issues/new?title=Issue%20with%20k8s.io">
+      报告问题</a>
+    或者
+    <a class="feedback--link" target="_blank" rel="noopener"
+      href="https://github.com/kubernetes/website/issues/new?title=Improvement%20for%20k8s.io">
+      提出改进建议</a>.
+  </p>
+  <script>
+    const yes = document.querySelector('.feedback--yes');
+    const no = document.querySelector('.feedback--no');
+    document.querySelectorAll('.feedback--link').forEach(link => {
+      link.href = link.href + window.location.pathname;
+    });
+    const sendFeedback = (value) => {
+      if (!gtag) { console.log('!gtag'); }
+      gtag('event', 'click', {
+        'event_category': 'Helpful',
+        'event_label': window.location.pathname,
+        value
+      });
+    };
+    const disableButtons = () => {
+      yes.disabled = true;
+      yes.classList.add('feedback--button__disabled');
+      no.disabled = true;
+      no.classList.add('feedback--button__disabled');
+    };
+    yes.addEventListener('click', () => {
+      sendFeedback(1);
+      disableButtons();
+      document.querySelector('.feedback--response').classList.remove('feedback--response__hidden');
+    });
+    no.addEventListener('click', () => {
+      sendFeedback(0);
+      disableButtons();
+      document.querySelector('.feedback--response').classList.remove('feedback--response__hidden');
+    });
+  </script>
+
+
+    
+            <div id="pre-footer"> 
+  <hr />
+
+  <div class="issue-button-container">
+    <p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/user-journeys/users/cluster-operator/foundational.md?pixel" alt="Analytics" /></a></p>
+    
+    
+    <script type="text/javascript">
+    PDRTJS_settings_8345992 = {
+    "id" : "8345992",
+    "unique_id" : "\/zh\/docs\/user-journeys\/users\/cluster-operator\/foundational\/",
+    "title" : "基础知识",
+    "permalink" : "https:\/\/kubernetes.io\/zh\/docs\/user-journeys\/users\/cluster-operator\/foundational\/"
+    };
+    (function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+    </script>
+    <a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?template=bug-report.md&title=Issue%20with%20' +
+    'k8s.io'+window.location.pathname)" class="button issue">报告 GitHub 问题</a>
+    
+    
+    
+    <a href="https://github.com/kubernetes/website/edit/master/content/zh/docs/user-journeys/users/cluster-operator/foundational.md" class="button issue">修改本页面</a>
+    
+  </div>
+  
+
+  <div id="lastedit" class="lastedit issue-button-container">
+    页面最后一次修改于 December 25, 2019 at 8:53 AM PST 由：
+    <a href="https://github.com/kubernetes/website/commit/0f2bd2871bbb2be9c635054e690b92524670f1e7/">zh-trans: merge zh content from release-1.16-temporary into release-1.16 (#18216)</a> (<a href="https://github.com/kubernetes/website/commits/master/content/en/docs/user-journeys/users/cluster-operator/foundational.md">页面历史</a>)
+  </div>
+  
+</div>
+
+          </div>
+        </section>
+    </main>
+		<footer>
+    <div class="light-text main-section">
+        <nav>
+            
+            
+            
+            <a href="/zh/docs/home/">主页</a>
+            
+            <a href="/zh/blog/">博客</a>
+            
+            <a href="/zh/partners/">合作伙伴</a>
+            
+            <a href="/zh/community/">社区</a>
+            
+            <a href="/zh/case-studies/">案例分析</a>
+            
+        </nav>
+        <div class="social" role="region" aria-label="Social hyperlinks">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>GitHub</span></a>
+                <a href="https://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="https://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://www.youtube.com/kubernetescommunity" class="youtube"><span>YouTube</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>论坛</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>事件日历</span></a>
+            </div>
+            <div>
+                
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">贡献</a>
+            </div>
+        </div>
+        <div class="miceType center">
+            &copy; 2023 The Kubernetes 作者 | 文档发布基于 <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a> 授权许可</a>
+        </div>
+        <div class="miceType center">
+            Copyright &copy; 2023 Linux 基金会&reg;。保留所有权利。Linux 基金会已注册并使用商标。如需了解 Linux 基金会的商标列表，请访问<a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">商标使用页面</a>
+        </div>
+        <div class="miceType center">
+            ICP license: 京ICP备17074266号-3
+        </div>
+    </div>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()" aria-label="Toggle table of contents visibility"></button>
+
+<script>
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+    <script language="application/javascript">
+      
+      (function addHeadingLinks(){
+        var article = document.getElementById('docsContent');
+        var headings = article.querySelectorAll('h1, h2, h3, h4, h5, h6');
+        headings.forEach(function(heading){
+          if(heading.id){
+            var a = document.createElement('a');
+            a.innerHTML = heading.innerHTML;
+            a.href = '#'+heading.id;
+            a.classList.add('inpage_heading');
+            heading.innerHTML = '';
+            heading.appendChild(a);
+          }
+        });
+      })();
+    </script>
+	</body>
+</html>

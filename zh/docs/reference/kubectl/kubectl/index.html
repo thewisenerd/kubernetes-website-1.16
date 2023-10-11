@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html id="docs" lang="zh" class="">
+	<head>
+	
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-36037335-10"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-36037335-10');
+</script>
+<meta charset="utf-8">
+<title>kubectl - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/style.03896868dcf2dd803b1af07e10dc058b63ac620a0915c37b5add3dd59431555f.css" integrity="sha256-A4loaNzy3YA7GvB&#43;ENwFi2OsYgoJFcN7Wt091ZQxVV8=">
+
+
+<link rel="stylesheet" href="/css/base_fonts.css">
+<link rel="stylesheet" href="/css/jquery-ui.min.css">
+<link rel="stylesheet" href="/css/callouts.css">
+<link rel="stylesheet" href="/css/custom-jekyll/tags.css">
+
+
+
+<meta name="description" content="kubectl kubectl 可以操控 Kubernetes 集群。
+简介 kubectl 可以操控 Kubernetes 集群。
+获取更多信息，请访问：kubectl 概述
+kubectl [flags]  选项  --alsologtostderr 同时输出日志到标准错误控制台和文件 --as string 以指定用户执行操作 --as-group stringArray 模拟操作的组，可以使用这个标识来指定多个组。 --cache-dir string 默认 HTTP 缓存目录（默认值 &quot;/home/username/.kube/http-cache&quot; ） --certificate-authority string 用于进行认证授权的 .cert 文件路径 --client-certificate string TLS 使用的客户端证书路径 --client-key string TLS 使用的客户端密钥文件路径 --cluster string 指定要使用的 kubeconfig 文件中集群名 --context string 指定要使用的 kubeconfig 文件中上下文 -h, --help kubectl 帮助 --insecure-skip-tls-verify 值为 true，则不会检查服务器的证书的有效性。 这将使您的HTTPS连接不安全 --kubeconfig string CLI 请求使用的 kubeconfig 配置文件路径。 --log-backtrace-at traceLocation 当日志长度超出规定的行数时，忽略堆栈信息（默认值：0） --log-dir string 如果不为空，则将日志文件写入此目录 --logtostderr 日志输出到标准错误控制台而不输出到文件 --match-server-version 要求客户端版本和服务端版本相匹配 -n, --namespace string 如果存在，CLI 请求将使用此命名空间 --request-timeout string 放弃一个简单服务请求前的等待时间，非零值需要包含相应时间单位(例如：1s, 2m, 3h)。零值则认为不做超时请求。 (默认值 &quot;0&quot;) -s, --server string Kubernetes API server 的地址和端口 --stderrthreshold severity 等于或高于此阈值的日志将输出标准错误控制台（默认值2） --token string 用于 API server 进行身份认证的承载令牌 --user string 指定使用的 kubeconfig 配置文件中的用户名 -v, --v Level 指定输出日志的日志级别 --vmodule moduleSpec 指定输出日志的模块，格式如下：pattern=N，使用逗号分隔  接下来看  kubectl alpha - alpha环境上命令属性 kubectl annotate - 更新资源上注释 kubectl api-resources - 在服务器上打印支持的 API 资源 kubectl api-versions - 以 &ldquo;group/version&rdquo; 的形式在服务器上打印支持的 API 版本 kubectl apply - 通过文件名或标准输入将配置添加给资源 kubectl attach - 附加到正在运行的容器 kubectl auth - 检查授权 kubectl autoscale - 自动扩展 Deployment, ReplicaSet 或 ReplicationController kubectl certificate - 修改证书资源。 kubectl cluster-info - 展示集群信息 kubectl completion - 为给定的 shell 输出完成代码（ bash 或 zsh） kubectl config - 修改 kubeconfig 配置文件 kubectl convert - 在不同的 API 版本之间转换配置文件 kubectl cordon - 将 node 节点标记为不可调度 kubectl cp - 从容器复制文件和目录，也可将文件和目录复制到容器。 kubectl create - 通过文件名或标准输入创建资源。 kubectl delete - 通过文件名，标准输入，资源和名称或资源和标签选择器删除资源 kubectl describe - 显示特定资源或资源组的详细信息 kubectl drain - 为便于维护，需要提前驱逐node节点 kubectl edit - 在服务器编辑资源 kubectl exec - 容器内退出命令 kubectl explain - 资源文档 kubectl expose - 获取 replication controller, service, deployment 或 pod 资源，并作为新的 Kubernetes 服务暴露 kubectl get - 展示一个或多个资源 kubectl label - 升级资源标签 kubectl logs - 为 pod 中的容器打印日志 kubectl options - 打印所有命令继承的标识列表 kubectl patch - 使用战略性合并补丁更新资源字段 kubectl plugin - 运行命令行插件 kubectl port-forward - 给 pod 开放一个或多个本地端口 kubectl proxy - 为 Kubernetes API server 运行代理 kubectl replace - 通过文件或标准输入替换资源 kubectl rollout - 管理资源展示 kubectl run - 在集群上运行指定镜像 kubectl scale - 给 Deployment, ReplicaSet, Replication Controller 或 Job 设置新副本规模 kubectl set - 给对象设置特定功能 kubectl taint - 更新一个或多个 node 节点的污点信息 kubectl top - 展示资源 (CPU/Memory/Storage) 使用信息。 kubectl uncordon - 标记 node 节点为可调度 kubectl version - 打印客户端和服务端版本信息 kubectl wait - 试验: 在一个或多个资源上等待条件完成  ######2018年6月16日，通过spf13/cobra自动生成">
+<meta property="og:description" content="kubectl kubectl 可以操控 Kubernetes 集群。
+简介 kubectl 可以操控 Kubernetes 集群。
+获取更多信息，请访问：kubectl 概述
+kubectl [flags]  选项  --alsologtostderr 同时输出日志到标准错误控制台和文件 --as string 以指定用户执行操作 --as-group stringArray 模拟操作的组，可以使用这个标识来指定多个组。 --cache-dir string 默认 HTTP 缓存目录（默认值 &quot;/home/username/.kube/http-cache&quot; ） --certificate-authority string 用于进行认证授权的 .cert 文件路径 --client-certificate string TLS 使用的客户端证书路径 --client-key string TLS 使用的客户端密钥文件路径 --cluster string 指定要使用的 kubeconfig 文件中集群名 --context string 指定要使用的 kubeconfig 文件中上下文 -h, --help kubectl 帮助 --insecure-skip-tls-verify 值为 true，则不会检查服务器的证书的有效性。 这将使您的HTTPS连接不安全 --kubeconfig string CLI 请求使用的 kubeconfig 配置文件路径。 --log-backtrace-at traceLocation 当日志长度超出规定的行数时，忽略堆栈信息（默认值：0） --log-dir string 如果不为空，则将日志文件写入此目录 --logtostderr 日志输出到标准错误控制台而不输出到文件 --match-server-version 要求客户端版本和服务端版本相匹配 -n, --namespace string 如果存在，CLI 请求将使用此命名空间 --request-timeout string 放弃一个简单服务请求前的等待时间，非零值需要包含相应时间单位(例如：1s, 2m, 3h)。零值则认为不做超时请求。 (默认值 &quot;0&quot;) -s, --server string Kubernetes API server 的地址和端口 --stderrthreshold severity 等于或高于此阈值的日志将输出标准错误控制台（默认值2） --token string 用于 API server 进行身份认证的承载令牌 --user string 指定使用的 kubeconfig 配置文件中的用户名 -v, --v Level 指定输出日志的日志级别 --vmodule moduleSpec 指定输出日志的模块，格式如下：pattern=N，使用逗号分隔  接下来看  kubectl alpha - alpha环境上命令属性 kubectl annotate - 更新资源上注释 kubectl api-resources - 在服务器上打印支持的 API 资源 kubectl api-versions - 以 &ldquo;group/version&rdquo; 的形式在服务器上打印支持的 API 版本 kubectl apply - 通过文件名或标准输入将配置添加给资源 kubectl attach - 附加到正在运行的容器 kubectl auth - 检查授权 kubectl autoscale - 自动扩展 Deployment, ReplicaSet 或 ReplicationController kubectl certificate - 修改证书资源。 kubectl cluster-info - 展示集群信息 kubectl completion - 为给定的 shell 输出完成代码（ bash 或 zsh） kubectl config - 修改 kubeconfig 配置文件 kubectl convert - 在不同的 API 版本之间转换配置文件 kubectl cordon - 将 node 节点标记为不可调度 kubectl cp - 从容器复制文件和目录，也可将文件和目录复制到容器。 kubectl create - 通过文件名或标准输入创建资源。 kubectl delete - 通过文件名，标准输入，资源和名称或资源和标签选择器删除资源 kubectl describe - 显示特定资源或资源组的详细信息 kubectl drain - 为便于维护，需要提前驱逐node节点 kubectl edit - 在服务器编辑资源 kubectl exec - 容器内退出命令 kubectl explain - 资源文档 kubectl expose - 获取 replication controller, service, deployment 或 pod 资源，并作为新的 Kubernetes 服务暴露 kubectl get - 展示一个或多个资源 kubectl label - 升级资源标签 kubectl logs - 为 pod 中的容器打印日志 kubectl options - 打印所有命令继承的标识列表 kubectl patch - 使用战略性合并补丁更新资源字段 kubectl plugin - 运行命令行插件 kubectl port-forward - 给 pod 开放一个或多个本地端口 kubectl proxy - 为 Kubernetes API server 运行代理 kubectl replace - 通过文件或标准输入替换资源 kubectl rollout - 管理资源展示 kubectl run - 在集群上运行指定镜像 kubectl scale - 给 Deployment, ReplicaSet, Replication Controller 或 Job 设置新副本规模 kubectl set - 给对象设置特定功能 kubectl taint - 更新一个或多个 node 节点的污点信息 kubectl top - 展示资源 (CPU/Memory/Storage) 使用信息。 kubectl uncordon - 标记 node 节点为可调度 kubectl version - 打印客户端和服务端版本信息 kubectl wait - 试验: 在一个或多个资源上等待条件完成  ######2018年6月16日，通过spf13/cobra自动生成">
+<meta name="twitter:description" content="kubectl kubectl 可以操控 Kubernetes 集群。
+简介 kubectl 可以操控 Kubernetes 集群。
+获取更多信息，请访问：kubectl 概述
+kubectl [flags]  选项  --alsologtostderr 同时输出日志到标准错误控制台和文件 --as string 以指定用户执行操作 --as-group stringArray 模拟操作的组，可以使用这个标识来指定多个组。 --cache-dir string 默认 HTTP 缓存目录（默认值 &quot;/home/username/.kube/http-cache&quot; ） --certificate-authority string 用于进行认证授权的 .cert 文件路径 --client-certificate string TLS 使用的客户端证书路径 --client-key string TLS 使用的客户端密钥文件路径 --cluster string 指定要使用的 kubeconfig 文件中集群名 --context string 指定要使用的 kubeconfig 文件中上下文 -h, --help kubectl 帮助 --insecure-skip-tls-verify 值为 true，则不会检查服务器的证书的有效性。 这将使您的HTTPS连接不安全 --kubeconfig string CLI 请求使用的 kubeconfig 配置文件路径。 --log-backtrace-at traceLocation 当日志长度超出规定的行数时，忽略堆栈信息（默认值：0） --log-dir string 如果不为空，则将日志文件写入此目录 --logtostderr 日志输出到标准错误控制台而不输出到文件 --match-server-version 要求客户端版本和服务端版本相匹配 -n, --namespace string 如果存在，CLI 请求将使用此命名空间 --request-timeout string 放弃一个简单服务请求前的等待时间，非零值需要包含相应时间单位(例如：1s, 2m, 3h)。零值则认为不做超时请求。 (默认值 &quot;0&quot;) -s, --server string Kubernetes API server 的地址和端口 --stderrthreshold severity 等于或高于此阈值的日志将输出标准错误控制台（默认值2） --token string 用于 API server 进行身份认证的承载令牌 --user string 指定使用的 kubeconfig 配置文件中的用户名 -v, --v Level 指定输出日志的日志级别 --vmodule moduleSpec 指定输出日志的模块，格式如下：pattern=N，使用逗号分隔  接下来看  kubectl alpha - alpha环境上命令属性 kubectl annotate - 更新资源上注释 kubectl api-resources - 在服务器上打印支持的 API 资源 kubectl api-versions - 以 &ldquo;group/version&rdquo; 的形式在服务器上打印支持的 API 版本 kubectl apply - 通过文件名或标准输入将配置添加给资源 kubectl attach - 附加到正在运行的容器 kubectl auth - 检查授权 kubectl autoscale - 自动扩展 Deployment, ReplicaSet 或 ReplicationController kubectl certificate - 修改证书资源。 kubectl cluster-info - 展示集群信息 kubectl completion - 为给定的 shell 输出完成代码（ bash 或 zsh） kubectl config - 修改 kubeconfig 配置文件 kubectl convert - 在不同的 API 版本之间转换配置文件 kubectl cordon - 将 node 节点标记为不可调度 kubectl cp - 从容器复制文件和目录，也可将文件和目录复制到容器。 kubectl create - 通过文件名或标准输入创建资源。 kubectl delete - 通过文件名，标准输入，资源和名称或资源和标签选择器删除资源 kubectl describe - 显示特定资源或资源组的详细信息 kubectl drain - 为便于维护，需要提前驱逐node节点 kubectl edit - 在服务器编辑资源 kubectl exec - 容器内退出命令 kubectl explain - 资源文档 kubectl expose - 获取 replication controller, service, deployment 或 pod 资源，并作为新的 Kubernetes 服务暴露 kubectl get - 展示一个或多个资源 kubectl label - 升级资源标签 kubectl logs - 为 pod 中的容器打印日志 kubectl options - 打印所有命令继承的标识列表 kubectl patch - 使用战略性合并补丁更新资源字段 kubectl plugin - 运行命令行插件 kubectl port-forward - 给 pod 开放一个或多个本地端口 kubectl proxy - 为 Kubernetes API server 运行代理 kubectl replace - 通过文件或标准输入替换资源 kubectl rollout - 管理资源展示 kubectl run - 在集群上运行指定镜像 kubectl scale - 给 Deployment, ReplicaSet, Replication Controller 或 Job 设置新副本规模 kubectl set - 给对象设置特定功能 kubectl taint - 更新一个或多个 node 节点的污点信息 kubectl top - 展示资源 (CPU/Memory/Storage) 使用信息。 kubectl uncordon - 标记 node 节点为可调度 kubectl version - 打印客户端和服务端版本信息 kubectl wait - 试验: 在一个或多个资源上等待条件完成  ######2018年6月16日，通过spf13/cobra自动生成">
+<meta property="og:url" content="https://kubernetes.io/zh/docs/reference/kubectl/kubectl/">
+<meta property="og:title" content="kubectl">
+<meta name="twitter:title" content="kubectl">
+<meta name="twitter:image" content="https://kubernetes.io/images/favicon.png" />
+
+<meta name="twitter:image:alt" content="Kubernetes">
+
+<meta property="og:image" content="/images/kubernetes-horizontal-color.png">
+
+<meta property="og:type" content="article">
+<script src="/js/anchor-4.1.1.min.js"></script>
+<script src="/js/jquery-3.2.1.min.js"></script>
+<script src="/js/jquery-ui-1.12.1.min.js"></script>
+<script src="/js/bootstrap-4.3.1.min.js"></script>
+<script src="/js/sweetalert-2.1.2.min.js"></script>
+
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/zh/" class="logo" title="Production-Grade Container Orchestration - Kubernetes" aria-label="Kubernetes website"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/zh/docs/" class="active">文档</a></li>
+            
+            <li><a href="/zh/blog/">博客</a></li>
+            
+            <li><a href="/zh/partners/">合作伙伴</a></li>
+            
+            <li><a href="/zh/community/">社区</a></li>
+            
+            <li><a href="/zh/case-studies/">案例分析</a></li>
+            
+            
+            
+             <li>
+                <a href="#">
+                    中文 Chinese <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/docs/reference/kubectl/kubectl/">English</a></li>
+                
+                    <li><a href="/fr/docs/reference/kubectl/kubectl/">Français</a></li>
+                
+                </ul>
+            </li>
+
+            <li>
+                <a href="#">
+                    v1.16 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io/zh/docs/reference/kubectl/kubectl/">v1.20</a></li>
+                
+                    <li><a href="https://v1-19.docs.kubernetes.io/zh/docs/reference/kubectl/kubectl/">v1.19</a></li>
+                
+                    <li><a href="https://v1-18.docs.kubernetes.io/zh/docs/reference/kubectl/kubectl/">v1.18</a></li>
+                
+                    <li><a href="https://v1-17.docs.kubernetes.io/zh/docs/reference/kubectl/kubectl/">v1.17</a></li>
+                
+                    <li><a href="https://v1-16.docs.kubernetes.io/zh/docs/reference/kubectl/kubectl/">v1.16</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/zh/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>学习 Kubernetes 基础知识</a>
+        
+
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <div class="main-section" data-auto-burger="primary">
+         
+           <div class="nav-box">
+            <h3><a href="/zh/docs/tutorials/hello-minikube/">Get Started</a></h3>
+           <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+
+            </div>
+         
+           <div class="nav-box">
+            <h3><a href="/zh/docs/home/">文档</a></h3>
+           <p>通过演练，示例和参考文档了解如何使用 Kubernetes。你甚至可以<a href="/editdocs/" data-auto-burger-exclude>帮助贡献文档</a>！</p>
+
+            </div>
+         
+           <div class="nav-box">
+            <h3><a href="/zh/blog/">博客</a></h3>
+           <p>阅读关于 kubernetes 和容器规范的最新信息,以及获取最新的技术。</p>
+
+            </div>
+         
+        </div>
+        <div class="main-section" data-auto-burger="primary">
+            <div class="left">
+                <h5 class="github-invite">想要修改 Kubernetes 的核心源代码？</h5>
+                <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>在 GitHub 上查看</a>
+            </div>
+
+            <div class="right">
+                <h5 class="github-invite">了解社区</h5>
+                <div class="social">
+                    <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                    <a href="https://github.com/kubernetes/kubernetes" class="github"><span>GitHub</span></a>
+                    <a href="http://slack.k8s.io/" class="slack"><span>Slack Slack</span></a>
+                    <a href="https://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                    <a href="https://www.youtube.com/kubernetescommunity" class="youtube"><span>YouTube</span></a>
+                    <a href="https://discuss.kubernetes.io" class="mailing-list"><span>论坛</span></a>
+                    <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>事件日历</span></a>
+                </div>
+            </div>
+            <div class="clear" style="clear: both"></div>
+        </div>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h1>参考</h1>
+<h5></h5>
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/zh/docs/home/">主页</a></li>
+		
+		
+		<li><a href="/zh/docs/setup/">入门</a></li>
+		
+		
+		<li><a href="/zh/docs/concepts/">概念</a></li>
+		
+		
+		<li><a href="/zh/docs/tasks/">任务</a></li>
+		
+		
+		<li><a href="/zh/docs/tutorials/">教程</a></li>
+		
+		
+		<li><a href="/zh/docs/reference/" class="YAH">参考</a></li>
+		
+		
+		<li><a href="/zh/docs/contribute/">贡献</a></li>
+		
+	</ul>
+	<form id="searchBox" action="/docs/search/" role="search">
+		<input type="text" id="search" name="q" placeholder="搜索" aria-label="Search">
+	</form>
+</div>
+
+		</section>
+		
+    
+		
+<section id="deprecationWarning">
+  <main>
+    <div class="content deprecation-warning">
+      <h3>
+	 Kubernetes v1.16
+	  版本的文档已不再维护。您现在看到的版本来自于一份静态的快照。如需查阅最新文档，请点击
+	 <a href="https://kubernetes.io/docs/home/">最新版本。</a>
+      </h3>
+    </div>
+  </main>
+</section>
+
+
+    <main>
+        <section id="encyclopedia">
+          
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="参考" href="/zh/docs/reference/"></a>
+
+	
+	
+			
+			
+			
+			
+			
+		
+	
+	
+	
+		
+			
+
+<a class="item" data-title="标准化词汇表" href="/zh/docs/reference/glossary/"></a>
+
+		
+	
+		
+			
+<div class="item" data-title="Kubernetes 问题和安全">
+	<div class="container">
+		
+		
+		
+		<a class="item" data-title="Kubernetes 问题和安全" href="/zh/docs/reference/issues-security/"></a>
+		
+		
+	
+	
+			
+			
+			
+			
+			
+		
+	
+	
+	
+		
+			
+
+<a class="item" data-title="Kubernetes 问题追踪" href="/zh/docs/reference/issues-security/issues/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Kubernetes 安全和信息披露" href="/zh/docs/reference/issues-security/security/"></a>
+
+		
+	
+
+	</div>
+</div>
+
+		
+	
+		
+			
+<div class="item" data-title="使用 Kubernetes API">
+	<div class="container">
+		
+		
+		
+		<a class="item" data-title="使用 Kubernetes API" href="/zh/docs/reference/using-api/"></a>
+		
+		
+	
+	
+			
+			
+			
+			
+			
+		
+	
+	
+	
+		
+			
+
+<a class="item" data-title="Kubernetes API 总览" href="/zh/docs/reference/using-api/api-overview/"></a>
+
+		
+	
+		
+			
+
+<a class="item" target="_blank" data-title="Kubernetes API Concepts <small>(EN)</small>" href="/docs/reference/using-api/api-concepts/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="客户端库" href="/zh/docs/reference/using-api/client-libraries/"></a>
+
+		
+	
+		
+			
+
+<a class="item" target="_blank" data-title="Kubernetes Deprecation Policy <small>(EN)</small>" href="/docs/reference/using-api/deprecation-policy/"></a>
+
+		
+	
+
+	</div>
+</div>
+
+		
+	
+		
+			
+<div class="item" data-title="访问 API">
+	<div class="container">
+		
+		
+	
+	
+			
+			
+			
+			
+			
+		
+	
+	
+	
+		
+			
+
+<a class="item" target="_blank" data-title="Authenticating <small>(EN)</small>" href="/docs/reference/access-authn-authz/authentication/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="动态准入控制" href="/zh/docs/reference/access-authn-authz/extensible-admission-controllers/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="授权概述" href="/zh/docs/reference/access-authn-authz/authorization/"></a>
+
+		
+	
+		
+			
+
+<a class="item" target="_blank" data-title="Using RBAC Authorization <small>(EN)</small>" href="/docs/reference/access-authn-authz/rbac/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="使用 Node 鉴权" href="/zh/docs/reference/access-authn-authz/node/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Webhook 模式" href="/zh/docs/reference/access-authn-authz/webhook/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Kubernetes API 访问控制" href="/zh/docs/reference/access-authn-authz/controlling-access/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="使用 ABAC 鉴权" href="/zh/docs/reference/access-authn-authz/abac/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="使用准入控制插件" href="/zh/docs/reference/access-authn-authz/admission-controllers/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="使用启动引导令牌（Bootstrap Tokens）认证" href="/zh/docs/reference/access-authn-authz/bootstrap-tokens/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="管理 Service Accounts" href="/zh/docs/reference/access-authn-authz/service-accounts-admin/"></a>
+
+		
+	
+
+	</div>
+</div>
+
+		
+	
+		
+			
+<div class="item" data-title="API 参考">
+	<div class="container">
+		
+		
+		
+		<a class="item" data-title="API 参考" href="/zh/docs/reference/kubernetes-api/"></a>
+		
+		
+	
+	
+			
+			
+			
+			
+			
+		
+	
+	
+	
+		
+			
+
+<a class="item" data-title="v1.15" href="/zh/docs/reference/kubernetes-api/api-index/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="知名标签（Label）、注解（Annotation）和 Taints" href="/zh/docs/reference/kubernetes-api/labels-annotations-taints/"></a>
+
+		
+	
+
+	</div>
+</div>
+
+		
+	
+		
+			
+<div class="item" data-title="安装工具">
+	<div class="container">
+		
+		
+	
+	
+			
+			
+			
+			
+			
+		
+	
+	
+	
+		
+			
+<div class="item" data-title="Kubeadm">
+	<div class="container">
+		
+		
+	
+	
+			
+			
+			
+			
+			
+		
+	
+	
+	
+		
+			
+
+<a class="item" data-title="kubeadm 概述" href="/zh/docs/reference/setup-tools/kubeadm/kubeadm/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="kubeadm init" href="/zh/docs/reference/setup-tools/kubeadm/kubeadm-init/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="kubeadm join" href="/zh/docs/reference/setup-tools/kubeadm/kubeadm-join/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="kubeadm upgrade" href="/zh/docs/reference/setup-tools/kubeadm/kubeadm-upgrade/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="kubeadm config" href="/zh/docs/reference/setup-tools/kubeadm/kubeadm-config/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="kubeadm reset" href="/zh/docs/reference/setup-tools/kubeadm/kubeadm-reset/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="kubeadm 令牌" href="/zh/docs/reference/setup-tools/kubeadm/kubeadm-token/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="kubeadm version" href="/zh/docs/reference/setup-tools/kubeadm/kubeadm-version/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="kubeadm alpha" href="/zh/docs/reference/setup-tools/kubeadm/kubeadm-alpha/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="kubeadm init phase" href="/zh/docs/reference/setup-tools/kubeadm/kubeadm-init-phase/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="kubeadm join phase" href="/zh/docs/reference/setup-tools/kubeadm/kubeadm-join-phase/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="kubeadm reset phase" href="/zh/docs/reference/setup-tools/kubeadm/kubeadm-reset-phase/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="kubeadm upgrade phase" href="/zh/docs/reference/setup-tools/kubeadm/kubeadm-upgrade-phase/"></a>
+
+		
+	
+		
+			
+
+<a class="item" target="_blank" data-title="Implementation details <small>(EN)</small>" href="/docs/reference/setup-tools/kubeadm/implementation-details/"></a>
+
+		
+	
+
+	</div>
+</div>
+
+		
+	
+
+	</div>
+</div>
+
+		
+	
+		
+			
+<div class="item" data-title="kubectl 命令行界面">
+	<div class="container">
+		
+		
+		
+		<a class="item" data-title="kubectl 命令行界面" href="/zh/docs/reference/kubectl/"></a>
+		
+		
+	
+	
+			
+			
+			
+			
+			
+		
+	
+	
+	
+		
+			
+
+<a class="item" data-title="kubectl 概述" href="/zh/docs/reference/kubectl/overview/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="JSONPath 支持" href="/zh/docs/reference/kubectl/jsonpath/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="kubectl" href="/zh/docs/reference/kubectl/kubectl/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="kubectl 命令" href="/zh/docs/reference/kubectl/kubectl-cmds/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="kubectl 备忘单" href="/zh/docs/reference/kubectl/cheatsheet/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="kubectl 的用法约定" href="/zh/docs/reference/kubectl/conventions/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="适用于 Docker 用户的 kubectl" href="/zh/docs/reference/kubectl/docker-cli-to-kubectl/"></a>
+
+		
+	
+
+	</div>
+</div>
+
+		
+	
+		
+			
+<div class="item" data-title="命令行工具参考">
+	<div class="container">
+		
+		
+		
+		<a class="item" data-title="命令行工具参考" href="/zh/docs/reference/command-line-tools-reference/"></a>
+		
+		
+	
+	
+			
+			
+			
+			
+			
+		
+	
+	
+	
+		
+			
+
+<a class="item" data-title="Feature Gates" href="/zh/docs/reference/command-line-tools-reference/feature-gates/"></a>
+
+		
+	
+		
+			
+
+<a class="item" target="_blank" data-title="cloud-controller-manager <small>(EN)</small>" href="/docs/reference/command-line-tools-reference/cloud-controller-manager/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="kube-proxy" href="/zh/docs/reference/command-line-tools-reference/kube-proxy/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="kube-scheduler" href="/zh/docs/reference/command-line-tools-reference/kube-scheduler/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="kubelet" href="/zh/docs/reference/command-line-tools-reference/kubelet/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="kube-apiserver" href="/zh/docs/reference/command-line-tools-reference/kube-apiserver/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="kube-controller-manager" href="/zh/docs/reference/command-line-tools-reference/kube-controller-manager/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Kubelet authentication/authorization" href="/zh/docs/reference/command-line-tools-reference/kubelet-authentication-authorization/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="TLS bootstrapping" href="/zh/docs/reference/command-line-tools-reference/kubelet-tls-bootstrapping/"></a>
+
+		
+	
+
+	</div>
+</div>
+
+		
+	
+		
+			
+
+<a class="item" data-title="工具" href="/zh/docs/reference/tools/"></a>
+
+		
+	
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+
+          <div id="docsContent">
+            
+
+<p>
+  <a href="https://github.com/kubernetes/website/edit/master/content/zh/docs/reference/kubectl/kubectl.md" id="editPageButton" target="_blank">
+    Edit This Page
+  </a>
+</p>
+
+
+
+<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#kubectl">kubectl</a>
+<ul>
+<li><a href="#简介">简介</a></li>
+<li><a href="#选项">选项</a></li>
+<li><a href="#接下来看">接下来看</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+
+
+
+<h2 id="kubectl">kubectl</h2>
+
+<!--
+kubectl controls the Kubernetes cluster manager
+-->
+
+<p>kubectl 可以操控 Kubernetes 集群。</p>
+
+<!--
+### Synopsis
+
+kubectl controls the Kubernetes cluster manager.
+
+Find more information at: /docs/reference/kubectl/overview/
+-->
+
+<h3 id="简介">简介</h3>
+
+<p>kubectl 可以操控 Kubernetes 集群。</p>
+
+<p>获取更多信息，请访问：<a href="/docs/reference/kubectl/overview/">kubectl 概述</a></p>
+
+<pre><code>kubectl [flags]
+</code></pre>
+
+<!--
+### Options
+
+```
+      --alsologtostderr                  log to standard error as well as files
+      --as string                        Username to impersonate for the operation
+      --as-group stringArray             Group to impersonate for the operation, this flag can be repeated to specify multiple groups.
+      --cache-dir string                 Default HTTP cache directory (default "/home/username/.kube/http-cache")
+      --certificate-authority string     Path to a cert file for the certificate authority
+      --client-certificate string        Path to a client certificate file for TLS
+      --client-key string                Path to a client key file for TLS
+      --cluster string                   The name of the kubeconfig cluster to use
+      --context string                   The name of the kubeconfig context to use
+  -h, --help                             help for kubectl
+      --insecure-skip-tls-verify         If true, the server's certificate will not be checked for validity. This will make your HTTPS connections insecure
+      --kubeconfig string                Path to the kubeconfig file to use for CLI requests.
+      --log-backtrace-at traceLocation   when logging hits line file:N, emit a stack trace (default :0)
+      --log-dir string                   If non-empty, write log files in this directory
+      --logtostderr                      log to standard error instead of files
+      --match-server-version             Require server version to match client version
+  -n, --namespace string                 If present, the namespace scope for this CLI request
+      --request-timeout string           The length of time to wait before giving up on a single server request. Non-zero values should contain a corresponding time unit (e.g. 1s, 2m, 3h). A value of zero means don't timeout requests. (default "0")
+  -s, --server string                    The address and port of the Kubernetes API server
+      --stderrthreshold severity         logs at or above this threshold go to stderr (default 2)
+      --token string                     Bearer token for authentication to the API server
+      --user string                      The name of the kubeconfig user to use
+  -v, --v Level                          log level for V logs
+      --vmodule moduleSpec               comma-separated list of pattern=N settings for file-filtered logging
+```
+-->
+
+<h3 id="选项">选项</h3>
+
+<pre><code>      --alsologtostderr                  同时输出日志到标准错误控制台和文件
+      --as string                        以指定用户执行操作
+	  --as-group stringArray             模拟操作的组，可以使用这个标识来指定多个组。
+      --cache-dir string                 默认 HTTP 缓存目录（默认值 &quot;/home/username/.kube/http-cache&quot; ）
+      --certificate-authority string     用于进行认证授权的 .cert 文件路径
+      --client-certificate string        TLS 使用的客户端证书路径
+      --client-key string                TLS 使用的客户端密钥文件路径
+      --cluster string                   指定要使用的 kubeconfig 文件中集群名
+      --context string                   指定要使用的 kubeconfig 文件中上下文
+  -h, --help                             kubectl 帮助
+      --insecure-skip-tls-verify         值为 true，则不会检查服务器的证书的有效性。 这将使您的HTTPS连接不安全
+      --kubeconfig string                CLI 请求使用的 kubeconfig 配置文件路径。
+      --log-backtrace-at traceLocation   当日志长度超出规定的行数时，忽略堆栈信息（默认值：0）
+      --log-dir string                   如果不为空，则将日志文件写入此目录
+      --logtostderr                      日志输出到标准错误控制台而不输出到文件
+      --match-server-version             要求客户端版本和服务端版本相匹配
+  -n, --namespace string                 如果存在，CLI 请求将使用此命名空间
+      --request-timeout string           放弃一个简单服务请求前的等待时间，非零值需要包含相应时间单位(例如：1s, 2m, 3h)。零值则认为不做超时请求。 (默认值 &quot;0&quot;)
+  -s, --server string                    Kubernetes API server 的地址和端口
+      --stderrthreshold severity         等于或高于此阈值的日志将输出标准错误控制台（默认值2）
+      --token string                     用于 API server 进行身份认证的承载令牌
+      --user string                      指定使用的 kubeconfig 配置文件中的用户名
+  -v, --v Level                          指定输出日志的日志级别
+      --vmodule moduleSpec               指定输出日志的模块，格式如下：pattern=N，使用逗号分隔
+</code></pre>
+
+<!--
+### SEE ALSO
+
+* [kubectl alpha](kubectl_alpha.md)  - Commands for features in alpha
+* [kubectl annotate](kubectl_annotate.md)    - Update the annotations on a resource
+* [kubectl api-resources](kubectl_api-resources.md)  - Print the supported API resources on the server
+* [kubectl api-versions](kubectl_api-versions.md)    - Print the supported API versions on the server, in the form of "group/version"
+* [kubectl apply](kubectl_apply.md)  - Apply a configuration to a resource by filename or stdin
+* [kubectl attach](kubectl_attach.md)    - Attach to a running container
+* [kubectl auth](kubectl_auth.md)    - Inspect authorization
+* [kubectl autoscale](kubectl_autoscale.md)  - Auto-scale a Deployment, ReplicaSet, or ReplicationController
+* [kubectl certificate](kubectl_certificate.md)  - Modify certificate resources.
+* [kubectl cluster-info](kubectl_cluster-info.md)    - Display cluster info
+* [kubectl completion](kubectl_completion.md)    - Output shell completion code for the specified shell (bash or zsh)
+* [kubectl config](kubectl_config.md)    - Modify kubeconfig files
+* [kubectl convert](kubectl_convert.md)  - Convert config files between different API versions
+* [kubectl cordon](kubectl_cordon.md)    - Mark node as unschedulable
+* [kubectl cp](kubectl_cp.md)    - Copy files and directories to and from containers.
+* [kubectl create](kubectl_create.md)    - Create a resource from a file or from stdin.
+* [kubectl delete](kubectl_delete.md)    - Delete resources by filenames, stdin, resources and names, or by resources and label selector
+* [kubectl describe](kubectl_describe.md)    - Show details of a specific resource or group of resources
+* [kubectl drain](kubectl_drain.md)  - Drain node in preparation for maintenance
+* [kubectl edit](kubectl_edit.md)    - Edit a resource on the server
+* [kubectl exec](kubectl_exec.md)    - Execute a command in a container
+* [kubectl explain](kubectl_explain.md)  - Documentation of resources
+* [kubectl expose](kubectl_expose.md)    - Take a replication controller, service, deployment or pod and expose it as a new Kubernetes Service
+* [kubectl get](kubectl_get.md)  - Display one or many resources
+* [kubectl label](kubectl_label.md)  - Update the labels on a resource
+* [kubectl logs](kubectl_logs.md)    - Print the logs for a container in a pod
+* [kubectl options](kubectl_options.md)  - Print the list of flags inherited by all commands
+* [kubectl patch](kubectl_patch.md)  - Update field(s) of a resource using strategic merge patch
+* [kubectl plugin](kubectl_plugin.md)    - Runs a command-line plugin
+* [kubectl port-forward](kubectl_port-forward.md)    - Forward one or more local ports to a pod
+* [kubectl proxy](kubectl_proxy.md)  - Run a proxy to the Kubernetes API server
+* [kubectl replace](kubectl_replace.md)  - Replace a resource by filename or stdin
+* [kubectl rollout](kubectl_rollout.md)  - Manage the rollout of a resource
+* [kubectl run](kubectl_run.md)  - Run a particular image on the cluster
+* [kubectl scale](kubectl_scale.md)  - Set a new size for a Deployment, ReplicaSet, Replication Controller, or Job
+* [kubectl set](kubectl_set.md)  - Set specific features on objects
+* [kubectl taint](kubectl_taint.md)  - Update the taints on one or more nodes
+* [kubectl top](kubectl_top.md)  - Display Resource (CPU/Memory/Storage) usage.
+* [kubectl uncordon](kubectl_uncordon.md)    - Mark node as schedulable
+* [kubectl version](kubectl_version.md)  - Print the client and server version information
+* [kubectl wait](kubectl_wait.md)    - Experimental: Wait for one condition on one or many resources
+-->
+
+<h3 id="接下来看">接下来看</h3>
+
+<ul>
+<li><a href="kubectl_alpha.md" target="_blank">kubectl alpha</a>  - alpha环境上命令属性</li>
+<li><a href="kubectl_annotate.md" target="_blank">kubectl annotate</a>    - 更新资源上注释</li>
+<li><a href="kubectl_api-resources.md" target="_blank">kubectl api-resources</a>  - 在服务器上打印支持的 API 资源</li>
+<li><a href="kubectl_api-versions.md" target="_blank">kubectl api-versions</a>    - 以 &ldquo;group/version&rdquo; 的形式在服务器上打印支持的 API 版本</li>
+<li><a href="kubectl_apply.md" target="_blank">kubectl apply</a>  - 通过文件名或标准输入将配置添加给资源</li>
+<li><a href="kubectl_attach.md" target="_blank">kubectl attach</a>    - 附加到正在运行的容器</li>
+<li><a href="kubectl_auth.md" target="_blank">kubectl auth</a>    - 检查授权</li>
+<li><a href="kubectl_autoscale.md" target="_blank">kubectl autoscale</a>  - 自动扩展 Deployment, ReplicaSet 或 ReplicationController</li>
+<li><a href="kubectl_certificate.md" target="_blank">kubectl certificate</a>  - 修改证书资源。</li>
+<li><a href="kubectl_cluster-info.md" target="_blank">kubectl cluster-info</a>    - 展示集群信息</li>
+<li><a href="kubectl_completion.md" target="_blank">kubectl completion</a>    - 为给定的 shell 输出完成代码（ bash 或 zsh）</li>
+<li><a href="kubectl_config.md" target="_blank">kubectl config</a>    - 修改 kubeconfig 配置文件</li>
+<li><a href="kubectl_convert.md" target="_blank">kubectl convert</a>  - 在不同的 API 版本之间转换配置文件</li>
+<li><a href="kubectl_cordon.md" target="_blank">kubectl cordon</a>    - 将 node 节点标记为不可调度</li>
+<li><a href="kubectl_cp.md" target="_blank">kubectl cp</a>    - 从容器复制文件和目录，也可将文件和目录复制到容器。</li>
+<li><a href="kubectl_create.md" target="_blank">kubectl create</a>    - 通过文件名或标准输入创建资源。</li>
+<li><a href="kubectl_delete.md" target="_blank">kubectl delete</a>    - 通过文件名，标准输入，资源和名称或资源和标签选择器删除资源</li>
+<li><a href="kubectl_describe.md" target="_blank">kubectl describe</a>    - 显示特定资源或资源组的详细信息</li>
+<li><a href="kubectl_drain.md" target="_blank">kubectl drain</a>  - 为便于维护，需要提前驱逐node节点</li>
+<li><a href="kubectl_edit.md" target="_blank">kubectl edit</a>    - 在服务器编辑资源</li>
+<li><a href="kubectl_exec.md" target="_blank">kubectl exec</a>    - 容器内退出命令</li>
+<li><a href="kubectl_explain.md" target="_blank">kubectl explain</a>  - 资源文档</li>
+<li><a href="kubectl_expose.md" target="_blank">kubectl expose</a>    - 获取 replication controller, service, deployment 或 pod 资源，并作为新的 Kubernetes 服务暴露</li>
+<li><a href="kubectl_get.md" target="_blank">kubectl get</a>  - 展示一个或多个资源</li>
+<li><a href="kubectl_label.md" target="_blank">kubectl label</a>  - 升级资源标签</li>
+<li><a href="kubectl_logs.md" target="_blank">kubectl logs</a>    - 为 pod 中的容器打印日志</li>
+<li><a href="kubectl_options.md" target="_blank">kubectl options</a>  - 打印所有命令继承的标识列表</li>
+<li><a href="kubectl_patch.md" target="_blank">kubectl patch</a>  - 使用战略性合并补丁更新资源字段</li>
+<li><a href="kubectl_plugin.md" target="_blank">kubectl plugin</a>    - 运行命令行插件</li>
+<li><a href="kubectl_port-forward.md" target="_blank">kubectl port-forward</a>    - 给 pod 开放一个或多个本地端口</li>
+<li><a href="kubectl_proxy.md" target="_blank">kubectl proxy</a>  - 为 Kubernetes API server 运行代理</li>
+<li><a href="kubectl_replace.md" target="_blank">kubectl replace</a>  - 通过文件或标准输入替换资源</li>
+<li><a href="kubectl_rollout.md" target="_blank">kubectl rollout</a>  - 管理资源展示</li>
+<li><a href="kubectl_run.md" target="_blank">kubectl run</a>  - 在集群上运行指定镜像</li>
+<li><a href="kubectl_scale.md" target="_blank">kubectl scale</a>  - 给 Deployment, ReplicaSet, Replication Controller 或 Job 设置新副本规模</li>
+<li><a href="kubectl_set.md" target="_blank">kubectl set</a>  - 给对象设置特定功能</li>
+<li><a href="kubectl_taint.md" target="_blank">kubectl taint</a>  - 更新一个或多个 node 节点的污点信息</li>
+<li><a href="kubectl_top.md" target="_blank">kubectl top</a>  - 展示资源 (CPU/Memory/Storage) 使用信息。</li>
+<li><a href="kubectl_uncordon.md" target="_blank">kubectl uncordon</a>    - 标记 node 节点为可调度</li>
+<li><a href="kubectl_version.md" target="_blank">kubectl version</a>  - 打印客户端和服务端版本信息</li>
+<li><a href="kubectl_wait.md" target="_blank">kubectl wait</a>    - 试验: 在一个或多个资源上等待条件完成</li>
+</ul>
+
+<!--
+###### Auto generated by spf13/cobra on 16-Jun-2018
+-->
+
+<p>######2018年6月16日，通过spf13/cobra自动生成</p>
+
+<!-- * [kubectl alpha](kubectl_alpha.md)     - Commands for features in alpha -->
+
+<ul>
+<li><a href="kubectl_alpha.md" target="_blank">kubectl alpha</a>  - kubectl alpha 功能
+<!-- * [kubectl annotate](kubectl_annotate.md)   - Update the annotations on a resource --></li>
+<li><a href="kubectl_annotate.md" target="_blank">kubectl annotate</a>    - 更新资源所关联的注解
+<!-- * [kubectl api-resources](kubectl_api-resources.md)     - Print the supported API resources on the server --></li>
+<li><a href="kubectl_api-resources.md" target="_blank">kubectl api-resources</a>  - 打印服务器上所支持的 API 资源
+<!-- * [kubectl api-versions](kubectl_api-versions.md)   - Print the supported API versions on the server, in the form of "group/version" --></li>
+<li><a href="kubectl_api-versions.md" target="_blank">kubectl api-versions</a>    - 以“组/版本”的格式输出服务端支持的 API 版本
+<!-- * [kubectl apply](kubectl_apply.md)     - Apply a configuration to a resource by filename or stdin --></li>
+<li><a href="kubectl_apply.md" target="_blank">kubectl apply</a>  - 基于文件名或标准输入，将新的配置应用到资源上
+<!-- * [kubectl attach](kubectl_attach.md)   - Attach to a running container --></li>
+<li><a href="kubectl_attach.md" target="_blank">kubectl attach</a>    - 连接到一个正在运行的容器
+<!-- * [kubectl auth](kubectl_auth.md)   - Inspect authorization --></li>
+<li><a href="kubectl_auth.md" target="_blank">kubectl auth</a>    - 检视授权信息
+<!-- * [kubectl autoscale](kubectl_autoscale.md)     - Auto-scale a Deployment, ReplicaSet, or ReplicationController --></li>
+<li><a href="kubectl_autoscale.md" target="_blank">kubectl autoscale</a>  -  对一个资源对象（ Deployment、ReplicaSet 或 ReplicationController ）进行扩缩
+<!-- * [kubectl certificate](kubectl_certificate.md)     - Modify certificate resources. --></li>
+<li><a href="kubectl_certificate.md" target="_blank">kubectl certificate</a>  - 修改证书资源
+<!-- * [kubectl cluster-info](kubectl_cluster-info.md)   - Display cluster info --></li>
+<li><a href="kubectl_cluster-info.md" target="_blank">kubectl cluster-info</a>    - 显示集群信息
+<!-- * [kubectl completion](kubectl_completion.md)   - Output shell completion code for the specified shell (bash or zsh) --></li>
+<li><a href="kubectl_completion.md" target="_blank">kubectl completion</a>    - 根据已经给出的 Shell（bash 或 zsh），输出 Shell 补全后的代码
+<!-- * [kubectl config](kubectl_config.md)   - Modify kubeconfig files --></li>
+<li><a href="kubectl_config.md" target="_blank">kubectl config</a>    - 修改 kubeconfig 配置文件
+<!-- * [kubectl convert](kubectl_convert.md)     - Convert config files between different API versions --></li>
+<li><a href="kubectl_convert.md" target="_blank">kubectl convert</a>  - 在不同的 API 版本之间转换配置文件
+<!-- * [kubectl cordon](kubectl_cordon.md)   - Mark node as unschedulable --></li>
+<li><a href="kubectl_cordon.md" target="_blank">kubectl cordon</a>    - 标记节点为不可调度的
+<!-- * [kubectl cp](kubectl_cp.md)   - Copy files and directories to and from containers. --></li>
+<li><a href="kubectl_cp.md" target="_blank">kubectl cp</a>    - 将文件和路径拷入/拷出容器。
+<!-- * [kubectl create](kubectl_create.md)   - Create a resource from a file or from stdin. --></li>
+<li><a href="kubectl_create.md" target="_blank">kubectl create</a>    - 通过文件或标准输入来创建资源
+<!-- * [kubectl delete](kubectl_delete.md)   - Delete resources by filenames, stdin, resources and names, or by resources and label selector --></li>
+<li><a href="kubectl_delete.md" target="_blank">kubectl delete</a>    - 通过文件名、标准输入、资源和名字删除资源，或者通过资源和标签选择器来删除资源
+<!-- * [kubectl describe](kubectl_describe.md)   - Show details of a specific resource or group of resources --></li>
+<li><a href="kubectl_describe.md" target="_blank">kubectl describe</a>    - 显示某个资源或某组资源的详细信息
+<!-- * [kubectl drain](kubectl_drain.md)     - Drain node in preparation for maintenance --></li>
+<li><a href="kubectl_drain.md" target="_blank">kubectl drain</a>  - 腾空节点，准备维护
+<!-- * [kubectl edit](kubectl_edit.md)   - Edit a resource on the server --></li>
+<li><a href="kubectl_edit.md" target="_blank">kubectl edit</a>    - 修改服务器上的某资源
+<!-- * [kubectl exec](kubectl_exec.md)   - Execute a command in a container --></li>
+<li><a href="kubectl_exec.md" target="_blank">kubectl exec</a>    - 在容器中执行命令
+<!-- * [kubectl explain](kubectl_explain.md)     - Documentation of resources --></li>
+<li><a href="kubectl_explain.md" target="_blank">kubectl explain</a>  - 显示资源说明
+<!-- * [kubectl expose](kubectl_expose.md)   - Take a replication controller, service, deployment or pod and expose it as a new Kubernetes Service --></li>
+<li><a href="kubectl_expose.md" target="_blank">kubectl expose</a>    - 给定副本控制器、服务、Deployment 或 Pod，将其暴露为新的 kubernetes Service
+<!-- * [kubectl get](kubectl_get.md)     - Display one or many resources --></li>
+<li><a href="kubectl_get.md" target="_blank">kubectl get</a>  - 显示一个或者多个资源信息
+<!-- * [kubectl label](kubectl_label.md)     - Update the labels on a resource --></li>
+<li><a href="kubectl_label.md" target="_blank">kubectl label</a>  - 更新资源的标签
+<!-- * [kubectl logs](kubectl_logs.md)   - Print the logs for a container in a pod --></li>
+<li><a href="kubectl_logs.md" target="_blank">kubectl logs</a>    - 输出 pod 中某容器的日志
+<!-- * [kubectl options](kubectl_options.md)     - Print the list of flags inherited by all commands --></li>
+<li><a href="kubectl_options.md" target="_blank">kubectl options</a>  - 打印所有命令都支持的共有参数列表
+<!-- * [kubectl patch](kubectl_patch.md)     - Update field(s) of a resource using strategic merge patch --></li>
+<li><a href="kubectl_patch.md" target="_blank">kubectl patch</a>  - 基于策略性合并修补（Stategic Merge Patch）规则更新某资源中的字段
+<!-- * [kubectl plugin](kubectl_plugin.md)   - Runs a command-line plugin --></li>
+<li><a href="kubectl_plugin.md" target="_blank">kubectl plugin</a>    - 运行命令行插件
+<!-- * [kubectl port-forward](kubectl_port-forward.md)   - Forward one or more local ports to a pod --></li>
+<li><a href="kubectl_port-forward.md" target="_blank">kubectl port-forward</a>    - 将一个或者多个本地端口转发到 pod
+<!-- * [kubectl proxy](kubectl_proxy.md)     - Run a proxy to the Kubernetes API server --></li>
+<li><a href="kubectl_proxy.md" target="_blank">kubectl proxy</a>  - 运行一个 kubernetes API 服务器代理
+<!-- * [kubectl replace](kubectl_replace.md)     - Replace a resource by filename or stdin --></li>
+<li><a href="kubectl_replace.md" target="_blank">kubectl replace</a>  - 基于文件名或标准输入替换资源
+<!-- * [kubectl rollout](kubectl_rollout.md)     - Manage the rollout of a resource --></li>
+<li><a href="kubectl_rollout.md" target="_blank">kubectl rollout</a>  - 管理资源的上线
+<!-- * [kubectl run](kubectl_run.md)     - Run a particular image on the cluster --></li>
+<li><a href="kubectl_run.md" target="_blank">kubectl run</a>  - 在集群中使用指定镜像启动容器
+<!-- * [kubectl scale](kubectl_scale.md)     - Set a new size for a Deployment, ReplicaSet, Replication Controller, or Job --></li>
+<li><a href="kubectl_scale.md" target="_blank">kubectl scale</a>  - 为一个 Deployment、ReplicaSet、ReplicationController 或 Job 设置一个新的规模尺寸值
+<!-- * [kubectl set](kubectl_set.md)     - Set specific features on objects --></li>
+<li><a href="kubectl_set.md" target="_blank">kubectl set</a>  - 在资源对象设置特定的功能
+<!-- * [kubectl taint](kubectl_taint.md)     - Update the taints on one or more nodes --></li>
+<li><a href="kubectl_taint.md" target="_blank">kubectl taint</a>  - 在一个或者多个节点上更新污点配置
+<!-- * [kubectl top](kubectl_top.md)     - Display Resource (CPU/Memory/Storage) usage. --></li>
+<li><a href="kubectl_top.md" target="_blank">kubectl top</a>  - 显示资源（CPU /内存/存储）使用率
+<!-- * [kubectl uncordon](kubectl_uncordon.md)   - Mark node as schedulable --></li>
+<li><a href="kubectl_uncordon.md" target="_blank">kubectl uncordon</a>    - 标记节点为可调度的
+<!-- * [kubectl version](kubectl_version.md)     - Print the client and server version information --></li>
+<li><a href="kubectl_version.md" target="_blank">kubectl version</a>  - 打印客户端和服务器的版本信息
+<!-- * [kubectl wait](kubectl_wait.md)   - Experimental: Wait for one condition on one or many resources --></li>
+<li><a href="kubectl_wait.md" target="_blank">kubectl wait</a>    - 实验性：等待一个或多个资源达到某种状态</li>
+</ul>
+
+
+
+
+    
+            
+  <h2>反馈</h2>
+  <p class="feedback--prompt">此页是否对您有帮助？ </p>
+  <button class="button feedback--yes">是</button>
+  <button class="button feedback--no">否</button>
+  <p class="feedback--response feedback--response__hidden">
+    感谢反馈。如果您有一个关于如何使用 Kubernetes 的特定的、需要答案的问题，可以访问
+    <a target="_blank" rel="noopener"
+      href="https://stackoverflow.com/questions/tagged/kubernetes">
+      Stack Overflow</a>.
+    在 GitHub 仓库上登记新的问题
+    <a class="feedback--link" target="_blank" rel="noopener"
+      href="https://github.com/kubernetes/website/issues/new?title=Issue%20with%20k8s.io">
+      报告问题</a>
+    或者
+    <a class="feedback--link" target="_blank" rel="noopener"
+      href="https://github.com/kubernetes/website/issues/new?title=Improvement%20for%20k8s.io">
+      提出改进建议</a>.
+  </p>
+  <script>
+    const yes = document.querySelector('.feedback--yes');
+    const no = document.querySelector('.feedback--no');
+    document.querySelectorAll('.feedback--link').forEach(link => {
+      link.href = link.href + window.location.pathname;
+    });
+    const sendFeedback = (value) => {
+      if (!gtag) { console.log('!gtag'); }
+      gtag('event', 'click', {
+        'event_category': 'Helpful',
+        'event_label': window.location.pathname,
+        value
+      });
+    };
+    const disableButtons = () => {
+      yes.disabled = true;
+      yes.classList.add('feedback--button__disabled');
+      no.disabled = true;
+      no.classList.add('feedback--button__disabled');
+    };
+    yes.addEventListener('click', () => {
+      sendFeedback(1);
+      disableButtons();
+      document.querySelector('.feedback--response').classList.remove('feedback--response__hidden');
+    });
+    no.addEventListener('click', () => {
+      sendFeedback(0);
+      disableButtons();
+      document.querySelector('.feedback--response').classList.remove('feedback--response__hidden');
+    });
+  </script>
+
+
+    
+            <div id="pre-footer"> 
+  <hr />
+
+  <div class="issue-button-container">
+    <p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/reference/kubectl/kubectl.md?pixel" alt="Analytics" /></a></p>
+    
+    
+    <script type="text/javascript">
+    PDRTJS_settings_8345992 = {
+    "id" : "8345992",
+    "unique_id" : "\/zh\/docs\/reference\/kubectl\/kubectl\/",
+    "title" : "kubectl",
+    "permalink" : "https:\/\/kubernetes.io\/zh\/docs\/reference\/kubectl\/kubectl\/"
+    };
+    (function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+    </script>
+    <a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?template=bug-report.md&title=Issue%20with%20' +
+    'k8s.io'+window.location.pathname)" class="button issue">报告 GitHub 问题</a>
+    
+    
+    
+    <a href="https://github.com/kubernetes/website/edit/master/content/zh/docs/reference/kubectl/kubectl.md" class="button issue">修改本页面</a>
+    
+  </div>
+  
+
+  <div id="lastedit" class="lastedit issue-button-container">
+    页面最后一次修改于 December 25, 2019 at 8:53 AM PST 由：
+    <a href="https://github.com/kubernetes/website/commit/0f2bd2871bbb2be9c635054e690b92524670f1e7/">zh-trans: merge zh content from release-1.16-temporary into release-1.16 (#18216)</a> (<a href="https://github.com/kubernetes/website/commits/master/content/en/docs/reference/kubectl/kubectl.md">页面历史</a>)
+  </div>
+  
+</div>
+
+          </div>
+        </section>
+    </main>
+		<footer>
+    <div class="light-text main-section">
+        <nav>
+            
+            
+            
+            <a href="/zh/docs/home/">主页</a>
+            
+            <a href="/zh/blog/">博客</a>
+            
+            <a href="/zh/partners/">合作伙伴</a>
+            
+            <a href="/zh/community/">社区</a>
+            
+            <a href="/zh/case-studies/">案例分析</a>
+            
+        </nav>
+        <div class="social" role="region" aria-label="Social hyperlinks">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>GitHub</span></a>
+                <a href="https://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="https://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://www.youtube.com/kubernetescommunity" class="youtube"><span>YouTube</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>论坛</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>事件日历</span></a>
+            </div>
+            <div>
+                
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">贡献</a>
+            </div>
+        </div>
+        <div class="miceType center">
+            &copy; 2023 The Kubernetes 作者 | 文档发布基于 <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a> 授权许可</a>
+        </div>
+        <div class="miceType center">
+            Copyright &copy; 2023 Linux 基金会&reg;。保留所有权利。Linux 基金会已注册并使用商标。如需了解 Linux 基金会的商标列表，请访问<a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">商标使用页面</a>
+        </div>
+        <div class="miceType center">
+            ICP license: 京ICP备17074266号-3
+        </div>
+    </div>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()" aria-label="Toggle table of contents visibility"></button>
+
+<script>
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+    <script language="application/javascript">
+      
+      (function addHeadingLinks(){
+        var article = document.getElementById('docsContent');
+        var headings = article.querySelectorAll('h1, h2, h3, h4, h5, h6');
+        headings.forEach(function(heading){
+          if(heading.id){
+            var a = document.createElement('a');
+            a.innerHTML = heading.innerHTML;
+            a.href = '#'+heading.id;
+            a.classList.add('inpage_heading');
+            heading.innerHTML = '';
+            heading.appendChild(a);
+          }
+        });
+      })();
+    </script>
+	</body>
+</html>

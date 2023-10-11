@@ -1,0 +1,2685 @@
+<!DOCTYPE html>
+<html id="docs" lang="zh" class="">
+	<head>
+	
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-36037335-10"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-36037335-10');
+</script>
+<meta charset="utf-8">
+<title>Job 从运行到完成 - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/style.03896868dcf2dd803b1af07e10dc058b63ac620a0915c37b5add3dd59431555f.css" integrity="sha256-A4loaNzy3YA7GvB&#43;ENwFi2OsYgoJFcN7Wt091ZQxVV8=">
+
+
+<link rel="stylesheet" href="/css/base_fonts.css">
+<link rel="stylesheet" href="/css/jquery-ui.min.css">
+<link rel="stylesheet" href="/css/callouts.css">
+<link rel="stylesheet" href="/css/custom-jekyll/tags.css">
+
+
+
+<meta name="description" content="In addition to services, Kubernetes can manage your batch and CI workloads, replacing containers that fail, if desired. weight: 70 --- -- ">
+<meta property="og:description" content="In addition to services, Kubernetes can manage your batch and CI workloads, replacing containers that fail, if desired. weight: 70 --- -- ">
+<meta name="twitter:description" content="In addition to services, Kubernetes can manage your batch and CI workloads, replacing containers that fail, if desired. weight: 70 --- -- ">
+<meta property="og:url" content="https://kubernetes.io/zh/docs/concepts/workloads/controllers/jobs-run-completion/">
+<meta property="og:title" content="Job 从运行到完成">
+<meta name="twitter:title" content="Job 从运行到完成">
+<meta name="twitter:image" content="https://kubernetes.io/images/favicon.png" />
+
+<meta name="twitter:image:alt" content="Kubernetes">
+
+<meta property="og:image" content="/images/kubernetes-horizontal-color.png">
+
+<meta property="og:type" content="article">
+<script src="/js/anchor-4.1.1.min.js"></script>
+<script src="/js/jquery-3.2.1.min.js"></script>
+<script src="/js/jquery-ui-1.12.1.min.js"></script>
+<script src="/js/bootstrap-4.3.1.min.js"></script>
+<script src="/js/sweetalert-2.1.2.min.js"></script>
+
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/zh/" class="logo" title="Production-Grade Container Orchestration - Kubernetes" aria-label="Kubernetes website"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/zh/docs/" class="active">文档</a></li>
+            
+            <li><a href="/zh/blog/">博客</a></li>
+            
+            <li><a href="/zh/partners/">合作伙伴</a></li>
+            
+            <li><a href="/zh/community/">社区</a></li>
+            
+            <li><a href="/zh/case-studies/">案例分析</a></li>
+            
+            
+            
+             <li>
+                <a href="#">
+                    中文 Chinese <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/">English</a></li>
+                
+                    <li><a href="/ko/">한국어 Korean</a></li>
+                
+                    <li><a href="/ja/">日本語 Japanese</a></li>
+                
+                    <li><a href="/fr/">Français</a></li>
+                
+                    <li><a href="/de/">Deutsch</a></li>
+                
+                    <li><a href="/es/">Español</a></li>
+                
+                    <li><a href="/pt/">Português</a></li>
+                
+                    <li><a href="/id/">Bahasa Indonesia</a></li>
+                
+                    <li><a href="/vi/">Vietnamese</a></li>
+                
+                    <li><a href="/ru/">Русский</a></li>
+                
+                </ul>
+            </li>
+
+            <li>
+                <a href="#">
+                    v1.16 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io/zh/docs/concepts/workloads/controllers/jobs-run-completion/">v1.20</a></li>
+                
+                    <li><a href="https://v1-19.docs.kubernetes.io/zh/docs/concepts/workloads/controllers/jobs-run-completion/">v1.19</a></li>
+                
+                    <li><a href="https://v1-18.docs.kubernetes.io/zh/docs/concepts/workloads/controllers/jobs-run-completion/">v1.18</a></li>
+                
+                    <li><a href="https://v1-17.docs.kubernetes.io/zh/docs/concepts/workloads/controllers/jobs-run-completion/">v1.17</a></li>
+                
+                    <li><a href="https://v1-16.docs.kubernetes.io/zh/docs/concepts/workloads/controllers/jobs-run-completion/">v1.16</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/zh/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>学习 Kubernetes 基础知识</a>
+        
+
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <div class="main-section" data-auto-burger="primary">
+         
+           <div class="nav-box">
+            <h3><a href="/zh/docs/tutorials/hello-minikube/">Get Started</a></h3>
+           <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+
+            </div>
+         
+           <div class="nav-box">
+            <h3><a href="/zh/docs/home/">文档</a></h3>
+           <p>通过演练，示例和参考文档了解如何使用 Kubernetes。你甚至可以<a href="/editdocs/" data-auto-burger-exclude>帮助贡献文档</a>！</p>
+
+            </div>
+         
+           <div class="nav-box">
+            <h3><a href="/zh/blog/">博客</a></h3>
+           <p>阅读关于 kubernetes 和容器规范的最新信息,以及获取最新的技术。</p>
+
+            </div>
+         
+        </div>
+        <div class="main-section" data-auto-burger="primary">
+            <div class="left">
+                <h5 class="github-invite">想要修改 Kubernetes 的核心源代码？</h5>
+                <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>在 GitHub 上查看</a>
+            </div>
+
+            <div class="right">
+                <h5 class="github-invite">了解社区</h5>
+                <div class="social">
+                    <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                    <a href="https://github.com/kubernetes/kubernetes" class="github"><span>GitHub</span></a>
+                    <a href="http://slack.k8s.io/" class="slack"><span>Slack Slack</span></a>
+                    <a href="https://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                    <a href="https://www.youtube.com/kubernetescommunity" class="youtube"><span>YouTube</span></a>
+                    <a href="https://discuss.kubernetes.io" class="mailing-list"><span>论坛</span></a>
+                    <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>事件日历</span></a>
+                </div>
+            </div>
+            <div class="clear" style="clear: both"></div>
+        </div>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+
+
+
+
+<h1>概念</h1>
+<h5></h5>
+
+
+
+
+
+
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/zh/docs/home/">主页</a></li>
+		
+		
+		<li><a href="/zh/docs/setup/">入门</a></li>
+		
+		
+		<li><a href="/zh/docs/concepts/" class="YAH">概念</a></li>
+		
+		
+		<li><a href="/zh/docs/tasks/">任务</a></li>
+		
+		
+		<li><a href="/zh/docs/tutorials/">教程</a></li>
+		
+		
+		<li><a href="/zh/docs/reference/">参考</a></li>
+		
+		
+		<li><a href="/zh/docs/contribute/">贡献</a></li>
+		
+	</ul>
+	<form id="searchBox" action="/docs/search/" role="search">
+		<input type="text" id="search" name="q" placeholder="搜索" aria-label="Search">
+	</form>
+</div>
+
+		</section>
+		
+    
+		
+<section id="deprecationWarning">
+  <main>
+    <div class="content deprecation-warning">
+      <h3>
+	 Kubernetes v1.16
+	  版本的文档已不再维护。您现在看到的版本来自于一份静态的快照。如需查阅最新文档，请点击
+	 <a href="https://kubernetes.io/docs/home/">最新版本。</a>
+      </h3>
+    </div>
+  </main>
+</section>
+
+
+    <main>
+        <section id="encyclopedia">
+          
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="概念" href="/zh/docs/concepts/"></a>
+
+	
+	
+			
+			
+			
+			
+			
+		
+	
+	
+	
+		
+			
+<div class="item" data-title="概述">
+	<div class="container">
+		
+		
+		
+		<a class="item" data-title="概述" href="/zh/docs/concepts/overview/"></a>
+		
+		
+	
+	
+			
+			
+			
+			
+			
+		
+	
+	
+	
+		
+			
+
+<a class="item" data-title="Kubernetes 是什么？" href="/zh/docs/concepts/overview/what-is-kubernetes/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Kubernetes 组件" href="/zh/docs/concepts/overview/components/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Kubernetes API" href="/zh/docs/concepts/overview/kubernetes-api/"></a>
+
+		
+	
+		
+			
+<div class="item" data-title="使用 Kubernetes 对象">
+	<div class="container">
+		
+		
+		
+		<a class="item" data-title="使用 Kubernetes 对象" href="/zh/docs/concepts/overview/working-with-objects/"></a>
+		
+		
+	
+	
+			
+			
+			
+			
+			
+		
+	
+	
+	
+		
+			
+
+<a class="item" data-title="Kubernetes 对象管理" href="/zh/docs/concepts/overview/working-with-objects/object-management/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="名称" href="/zh/docs/concepts/overview/working-with-objects/names/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="命名空间" href="/zh/docs/concepts/overview/working-with-objects/namespaces/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="标签和选择器" href="/zh/docs/concepts/overview/working-with-objects/labels/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="注解" href="/zh/docs/concepts/overview/working-with-objects/annotations/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="字段选择器" href="/zh/docs/concepts/overview/working-with-objects/field-selectors/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="推荐使用的标签" href="/zh/docs/concepts/overview/working-with-objects/common-labels/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="理解 Kubernetes 对象" href="/zh/docs/concepts/overview/working-with-objects/kubernetes-objects/"></a>
+
+		
+	
+
+	</div>
+</div>
+
+		
+	
+
+	</div>
+</div>
+
+		
+	
+		
+			
+<div class="item" data-title="Kubernetes 架构">
+	<div class="container">
+		
+		
+		
+		<a class="item" data-title="Kubernetes 架构" href="/zh/docs/concepts/architecture/"></a>
+		
+		
+	
+	
+			
+			
+			
+			
+			
+		
+	
+	
+	
+		
+			
+
+<a class="item" data-title="节点" href="/zh/docs/concepts/architecture/nodes/"></a>
+
+		
+	
+		
+			
+
+<a class="item" target="_blank" data-title="Controllers <small>(EN)</small>" href="/docs/concepts/architecture/controller/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="云控制器管理器的基础概念" href="/zh/docs/concepts/architecture/cloud-controller/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Master 节点通信" href="/zh/docs/concepts/architecture/master-node-communication/"></a>
+
+		
+	
+
+	</div>
+</div>
+
+		
+	
+		
+			
+<div class="item" data-title="计算、存储和网络扩展">
+	<div class="container">
+		
+		
+		
+		<a class="item" data-title="计算、存储和网络扩展" href="/zh/docs/concepts/cluster-administration/"></a>
+		
+		
+	
+	
+			
+			
+			
+			
+			
+		
+	
+	
+	
+		
+			
+
+<a class="item" data-title="集群管理概述" href="/zh/docs/concepts/cluster-administration/cluster-administration-overview/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="证书" href="/zh/docs/concepts/cluster-administration/certificates/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="云驱动" href="/zh/docs/concepts/cluster-administration/cloud-providers/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="管理资源" href="/zh/docs/concepts/cluster-administration/manage-deployment/"></a>
+
+		
+	
+		
+			
+
+<a class="item" target="_blank" data-title="Cluster Networking <small>(EN)</small>" href="/docs/concepts/cluster-administration/networking/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="日志架构" href="/zh/docs/concepts/cluster-administration/logging/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="配置 kubelet 垃圾回收策略" href="/zh/docs/concepts/cluster-administration/kubelet-garbage-collection/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="控制器管理器指标" href="/zh/docs/concepts/cluster-administration/controller-metrics/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Kubernetes 中的代理" href="/zh/docs/concepts/cluster-administration/proxies/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="安装扩展（Addons）" href="/zh/docs/concepts/cluster-administration/addons/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="联邦" href="/zh/docs/concepts/cluster-administration/federation/"></a>
+
+		
+	
+
+	</div>
+</div>
+
+		
+	
+		
+			
+<div class="item" data-title="扩展 Kubernetes">
+	<div class="container">
+		
+		
+		
+		<a class="item" data-title="扩展 Kubernetes" href="/zh/docs/concepts/extend-kubernetes/"></a>
+		
+		
+	
+	
+			
+			
+			
+			
+			
+		
+	
+	
+	
+		
+			
+
+<a class="item" data-title="扩展 Kubernetes 集群" href="/zh/docs/concepts/extend-kubernetes/extend-cluster/"></a>
+
+		
+	
+		
+			
+<div class="item" data-title="扩展 Kubernetes API">
+	<div class="container">
+		
+		
+		
+		<a class="item" data-title="扩展 Kubernetes API" href="/zh/docs/concepts/extend-kubernetes/api-extension/"></a>
+		
+		
+	
+	
+			
+			
+			
+			
+			
+		
+	
+	
+	
+		
+			
+
+<a class="item" data-title="通过聚合层扩展 Kubernetes API" href="/zh/docs/concepts/extend-kubernetes/api-extension/apiserver-aggregation/"></a>
+
+		
+	
+		
+			
+
+<a class="item" target="_blank" data-title="Custom Resources <small>(EN)</small>" href="/docs/concepts/extend-kubernetes/api-extension/custom-resources/"></a>
+
+		
+	
+
+	</div>
+</div>
+
+		
+	
+		
+			
+
+<a class="item" target="_blank" data-title="Operator pattern <small>(EN)</small>" href="/docs/concepts/extend-kubernetes/operator/"></a>
+
+		
+	
+		
+			
+<div class="item" data-title="计算、存储和网络扩展">
+	<div class="container">
+		
+		
+		
+		<a class="item" data-title="计算、存储和网络扩展" href="/zh/docs/concepts/extend-kubernetes/compute-storage-net/"></a>
+		
+		
+	
+	
+			
+			
+			
+			
+			
+		
+	
+	
+	
+		
+			
+
+<a class="item" data-title="网络插件" href="/zh/docs/concepts/extend-kubernetes/compute-storage-net/network-plugins/"></a>
+
+		
+	
+		
+			
+
+<a class="item" target="_blank" data-title="Device Plugins <small>(EN)</small>" href="/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/"></a>
+
+		
+	
+
+	</div>
+</div>
+
+		
+	
+		
+			
+
+<a class="item" data-title="服务目录" href="/zh/docs/concepts/extend-kubernetes/service-catalog/"></a>
+
+		
+	
+		
+			
+
+<a class="item" target="_blank" data-title="Poseidon-Firmament - An alternate scheduler <small>(EN)</small>" href="/docs/concepts/extend-kubernetes/poseidon-firmament-alternate-scheduler/"></a>
+
+		
+	
+
+	</div>
+</div>
+
+		
+	
+		
+			
+<div class="item" data-title="容器">
+	<div class="container">
+		
+		
+		
+		<a class="item" data-title="容器" href="/zh/docs/concepts/containers/"></a>
+		
+		
+	
+	
+			
+			
+			
+			
+			
+		
+	
+	
+	
+		
+			
+
+<a class="item" data-title="镜像" href="/zh/docs/concepts/containers/images/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="容器运行时类(Runtime Class)" href="/zh/docs/concepts/containers/runtime-class/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="容器生命周期钩子" href="/zh/docs/concepts/containers/container-lifecycle-hooks/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="容器环境变量" href="/zh/docs/concepts/containers/container-environment-variables/"></a>
+
+		
+	
+
+	</div>
+</div>
+
+		
+	
+		
+			
+<div class="item" data-title="工作负载">
+	<div class="container">
+		
+		
+		
+		<a class="item" data-title="工作负载" href="/zh/docs/concepts/workloads/"></a>
+		
+		
+	
+	
+			
+			
+			
+			
+			
+		
+	
+	
+	
+		
+			
+<div class="item" data-title="Pods">
+	<div class="container">
+		
+		
+		
+		<a class="item" data-title="Pods" href="/zh/docs/concepts/workloads/pods/"></a>
+		
+		
+	
+	
+			
+			
+			
+			
+			
+		
+	
+	
+	
+		
+			
+
+<a class="item" data-title="Pod 概览" href="/zh/docs/concepts/workloads/pods/pod-overview/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Pods" href="/zh/docs/concepts/workloads/pods/pod/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Pod Preset" href="/zh/docs/concepts/workloads/pods/podpreset/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Pod 拓扑扩展约束" href="/zh/docs/concepts/workloads/pods/pod-topology-spread-constraints/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="干扰" href="/zh/docs/concepts/workloads/pods/disruptions/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="临时容器" href="/zh/docs/concepts/workloads/pods/ephemeral-containers/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Init 容器" href="/zh/docs/concepts/workloads/pods/init-containers/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Pod 的生命周期" href="/zh/docs/concepts/workloads/pods/pod-lifecycle/"></a>
+
+		
+	
+
+	</div>
+</div>
+
+		
+	
+		
+			
+<div class="item" data-title="控制器">
+	<div class="container">
+		
+		
+		
+		<a class="item" data-title="控制器" href="/zh/docs/concepts/workloads/controllers/"></a>
+		
+		
+	
+	
+			
+			
+			
+			
+			
+		
+	
+	
+	
+		
+			
+
+<a class="item" data-title="ReplicaSet" href="/zh/docs/concepts/workloads/controllers/replicaset/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="ReplicationController" href="/zh/docs/concepts/workloads/controllers/replicationcontroller/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="StatefulSets" href="/zh/docs/concepts/workloads/controllers/statefulset/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="DaemonSet" href="/zh/docs/concepts/workloads/controllers/daemonset/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="已完成资源的 TTL 控制器" href="/zh/docs/concepts/workloads/controllers/ttlafterfinished/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Job 从运行到完成" href="/zh/docs/concepts/workloads/controllers/jobs-run-completion/"></a>
+
+		
+	
+		
+			
+
+<a class="item" target="_blank" data-title="Jobs - Run to Completion <small>(EN)</small>" href="/docs/concepts/workloads/controllers/jobs-run-to-completion/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="CronJob" href="/zh/docs/concepts/workloads/controllers/cron-jobs/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Deployments" href="/zh/docs/concepts/workloads/controllers/deployment/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="垃圾收集" href="/zh/docs/concepts/workloads/controllers/garbage-collection/"></a>
+
+		
+	
+
+	</div>
+</div>
+
+		
+	
+
+	</div>
+</div>
+
+		
+	
+		
+			
+<div class="item" data-title="存储">
+	<div class="container">
+		
+		
+		
+		<a class="item" data-title="存储" href="/zh/docs/concepts/storage/"></a>
+		
+		
+	
+	
+			
+			
+			
+			
+			
+		
+	
+	
+	
+		
+			
+
+<a class="item" data-title="Volumes" href="/zh/docs/concepts/storage/volumes/"></a>
+
+		
+	
+		
+			
+
+<a class="item" target="_blank" data-title="Persistent Volumes <small>(EN)</small>" href="/docs/concepts/storage/persistent-volumes/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="卷快照" href="/zh/docs/concepts/storage/volume-snapshots/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="CSI 卷克隆" href="/zh/docs/concepts/storage/volume-pvc-datasource/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Storage Classes" href="/zh/docs/concepts/storage/storage-classes/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="卷快照类" href="/zh/docs/concepts/storage/volume-snapshot-classes/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="动态卷供应" href="/zh/docs/concepts/storage/dynamic-provisioning/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="特定于节点的卷数限制" href="/zh/docs/concepts/storage/storage-limits/"></a>
+
+		
+	
+
+	</div>
+</div>
+
+		
+	
+		
+			
+<div class="item" data-title="配置">
+	<div class="container">
+		
+		
+		
+		<a class="item" data-title="配置" href="/zh/docs/concepts/configuration/"></a>
+		
+		
+	
+	
+			
+			
+			
+			
+			
+		
+	
+	
+	
+		
+			
+
+<a class="item" data-title="扩展资源的资源箱打包" href="/zh/docs/concepts/configuration/resource-bin-packing/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="配置最佳实践" href="/zh/docs/concepts/configuration/overview/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Pod 开销" href="/zh/docs/concepts/configuration/pod-overhead/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="为容器管理计算资源" href="/zh/docs/concepts/configuration/manage-compute-resources-container/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="将 Pod 分配给节点" href="/zh/docs/concepts/configuration/assign-pod-node/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Taint 和 Toleration" href="/zh/docs/concepts/configuration/taint-and-toleration/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Secret" href="/zh/docs/concepts/configuration/secret/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="使用 kubeconfig 文件组织集群访问" href="/zh/docs/concepts/configuration/organize-cluster-access-kubeconfig/"></a>
+
+		
+	
+		
+			
+
+<a class="item" target="_blank" data-title="Pod Priority and Preemption <small>(EN)</small>" href="/docs/concepts/configuration/pod-priority-preemption/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="调度框架" href="/zh/docs/concepts/configuration/scheduling-framework/"></a>
+
+		
+	
+
+	</div>
+</div>
+
+		
+	
+		
+			
+<div class="item" data-title="服务、负载均衡和联网">
+	<div class="container">
+		
+		
+		
+		<a class="item" data-title="服务、负载均衡和联网" href="/zh/docs/concepts/services-networking/"></a>
+		
+		
+	
+	
+			
+			
+			
+			
+			
+		
+	
+	
+	
+		
+			
+
+<a class="item" data-title="Endpoint Slices" href="/zh/docs/concepts/services-networking/endpoint-slices/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Services" href="/zh/docs/concepts/services-networking/service/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Pod 与 Service 的 DNS" href="/zh/docs/concepts/services-networking/dns-pod-service/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="应用连接到 Service" href="/zh/docs/concepts/services-networking/connect-applications-service/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Ingress" href="/zh/docs/concepts/services-networking/ingress/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Ingress 控制器" href="/zh/docs/concepts/services-networking/ingress-controllers/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="网络策略" href="/zh/docs/concepts/services-networking/network-policies/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="使用 HostAliases 向 Pod /etc/hosts 文件添加条目" href="/zh/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="IPv4/IPv6 双协议栈" href="/zh/docs/concepts/services-networking/dual-stack/"></a>
+
+		
+	
+
+	</div>
+</div>
+
+		
+	
+		
+			
+<div class="item" data-title="安全">
+	<div class="container">
+		
+		
+		
+		<a class="item" data-title="安全" href="/zh/docs/concepts/security/"></a>
+		
+		
+	
+	
+			
+			
+			
+			
+			
+		
+	
+	
+	
+		
+			
+
+<a class="item" data-title="云原生安全概述" href="/zh/docs/concepts/security/overview/"></a>
+
+		
+	
+
+	</div>
+</div>
+
+		
+	
+		
+			
+<div class="item" data-title="调度">
+	<div class="container">
+		
+		
+		
+		<a class="item" data-title="调度" href="/zh/docs/concepts/scheduling/"></a>
+		
+		
+	
+	
+			
+			
+			
+			
+			
+		
+	
+	
+	
+		
+			
+
+<a class="item" data-title="Kubernetes 调度器" href="/zh/docs/concepts/scheduling/kube-scheduler/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="调度器性能调优" href="/zh/docs/concepts/scheduling/scheduler-perf-tuning/"></a>
+
+		
+	
+
+	</div>
+</div>
+
+		
+	
+		
+			
+<div class="item" data-title="策略">
+	<div class="container">
+		
+		
+		
+		<a class="item" data-title="策略" href="/zh/docs/concepts/policy/"></a>
+		
+		
+	
+	
+			
+			
+			
+			
+			
+		
+	
+	
+	
+		
+			
+
+<a class="item" target="_blank" data-title="Limit Ranges <small>(EN)</small>" href="/docs/concepts/policy/limit-range/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Pod 安全策略" href="/zh/docs/concepts/policy/pod-security-policy/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="资源配额" href="/zh/docs/concepts/policy/resource-quotas/"></a>
+
+		
+	
+
+	</div>
+</div>
+
+		
+	
+		
+			
+
+<a class="item" data-title="概念模板示例" href="/zh/docs/concepts/example-concept-template/"></a>
+
+		
+	
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+
+          <div id="docsContent">
+            
+
+<p>
+  <a href="https://github.com/kubernetes/website/edit/master/content/zh/docs/concepts/workloads/controllers/jobs-run-completion.md" id="editPageButton" target="_blank">
+    Edit This Page
+  </a>
+</p>
+
+<h1>Job 从运行到完成</h1>
+
+
+
+<!--
+A Job creates one or more Pods and ensures that a specified number of them successfully terminate.
+As pods successfully complete, the Job tracks the successful completions.  When a specified number
+of successful completions is reached, the task (ie, Job) is complete.  Deleting a Job will clean up
+the Pods it created.
+-->
+
+<p>Job 创建一个或多个 pod，并且确保指定数量的 pod 成功终止。Pod 成功完成后，Job 将跟踪成功完成的情况。当达到指定的成功完成次数时，任务（即 Job）就完成了。删除 Job 将清除其创建的 pod。</p>
+
+<!--
+A simple case is to create one Job object in order to reliably run one Pod to completion.
+The Job object will start a new Pod if the first Pod fails or is deleted (for example
+due to a node hardware failure or a node reboot).
+-->
+
+<p>一种简单的情况时创建一个 Job 对象，以便可靠地运行一个 Pod 来完成。如果第一个 pod 失败了或被删除了（例如，由于节点硬件故障或节点重启），则 Job 对象将启动一个新的 pod。</p>
+
+<!--
+You can also use a Job to run multiple Pods in parallel.
+-->
+
+<p>也可以使用 Job 去并行运行多个 pod。</p>
+
+
+
+
+
+
+
+
+
+<ul id="markdown-toc">
+
+
+
+
+
+
+
+
+
+
+<li><a href="#%e8%bf%90%e8%a1%8c%e4%b8%80%e4%b8%aa-job-%e7%a4%ba%e4%be%8b">运行一个 Job 示例</a></li>
+
+
+
+
+<li><a href="#%e7%bc%96%e5%86%99-job-%e8%a7%84%e8%8c%83">编写 Job 规范</a></li>
+
+
+
+
+<li><a href="#%e5%a4%84%e7%90%86-pod-%e5%92%8c%e5%ae%b9%e5%99%a8%e5%a4%b1%e8%b4%a5">处理 Pod 和容器失败</a></li>
+
+
+
+
+<li><a href="#job-%e7%bb%88%e6%ad%a2%e5%92%8c%e6%b8%85%e7%90%86">Job 终止和清理</a></li>
+
+
+
+
+<li><a href="#%e8%87%aa%e5%8a%a8%e6%b8%85%e7%90%86%e5%b7%b2%e5%ae%8c%e6%88%90%e7%9a%84-job">自动清理已完成的 Job</a></li>
+
+
+
+
+<li><a href="#job-%e6%a8%a1%e5%bc%8f">Job 模式</a></li>
+
+
+
+
+<li><a href="#%e9%ab%98%e7%ba%a7%e7%94%a8%e6%b3%95">高级用法</a></li>
+
+
+
+
+<li><a href="#%e5%a4%87%e9%80%89%e6%96%b9%e6%a1%88">备选方案</a></li>
+
+
+
+
+<li><a href="#cron-jobs">Cron Jobs</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</ul>
+
+
+<!--
+## Running an example Job
+-->
+
+<h2 id="运行一个-job-示例">运行一个 Job 示例</h2>
+
+<!--
+Here is an example Job config.  It computes π to 2000 places and prints it out.
+It takes around 10s to complete.
+-->
+
+<p>下面是一个 Job 配置样例。它计算 π 到2000位并将其打印出来。大约需要 10 秒钟才能完成。</p>
+
+<table class="includecode" id="controllers-job-yaml">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/content/zh/examples/controllers/job.yaml" download="controllers/job.yaml">
+                    <code>controllers/job.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('controllers-job-yaml')" title="Copy controllers/job.yaml to clipboard">
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>batch/v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>Job<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>pi<span style="color:#bbb">
+</span><span style="color:#bbb"></span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>template:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>containers:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>pi<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>image:<span style="color:#bbb"> </span>perl<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>command:<span style="color:#bbb"> </span>[<span style="color:#b44">&#34;perl&#34;</span>,<span style="color:#bbb">  </span><span style="color:#b44">&#34;-Mbignum=bpi&#34;</span>,<span style="color:#bbb"> </span><span style="color:#b44">&#34;-wle&#34;</span>,<span style="color:#bbb"> </span><span style="color:#b44">&#34;print bpi(2000)&#34;</span>]<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>restartPolicy:<span style="color:#bbb"> </span>Never<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>backoffLimit:<span style="color:#bbb"> </span><span style="color:#666">4</span><span style="color:#bbb">
+</span></code></pre></div>  </td>
+        </tr>
+    </tbody>
+</table>
+
+<!--
+You can run the example with this command:
+-->
+
+<p>可以使用以下命令运行示例：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl apply -f https://k8s.io/examples/controllers/job.yaml</code></pre></div>
+<pre><code>job &quot;pi&quot; created
+</code></pre>
+
+<!--
+Check on the status of the Job with `kubectl`:
+-->
+
+<p>使用 <code>kubectl</code> 命令检查 Job 的状态：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl describe jobs/pi</code></pre></div>
+<pre><code>Name:             pi
+Namespace:        default
+Selector:         controller-uid=b1db589a-2c8d-11e6-b324-0209dc45a495
+Labels:           controller-uid=b1db589a-2c8d-11e6-b324-0209dc45a495
+                  job-name=pi
+Annotations:      &lt;none&gt;
+Parallelism:      1
+Completions:      1
+Start Time:       Tue, 07 Jun 2016 10:56:16 +0200
+Pods Statuses:    0 Running / 1 Succeeded / 0 Failed
+Pod Template:
+  Labels:       controller-uid=b1db589a-2c8d-11e6-b324-0209dc45a495
+                job-name=pi
+  Containers:
+   pi:
+    Image:      perl
+    Port:
+    Command:
+      perl
+      -Mbignum=bpi
+      -wle
+      print bpi(2000)
+    Environment:        &lt;none&gt;
+    Mounts:             &lt;none&gt;
+  Volumes:              &lt;none&gt;
+Events:
+  FirstSeen    LastSeen    Count    From            SubobjectPath    Type        Reason            Message
+  ---------    --------    -----    ----            -------------    --------    ------            -------
+  1m           1m          1        {job-controller }                Normal      SuccessfulCreate  Created pod: pi-dtn4q
+</code></pre>
+
+<!--
+To view completed Pods of a Job, use `kubectl get pods`.
+-->
+
+<p>要查看 Job 的已完成 pod，可以使用 <code>kubectl get pods</code> 命令。</p>
+
+<!--
+To list all the Pods that belong to a Job in a machine readable form, you can use a command like this:
+-->
+
+<p>要以机器可读的形式列出属于 Job 的所有 pod，可以使用以下命令：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#b8860b">pods</span><span style="color:#666">=</span><span style="color:#a2f;font-weight:bold">$(</span>kubectl get pods --selector<span style="color:#666">=</span>job-name<span style="color:#666">=</span>pi --output<span style="color:#666">=</span><span style="color:#b8860b">jsonpath</span><span style="color:#666">=</span><span style="color:#b44">&#39;{.items[*].metadata.name}&#39;</span><span style="color:#a2f;font-weight:bold">)</span>
+<span style="color:#a2f">echo</span> <span style="color:#b8860b">$pods</span></code></pre></div>
+<pre><code>pi-aiw0a
+</code></pre>
+
+<!--
+Here, the selector is the same as the selector for the Job.  The `--output=jsonpath` option specifies an expression
+that just gets the name from each Pod in the returned list.
+-->
+
+<p>这里，选择器与 Job 的选择器相同。<code>--output=jsonpath</code> 选项指定一个表达式来从 pod 返回列表中获取每个 pod 的名称。</p>
+
+<!--
+View the standard output of one of the pods:
+-->
+
+<p>查看其中一个 pod 的标准输出：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl logs <span style="color:#b8860b">$pods</span></code></pre></div>
+<p>The output is similar to this:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#666">3</span>.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679821480865132823066470938446095505822317253594081284811174502841027019385211055596446229489549303819644288109756659334461284756482337867831652712019091456485669234603486104543266482133936072602491412737245870066063155881748815209209628292540917153643678925903600113305305488204665213841469519415116094330572703657595919530921861173819326117931051185480744623799627495673518857527248912279381830119491298336733624406566430860213949463952247371907021798609437027705392171762931767523846748184676694051320005681271452635608277857713427577896091736371787214684409012249534301465495853710507922796892589235420199561121290219608640344181598136297747713099605187072113499999983729780499510597317328160963185950244594553469083026425223082533446850352619311881710100031378387528865875332083814206171776691473035982534904287554687311595628638823537875937519577818577805321712268066130019278766111959092164201989380952572010654858632788659361533818279682303019520353018529689957736225994138912497217752834791315155748572424541506959508295331168617278558890750983817546374649393192550604009277016711390098488240128583616035637076601047101819429555961989467678374494482553797747268471040475346462080466842590694912933136770289891521047521620569660240580381501935112533824300355876402474964732639141992726042699227967823547816360093417216412199245863150302861829745557067498385054945885869269956909272107975093029553211653449872027559602364806654991198818347977535663698074265425278625518184175746728909777727938000816470600161452491921732172147723501414419735685481613611573525521334757418494684385233239073941433345477624168625189835694855620992192221842725502542568876717904946016534668049886272327917860857843838279679766814541009538837863609506800642251252051173929848960841284886269456042419652850222106611863067442786220391949450471237137869609563643719172874677646575739624138908658326459958133904780275901</code></pre></div>
+<!--
+## Writing a Job Spec
+-->
+
+<h2 id="编写-job-规范">编写 Job 规范</h2>
+
+<!--
+As with all other Kubernetes config, a Job needs `apiVersion`, `kind`, and `metadata` fields.
+-->
+
+<p>和其他 Kubernetes 配置一样，Job 需要 <code>apiVersion</code>，<code>kind</code> 和 <code>metadata</code> 字段。</p>
+
+<!--
+A Job also needs a [`.spec` section](https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status).
+-->
+
+<p>Job 也需要 <a href="https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status" target="_blank"><code>.spec</code> 部分</a>。</p>
+
+<!--
+### Pod Template
+-->
+
+<h3 id="pod-模板">Pod 模板</h3>
+
+<!--
+The `.spec.template` is the only required field of the `.spec`.
+-->
+
+<p><code>.spec.template</code> 是 <code>.spec</code> 中唯一必填字段。</p>
+
+<!--
+The `.spec.template` is a [pod template](/docs/concepts/workloads/pods/pod-overview/#pod-templates). It has exactly the same schema as a [pod](/docs/user-guide/pods), except it is nested and does not have an `apiVersion` or `kind`.
+-->
+
+<p><code>.spec.template</code> 是 <a href="/docs/concepts/workloads/pods/pod-overview/#pod-templates">pod 模板</a>。它具有与 <a href="/docs/user-guide/pods">pod</a> 完全相同的架构，只是它是嵌套的并且没有 <code>apiVersion</code> 或 <code>kind</code>。</p>
+
+<!--
+In addition to required fields for a Pod, a pod template in a Job must specify appropriate
+labels (see [pod selector](#pod-selector)) and an appropriate restart policy.
+-->
+
+<p>除了 pod 的必填字段，Job 中的 pod 模板还必须指定合适的标签（参考 <a href="#pod-selector">pod 选择器</a>）和适当的重启策略。</p>
+
+<!--
+Only a [`RestartPolicy`](/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy) equal to `Never` or `OnFailure` is allowed.
+-->
+
+<p><a href="/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy"><code>RestartPolicy</code></a> 只能等于 <code>Never</code> 或 <code>OnFailure</code>。</p>
+
+<!--
+### Pod Selector
+-->
+
+<h3 id="pod-选择器">Pod 选择器</h3>
+
+<!--
+The `.spec.selector` field is optional.  In almost all cases you should not specify it.
+See section [specifying your own pod selector](#specifying-your-own-pod-selector).
+-->
+
+<p><code>.spec.selector</code> 字段是可选的。在大多数场景下不必指定它。请参阅<a href="#specifying-your-own-pod-selector">指定自己的 pod 选择器</a>。</p>
+
+<!--
+### Parallel Jobs
+-->
+
+<h3 id="并行-job">并行 Job</h3>
+
+<!--
+There are three main types of task suitable to run as a Job:
+-->
+
+<p>下面是适合作为 Job 运行的三种主要任务类型：</p>
+
+<!--
+1. Non-parallel Jobs
+  - normally, only one Pod is started, unless the Pod fails.
+  - the Job is complete as soon as its Pod terminates successfully.
+1. Parallel Jobs with a *fixed completion count*:
+  - specify a non-zero positive value for `.spec.completions`.
+  - the Job represents the overall task, and is complete when there is one successful Pod for each value in the range 1 to `.spec.completions`.
+  - **not implemented yet:** Each Pod is passed a different index in the range 1 to `.spec.completions`.
+1. Parallel Jobs with a *work queue*:
+  - do not specify `.spec.completions`, default to `.spec.parallelism`.
+  - the Pods must coordinate amongst themselves or an external service to determine what each should work on. For example, a Pod might fetch a batch of up to N items from the work queue.
+  - each Pod is independently capable of determining whether or not all its peers are done, and thus that the entire Job is done.
+  - when _any_ Pod from the Job terminates with success, no new Pods are created.
+  - once at least one Pod has terminated with success and all Pods are terminated, then the Job is completed with success.
+  - once any Pod has exited with success, no other Pod should still be doing any work for this task or writing any output.  They should all be in the process of exiting.
+-->
+
+<ol>
+<li>非并行 Job
+
+<ul>
+<li>通常，除非 pod 发生故障，否则仅启动一个 pod。</li>
+<li>一旦 pod 成功终止，Job 即完成。</li>
+</ul></li>
+<li>配置了*固定完成计数*的并行 Job：
+
+<ul>
+<li>为 <code>.spec.completions</code> 指定一个非零正数值。</li>
+<li>Job 代表整体任务，并且在 1 到 <code>.spec.completions</code> 范围内都有一个 pod 成功完成时，Job 才算完成。</li>
+<li><strong>尚未实现:</strong> 每个 pod 都会被传递一个从 1 到 <code>.spec.completions</code> 之间的索引值。</li>
+</ul></li>
+<li>具有*工作队列*的并行 Job：
+
+<ul>
+<li>不指定 <code>.spec.completions</code> 的话, 默认为 <code>.spec.parallelism</code>。</li>
+<li>Pod 必须在彼此之间或外部服务之间进行协调，来确定每个 pod 该处理什么任务。例如，一个 pod 可以从工作队列中获取一批任务（最多 N 个）。</li>
+<li>每个 pod 都可以独立确定其所有对端是否完成，从而确定整个 Job 完成。</li>
+<li>当 Job 中的<em>任何</em> pod 成功结束后，不会再创建新的 pod。</li>
+<li>一旦至少一个 pod 成功终止并且所有的 pod 都终止了，则 Job 就成功完成了。</li>
+<li>一旦 任何 pod 成功退出，其他 pod 都不应该为此任务做任务工作或编写任何输出。它们都应该处在退出过程中。</li>
+</ul></li>
+</ol>
+
+<!--
+For a _non-parallel_ Job, you can leave both `.spec.completions` and `.spec.parallelism` unset.  When both are
+unset, both are defaulted to 1.
+-->
+
+<p>对于<em>非并行</em> Job，可以不设置 <code>.spec.completions</code> 和 <code>.spec.parallelism</code>。两者均未设置时，默认值为 1。</p>
+
+<!--
+For a _fixed completion count_ Job, you should set `.spec.completions` to the number of completions needed.
+You can set `.spec.parallelism`, or leave it unset and it will default to 1.
+-->
+
+<p>对于一个<em>固定完成计数</em> Job，应该将 <code>.spec.completions</code> 设置为所需的完成数量。<code>.spec.parallelism</code> 可以设置，也可以不设置，默认值为 1。</p>
+
+<!--
+For a _work queue_ Job, you must leave `.spec.completions` unset, and set `.spec.parallelism` to
+a non-negative integer.
+-->
+
+<p>对于一个<em>工作队列</em> Job，不要设置 <code>.spec.completions</code>，并且将 <code>.spec.parallelism</code> 设置一个非负整数。</p>
+
+<!--
+For more information about how to make use of the different types of job, see the [job patterns](#job-patterns) section.
+-->
+
+<p>有关如何使用不同类型 Job 的更多信息，请参考 <a href="#job-patterns">Job 模式</a>部分。</p>
+
+<!--
+#### Controlling Parallelism
+-->
+
+<h4 id="控制并行">控制并行</h4>
+
+<!--
+The requested parallelism (`.spec.parallelism`) can be set to any non-negative value.
+If it is unspecified, it defaults to 1.
+If it is specified as 0, then the Job is effectively paused until it is increased.
+-->
+
+<p>请求的并发数（<code>.spec.parallelism</code>）可以设置为任何非负的整数。如果未指定，默认值为 1。如果指定为 0，则 Job 就被有效地暂停直到该配置值增加。</p>
+
+<!--
+Actual parallelism (number of pods running at any instant) may be more or less than requested
+parallelism, for a variety of reasons:
+-->
+
+<p>实际的并发数（在任何时刻运行着的 pod 数量）由于下面的一些原因，可能大于或小于请求的并发数：</p>
+
+<!--
+- For _fixed completion count_ Jobs, the actual number of pods running in parallel will not exceed the number of
+  remaining completions.   Higher values of `.spec.parallelism` are effectively ignored.
+- For _work queue_ Jobs, no new Pods are started after any Pod has succeeded -- remaining Pods are allowed to complete, however.
+- If the controller has not had time to react.
+- If the controller failed to create Pods for any reason (lack of `ResourceQuota`, lack of permission, etc.),
+  then there may be fewer pods than requested.
+- The controller may throttle new Pod creation due to excessive previous pod failures in the same Job.
+- When a Pod is gracefully shut down, it takes time to stop.
+-->
+
+<ul>
+<li>对于<em>固定完成计数</em> Job，实际上并行运行的 pod 数量不会超过剩余的完成数。更高的 <code>.spec.parallelism</code> 值将被优先忽略。</li>
+<li>对于<em>工作队列</em> Job，任何 pod 成功之后都不会启动新的 pod。然而，剩余的 pod 可以完成。</li>
+<li>如果控制器还没来得及反应。</li>
+<li>如果控制器由于任何原因（缺少 <code>ResourceQuota</code>，缺少权限等）未能创建 pod，则 pod 数量将少于请求数。</li>
+<li>控制器可能会因为同一 Job 中有过多之前失败的 pod，从而限制新的 pod 的创建。</li>
+<li>当 pod 优雅关闭时，需要花费一些时间才能停止。</li>
+</ul>
+
+<!--
+## Handling Pod and Container Failures
+-->
+
+<h2 id="处理-pod-和容器失败">处理 Pod 和容器失败</h2>
+
+<!--
+A container in a Pod may fail for a number of reasons, such as because the process in it exited with
+a non-zero exit code, or the container was killed for exceeding a memory limit, etc.  If this
+happens, and the `.spec.template.spec.restartPolicy = "OnFailure"`, then the Pod stays
+on the node, but the container is re-run.  Therefore, your program needs to handle the case when it is
+restarted locally, or else specify `.spec.template.spec.restartPolicy = "Never"`.
+See [pod lifecycle](/docs/concepts/workloads/pods/pod-lifecycle/#example-states) for more information on `restartPolicy`.
+-->
+
+<p>Pod 中的容器可能由于多种原因而失败，例如，由于容器中的进程以非零退出码退出，或者容器由于超过内存限制而被杀掉等。如果容器失败发生，并且 <code>.spec.template.spec.restartPolicy = &quot;OnFailure&quot;</code>，则 pod 停留在节点上，但是容器会重新运行。因此，你的程序需要处理本地重启的情况，或者指定 <code>.spec.template.spec.restartPolicy = &quot;Never&quot;</code>。参阅 <a href="/docs/concepts/workloads/pods/pod-lifecycle/#example-states">pod 生命周期</a>获取更多关于 <code>restartPolicy</code> 的信息。</p>
+
+<!--
+An entire Pod can also fail, for a number of reasons, such as when the pod is kicked off the node
+(node is upgraded, rebooted, deleted, etc.), or if a container of the Pod fails and the
+`.spec.template.spec.restartPolicy = "Never"`.  When a Pod fails, then the Job controller
+starts a new Pod.  This means that your application needs to handle the case when it is restarted in a new
+pod.  In particular, it needs to handle temporary files, locks, incomplete output and the like
+caused by previous runs.
+-->
+
+<p>由于多种原因，整个 pod 也可能失败，比如，当 pod 从节点上被踢走（节点在升级，重启，被删除等），或者 pod 中的容器失败且设置了 <code>.spec.template.spec.restartPolicy = &quot;Never&quot;</code>。当 pod 失败后，Job 控制器将启动一个新的 pod。这意味着你的应用程序需要处理这种情况（应用程序在新的 pod 中重启）。特别是，它需要处理由先前运行引起的临时文件，锁，不完整输出等等。</p>
+
+<!--
+Note that even if you specify `.spec.parallelism = 1` and `.spec.completions = 1` and
+`.spec.template.spec.restartPolicy = "Never"`, the same program may
+sometimes be started twice.
+-->
+
+<p>请注意，即使你指定了 <code>.spec.parallelism = 1</code>，<code>.spec.completions = 1</code> 和 <code>.spec.template.spec.restartPolicy = &quot;Never&quot;</code>，统一程序有时也会启动两次。</p>
+
+<!--
+If you do specify `.spec.parallelism` and `.spec.completions` both greater than 1, then there may be
+multiple pods running at once.  Therefore, your pods must also be tolerant of concurrency.
+-->
+
+<p>如果你指定 <code>.spec.parallelism</code> 和 <code>.spec.completions</code> 配置都大于 1，则可能同时有多个 pod 运行。因此，你的 pod 必须容忍并发。</p>
+
+<!--
+### Pod backoff failure policy
+-->
+
+<h3 id="pod-的退避失败策略">Pod 的退避失败策略</h3>
+
+<!--
+There are situations where you want to fail a Job after some amount of retries
+due to a logical error in configuration etc.
+To do so, set `.spec.backoffLimit` to specify the number of retries before
+considering a Job as failed. The back-off limit is set by default to 6. Failed
+Pods associated with the Job are recreated by the Job controller with an
+exponential back-off delay (10s, 20s, 40s ...) capped at six minutes. The
+back-off count is reset if no new failed Pods appear before the Job's next
+status check.
+-->
+
+<p>在某些情况下（配置中的逻辑错误等），你需要在重试一定次数后才使 Job 失败。为此需要设置 <code>.spec.backoffLimit</code> 配置值为判断 Job 失败前的重试次数。 退避限制默认设置为 6。与 Job 相关的 pod在失败后，经过一个指数级退避延迟（10 秒，20 秒，40 秒，上限为 6 分钟），由 Job 控制器重新创建。 如果在 Job 的下一次状态检查之前未出现新的失败 pod，则会重置退避计数。</p>
+
+<blockquote class="note">
+  <div><strong>注意：</strong> <!--
+Issue [#54870](https://github.com/kubernetes/kubernetes/issues/54870) still exists for versions of Kubernetes prior to version 1.12
+-->
+
+<p>1.12 之前的 Kubernetes 版本仍然存在问题 <a href="https://github.com/kubernetes/kubernetes/issues/54870" target="_blank">#54870</a></div>
+</blockquote>
+<blockquote class="note">
+  <div><strong>注意：</strong> <!--
+If your job has `restartPolicy = "OnFailure"`, keep in mind that your container running the Job
+will be terminated once the job backoff limit has been reached. This can make debugging the Job's executable more difficult. We suggest setting
+`restartPolicy = "Never"` when debugging the Job or using a logging system to ensure output
+from failed Jobs is not lost inadvertently.
+-->
+
+<p>如果你的 Job 外配置了 <code>restartPolicy = &quot;OnFailure&quot;</code>，请记住，一旦 Job 达到退避限制，运行在该 Job 的容器将被终止。这会使得调试 Job 的可执行将变得更加困难。我们建议在调试 Job 或使用日志系统时设置 <code>restartPolicy = &quot;Never&quot;</code>，以确保失败 Job 的输出不会在不经意间丢失。</div>
+</blockquote>
+
+<!--
+## Job Termination and Cleanup
+-->
+
+<h2 id="job-终止和清理">Job 终止和清理</h2>
+
+<!--
+When a Job completes, no more Pods are created, but the Pods are not deleted either.  Keeping them around
+allows you to still view the logs of completed pods to check for errors, warnings, or other diagnostic output.
+The job object also remains after it is completed so that you can view its status.  It is up to the user to delete
+old jobs after noting their status.  Delete the job with `kubectl` (e.g. `kubectl delete jobs/pi` or `kubectl delete -f ./job.yaml`). When you delete the job using `kubectl`, all the pods it created are deleted too.
+-->
+
+<p>当 Job 完成后，不会再创建 pod，但是 pod 也不会被删除。将这些 pod 保留，使你仍然可以查看已完成 pod 的日志来检查错误，警告或其他诊断输出。Job 对象在完成后也同样保留下来，以便你可以查看它的状态。由用户来决定在查看完状态后删除旧的 Job。使用 <code>kubectl</code>（例如 <code>kubectl delete jobs/pi</code> 或 <code>kubectl delete -f ./job.yaml</code> ）来删除 Job。当你使用 <code>kubectl</code> 删除 Job 后，它所创建的所有 pod 也会被删除。</p>
+
+<!--
+By default, a Job will run uninterrupted unless a Pod fails (`restartPolicy=Never`) or a Container exits in error (`restartPolicy=OnFailure`), at which point the Job defers to the
+`.spec.backoffLimit` described above. Once `.spec.backoffLimit` has been reached the Job will be marked as failed and any running Pods will be terminated.
+-->
+
+<p>默认情况下，除非 pod 失败（<code>restartPolicy=Never</code>）或容器错误退出（<code>restartPolicy=OnFailure</code>），否则 Job 将不会被中断运行。Job 中断将遵循上面介绍的 <code>.spec.backoffLimit</code>。一旦 <code>.spec.backoffLimit</code> 达到，Job 将被标记为失败，企鹅别所有正运行的 pod 将被终止。</p>
+
+<!--
+Another way to terminate a Job is by setting an active deadline.
+Do this by setting the `.spec.activeDeadlineSeconds` field of the Job to a number of seconds.
+The `activeDeadlineSeconds` applies to the duration of the job, no matter how many Pods are created.
+Once a Job reaches `activeDeadlineSeconds`, all of its running Pods are terminated and the Job status will become `type: Failed` with `reason: DeadlineExceeded`.
+-->
+
+<p>终止 Job 的另一种方式是设置有限期限。通过设置 Job 对象的 <code>.spec.activeDeadlineSeconds</code> 字段为秒数来达到。<code>activeDeadlineSeconds</code> 适用于 Job 存在期间，不管有多少 pod 被创建。一旦 Job 达到 <code>activeDeadlineSeconds</code>，所有运行中的 pod将被终止，并且 Job 的状态将变成 <code>type: Failed</code> 与 <code>reason: DeadlineExceeded</code>。</p>
+
+<!--
+Note that a Job's `.spec.activeDeadlineSeconds` takes precedence over its `.spec.backoffLimit`. Therefore, a Job that is retrying one or more failed Pods will not deploy additional Pods once it reaches the time limit specified by `activeDeadlineSeconds`, even if the `backoffLimit` is not yet reached.
+-->
+
+<p>请注意，Job 的 <code>.spec.activeDeadlineSeconds</code> 配置优先于 <code>.spec.backoffLimit</code> 配置。因此，重试一个或多个失败 pod 的 Job 在达到 <code>activeDeadlineSeconds</code> 指定的时间限制前，不会部署其他的 pod，即使 <code>backoffLimit</code> 尚未达到。</p>
+
+<!--
+Example:
+-->
+
+<p>例子：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>batch/v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>Job<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>pi-with-timeout<span style="color:#bbb">
+</span><span style="color:#bbb"></span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>backoffLimit:<span style="color:#bbb"> </span><span style="color:#666">5</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>activeDeadlineSeconds:<span style="color:#bbb"> </span><span style="color:#666">100</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>template:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>containers:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>pi<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>image:<span style="color:#bbb"> </span>perl<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>command:<span style="color:#bbb"> </span>[<span style="color:#b44">&#34;perl&#34;</span>,<span style="color:#bbb">  </span><span style="color:#b44">&#34;-Mbignum=bpi&#34;</span>,<span style="color:#bbb"> </span><span style="color:#b44">&#34;-wle&#34;</span>,<span style="color:#bbb"> </span><span style="color:#b44">&#34;print bpi(2000)&#34;</span>]<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>restartPolicy:<span style="color:#bbb"> </span>Never</code></pre></div>
+<!--
+Note that both the Job spec and the [Pod template spec](/docs/concepts/workloads/pods/init-containers/#detailed-behavior) within the Job have an `activeDeadlineSeconds` field. Ensure that you set this field at the proper level.
+-->
+
+<p>请注意，Job 对象中的 Job 规范和 <a href="/docs/concepts/workloads/pods/init-containers/#detailed-behavior">Pod 模板规范</a>都有 <code>activeDeadlineSeconds</code> 字段。确保将此字段设置在适当的层级。</p>
+
+<!--
+## Clean Up Finished Jobs Automatically
+-->
+
+<h2 id="自动清理已完成的-job">自动清理已完成的 Job</h2>
+
+<!--
+Finished Jobs are usually no longer needed in the system. Keeping them around in
+the system will put pressure on the API server. If the Jobs are managed directly
+by a higher level controller, such as
+[CronJobs](/docs/concepts/workloads/controllers/cron-jobs/), the Jobs can be
+cleaned up by CronJobs based on the specified capacity-based cleanup policy.
+-->
+
+<p>系统中已完成的 Job 通常不再需要。将它们保留在系统中将会给 API 服务器带来压力。如果 Job 由更高级别的控制器管理，比如 <a href="/docs/concepts/workloads/controllers/cron-jobs/">CronJobs</a>，则 Job 可以由 CronJobs 基于指定的基于容量的清理策略来进行清除。</p>
+
+<!--
+### TTL Mechanism for Finished Jobs
+-->
+
+<h3 id="已完成-job-的-ttl-机制">已完成 Job 的 TTL 机制</h3>
+
+<div style="margin-top: 10px; margin-bottom: 10px;">
+
+
+
+<b>FEATURE STATE:</b> <code>Kubernetes v1.12</code>
+
+
+
+
+    
+    
+    
+    
+    
+<a href="#" id="feature-state-dialog-link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-newwin"></span>alpha</a>
+<div id="feature-state-dialog" class="ui-dialog-content" title="alpha">
+该功能目前处于 <em>alpha</em> 状态，意味着：</p>
+
+<ul>
+<li>版本名称包含 alpha（例如 v1alpha1）。</li>
+<li>可能存在问题，启用该功能可能会暴露 bug。默认情况下被禁用。</li>
+<li>对该功能的支持可能在任何时候被取消，而不另行通知。</li>
+<li>API 可能会在以后的软件版本中以不兼容的方式被更改，而不另行通知。</li>
+<li>建议仅在短期测试集群中使用该功能，这是因为使用该功能会增加出现 bug 的风险，而且缺乏长期支持。</li>
+</ul>
+</div>
+<script>
+$(function(){
+    
+    $( "#feature-state-dialog" ).dialog({
+        autoOpen: false,
+        width: "600",
+        buttons: [
+            {
+                text: "Ok",
+                click: function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        ]
+    });
+
+    
+    $( "#feature-state-dialog-link" ).click(function( event ) {
+        $( "#feature-state-dialog" ).dialog( "open" );
+        event.preventDefault();
+    });
+
+});
+</script>
+
+    
+
+</div>
+
+<!--
+Another way to clean up finished Jobs (either `Complete` or `Failed`)
+automatically is to use a TTL mechanism provided by a
+[TTL controller](/docs/concepts/workloads/controllers/ttlafterfinished/) for
+finished resources, by specifying the `.spec.ttlSecondsAfterFinished` field of
+the Job.
+-->
+
+<p>清理已完成 Job（<code>Complete</code> 或 <code>Failed</code>）的另一个方式是通过使用 <a href="/docs/concepts/workloads/controllers/ttlafterfinished/">TTL 控制器</a>提供的 TTL 机制，TTL 通过指定 Job 的 <code>.spec.ttlSecondsAfterFinished</code> 字段来清理已完成资源。</p>
+
+<!--
+When the TTL controller cleans up the Job, it will delete the Job cascadingly,
+i.e. delete its dependent objects, such as Pods, together with the Job. Note
+that when the Job is deleted, its lifecycle guarantees, such as finalizers, will
+be honored.
+-->
+
+<p>当 TTL 控制器清理 Job 时，它将级联删除 Job，即删除它的依赖对象，比如 pod 将和 Job 一起被删除。请注意，当 Job 被删除后，它的生命周期保证，如终结者，将被触发。</p>
+
+<!--
+For example:
+-->
+
+<p>例如：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>batch/v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>Job<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>pi-with-ttl<span style="color:#bbb">
+</span><span style="color:#bbb"></span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>ttlSecondsAfterFinished:<span style="color:#bbb"> </span><span style="color:#666">100</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>template:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>containers:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>pi<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>image:<span style="color:#bbb"> </span>perl<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>command:<span style="color:#bbb"> </span>[<span style="color:#b44">&#34;perl&#34;</span>,<span style="color:#bbb">  </span><span style="color:#b44">&#34;-Mbignum=bpi&#34;</span>,<span style="color:#bbb"> </span><span style="color:#b44">&#34;-wle&#34;</span>,<span style="color:#bbb"> </span><span style="color:#b44">&#34;print bpi(2000)&#34;</span>]<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>restartPolicy:<span style="color:#bbb"> </span>Never</code></pre></div>
+<!--
+The Job `pi-with-ttl` will be eligible to be automatically deleted, `100`
+seconds after it finishes.
+-->
+
+<p><code>pi-with-ttl</code> Job 在完成后 100 秒就会自动删除掉。</p>
+
+<!--
+If the field is set to `0`, the Job will be eligible to be automatically deleted
+immediately after it finishes. If the field is unset, this Job won't be cleaned
+up by the TTL controller after it finishes.
+-->
+
+<p>如果该字段设为为 <code>0</code>，那么 Job 将在完成后立即被自动删除掉。如果该字段未设置，则 Job 在完成后将不会被 TTL 控制器清理掉。</p>
+
+<!--
+Note that this TTL mechanism is alpha, with feature gate `TTLAfterFinished`. For
+more information, see the documentation for
+[TTL controller](/docs/concepts/workloads/controllers/ttlafterfinished/) for
+finished resources.
+-->
+
+<p>请注意，此 TTL 机制处于 alpha 阶段，由 <code>TTLAfterFinished</code> 功能门控制是否启动。有关详细信息，请参阅 <a href="/docs/concepts/workloads/controllers/ttlafterfinished/">TTL 控制器</a>中关于已完成资源的处理。</p>
+
+<!--
+## Job Patterns
+-->
+
+<h2 id="job-模式">Job 模式</h2>
+
+<!--
+The Job object can be used to support reliable parallel execution of Pods.  The Job object is not
+designed to support closely-communicating parallel processes, as commonly found in scientific
+computing.  It does support parallel processing of a set of independent but related *work items*.
+These might be emails to be sent, frames to be rendered, files to be transcoded, ranges of keys in a
+NoSQL database to scan, and so on.
+-->
+
+<p>Job 对象可用于支持 pod 的可靠并行执行。Job 对象并非设计为支持紧密通信的并行过程（常见于科学计算领域）。它被用于支持一组独立但相关的*工作项*的并行处理。这些可能是要发送的电子邮件，要渲染的帧，要编码转换的文件，要扫描的 NoSQL 数据库中一段范围内的键等等。</p>
+
+<!--
+In a complex system, there may be multiple different sets of work items.  Here we are just
+considering one set of work items that the user wants to manage together &mdash; a *batch job*.
+-->
+
+<p>在复杂的系统中，可能会有多个不同的工作项集。这里我们只考虑用户想要一起管理一组工作项 &mdash; *批处理任务*。</p>
+
+<!--
+There are several different patterns for parallel computation, each with strengths and weaknesses.
+The tradeoffs are:
+-->
+
+<p>并行计算有几种不同的模式，每种都有各自的优缺点。权衡点如下：</p>
+
+<!--
+- One Job object for each work item, vs. a single Job object for all work items.  The latter is
+  better for large numbers of work items.  The former creates some overhead for the user and for the
+  system to manage large numbers of Job objects.
+- Number of pods created equals number of work items, vs. each Pod can process multiple work items.
+  The former typically requires less modification to existing code and containers.  The latter
+  is better for large numbers of work items, for similar reasons to the previous bullet.
+- Several approaches use a work queue.  This requires running a queue service,
+  and modifications to the existing program or container to make it use the work queue.
+  Other approaches are easier to adapt to an existing containerised application.
+-->
+
+<ul>
+<li>一个 Job 对象处理一个工作项，还是一个 Job 对象处理所有的工作项。后者适用于有大量工作项的场景。前者在管理大量 Job 对象时会对用户和系统带来一些开销。</li>
+<li>创建和工作项数量一样多的 pod，还是一个 pod 处理多个工作项。前者通常对现有代码和容器进行较少的修改。后者更适用于处理大量工作项（理由和前一条的相似）。</li>
+<li>几种方法使用工作队列。这需要运行一个队列服务，并对现有的程序和容器进行修改以使其能够使用工作队列。其他方法更容易适应现有的容器化应用程序。</li>
+</ul>
+
+<!--
+The tradeoffs are summarized here, with columns 2 to 4 corresponding to the above tradeoffs.
+The pattern names are also links to examples and more detailed description.
+-->
+
+<p>权衡总结如下表，第 2 至 4 列对应上面的权衡点。模式名称也是样例和详细描述的链接。</p>
+
+<!--
+|                            Pattern                                   | Single Job object | Fewer pods than work items? | Use app unmodified? |  Works in Kube 1.1? |
+| -------------------------------------------------------------------- |:-----------------:|:---------------------------:|:-------------------:|:-------------------:|
+| [Job Template Expansion](/docs/tasks/job/parallel-processing-expansion/)            |                   |                             |          ✓          |          ✓          |
+| [Queue with Pod Per Work Item](/docs/tasks/job/coarse-parallel-processing-work-queue/)   |         ✓         |                             |      sometimes      |          ✓          |
+| [Queue with Variable Pod Count](/docs/tasks/job/fine-parallel-processing-work-queue/)  |         ✓         |             ✓               |                     |          ✓          |
+| Single Job with Static Work Assignment                               |         ✓         |                             |          ✓          |
+                     |
+-->
+
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th align="center">单个 Job 对象</th>
+<th align="center">比工作项更少的 pod？</th>
+<th align="center">使用未修改的 app？</th>
+<th align="center">Kube 1.1 中生效？</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><a href="/docs/tasks/job/parallel-processing-expansion/">Job 模板扩展</a></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+</tr>
+
+<tr>
+<td><a href="/docs/tasks/job/coarse-parallel-processing-work-queue/">一个项对应一个 pod 的队列</a></td>
+<td align="center">✓</td>
+<td align="center"></td>
+<td align="center">有时</td>
+<td align="center">✓</td>
+</tr>
+
+<tr>
+<td><a href="/docs/tasks/job/fine-parallel-processing-work-queue/">具有可变 pod 数量的队列</a></td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center"></td>
+<td align="center">✓</td>
+</tr>
+
+<tr>
+<td>具有静态工作分配的单个 Job</td>
+<td align="center">✓</td>
+<td align="center"></td>
+<td align="center">✓</td>
+<td align="center"></td>
+</tr>
+</tbody>
+</table>
+
+<!--
+When you specify completions with `.spec.completions`, each Pod created by the Job controller
+has an identical [`spec`](https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status).  This means that
+all pods for a task will have the same command line and the same
+image, the same volumes, and (almost) the same environment variables.  These patterns
+are different ways to arrange for pods to work on different things.
+-->
+
+<p>当使用 <code>.spec.completions</code> 指定完成数时，由 Job 控制器创建的每个 pod 都有一个相同的 <a href="https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status" target="_blank"><code>规范</code></a>。这意味着一个任务的所有 pod 将有相同的命令行和镜像，相同的卷以及（几乎）相同的环境变量。这些模式通过不同的方式安排 pod 去处理不同的任务。</p>
+
+<!--
+This table shows the required settings for `.spec.parallelism` and `.spec.completions` for each of the patterns.
+Here, `W` is the number of work items.
+-->
+
+<p>下表列出了每种模式下对 <code>.spec.parallelism</code> 和 <code>.spec.completions</code> 需要做的设置。</p>
+
+<!--
+|                             Pattern                                  | `.spec.completions` |  `.spec.parallelism` |
+| -------------------------------------------------------------------- |:-------------------:|:--------------------:|
+| [Job Template Expansion](/docs/tasks/job/parallel-processing-expansion/)           |          1          |     should be 1      |
+| [Queue with Pod Per Work Item](/docs/tasks/job/coarse-parallel-processing-work-queue/)   |          W          |        any           |
+| [Queue with Variable Pod Count](/docs/tasks/job/fine-parallel-processing-work-queue/)  |          1          |        any           |
+| Single Job with Static Work Assignment                               |          W          |        any           |
+-->
+
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th align="center"><code>.spec.completions</code></th>
+<th align="center"><code>.spec.parallelism</code></th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><a href="/docs/tasks/job/parallel-processing-expansion/">Job 模板扩展</a></td>
+<td align="center">1</td>
+<td align="center">应该为 1</td>
+</tr>
+
+<tr>
+<td><a href="/docs/tasks/job/coarse-parallel-processing-work-queue/">一个项对应一个 pod 的队列</a></td>
+<td align="center">W</td>
+<td align="center">任意</td>
+</tr>
+
+<tr>
+<td><a href="/docs/tasks/job/fine-parallel-processing-work-queue/">具有可变 pod 数量的队列</a></td>
+<td align="center">1</td>
+<td align="center">任意</td>
+</tr>
+
+<tr>
+<td>具有静态工作分配的单个 Job</td>
+<td align="center">W</td>
+<td align="center">任意</td>
+</tr>
+</tbody>
+</table>
+
+<!--
+## Advanced Usage
+-->
+
+<h2 id="高级用法">高级用法</h2>
+
+<!--
+### Specifying your own pod selector
+-->
+
+<h3 id="指定你的-pod-选择器">指定你的 pod 选择器</h3>
+
+<!--
+Normally, when you create a Job object, you do not specify `.spec.selector`.
+The system defaulting logic adds this field when the Job is created.
+It picks a selector value that will not overlap with any other jobs.
+-->
+
+<p>通常，在创建 Job 对象时，不用指定 <code>.spec.selector</code>。系统的默认逻辑会在创建 Job 时添加这个字段。它会选择一个不会和其他 pod 重叠的选择器。</p>
+
+<!--
+However, in some cases, you might need to override this automatically set selector.
+To do this, you can specify the `.spec.selector` of the Job.
+-->
+
+<p>但是，在某些情况下，你可能需要去覆盖默认设置的选择器。为此，你需要指定 Job 的 <code>.spec.selector</code>。</p>
+
+<!--
+Be very careful when doing this.  If you specify a label selector which is not
+unique to the pods of that Job, and which matches unrelated Pods, then pods of the unrelated
+job may be deleted, or this Job may count other Pods as completing it, or one or both
+Jobs may refuse to create Pods or run to completion.  If a non-unique selector is
+chosen, then other controllers (e.g. ReplicationController) and their Pods may behave
+in unpredictable ways too.  Kubernetes will not stop you from making a mistake when
+specifying `.spec.selector`.
+-->
+
+<p>当设置时需要特别小心。如果你指定的标签选择器不是 Job 的 pod 所独有的，并且匹配到了不相关的 pod，那么不相关 Job 的 pod 可能会被删除，或此 Job 可能将其他 pod 统计为已完成，或者其中一个或两个 Job 可能拒绝创建 pod 或运行完成。如果一个选择了非唯一的选择器，则其他的控制器（比如 ReplicationController）和它的 pod 的行为也将是不可预测的。当指定了 <code>.spec.selector</code>，Kubernetes将不会阻止你产生错误。</p>
+
+<!--
+Here is an example of a case when you might want to use this feature.
+-->
+
+<p>下面的例子描述了你想要使用该功能的场景。</p>
+
+<!--
+Say Job `old` is already running.  You want existing Pods
+to keep running, but you want the rest of the Pods it creates
+to use a different pod template and for the Job to have a new name.
+You cannot update the Job because these fields are not updatable.
+Therefore, you delete Job `old` but _leave its pods
+running_, using `kubectl delete jobs/old --cascade=false`.
+Before deleting it, you make a note of what selector it uses:
+-->
+
+<p>假设 <code>old</code> Job 已经在运行了。你想要运行中的 pod 保持运行，但是你想 Job 创建的其他 pod 使用不同的 pod 模板，并使 Job 具有一个新的名称。你不能更新 Job 对象，因为这些字段是不可更新的。因此，你需要删除 <code>old</code> 但是_让它的 pod 运行_，可以使用 <code>kubectl delete jobs/old --cascade=false</code> 命令。在删除之前，你需要记下它所使用的选择器：</p>
+
+<pre><code>kubectl get job old -o yaml
+</code></pre>
+
+<pre><code>kind: Job
+metadata:
+  name: old
+  ...
+spec:
+  selector:
+    matchLabels:
+      controller-uid: a8f3d00d-c6d2-11e5-9f87-42010af00002
+  ...
+</code></pre>
+
+<!--
+Then you create a new Job with name `new` and you explicitly specify the same selector.
+Since the existing Pods have label `controller-uid=a8f3d00d-c6d2-11e5-9f87-42010af00002`,
+they are controlled by Job `new` as well.
+-->
+
+<p>然后使用新名称 <code>new</code> 创建一个新的 Job ，并且显示指定相同的选择器。由于现有的 pod 具有 <code>controller-uid=a8f3d00d-c6d2-11e5-9f87-42010af00002</code> 标签，它们也受 <code>new</code> Job 的控制。</p>
+
+<!--
+You need to specify `manualSelector: true` in the new Job since you are not using
+the selector that the system normally generates for you automatically.
+-->
+
+<p>由于你不再使用系统通常为你自动生成的选择器，你需要在新的 Job 中指定 <code>manualSelector: true</code>。</p>
+
+<pre><code>kind: Job
+metadata:
+  name: new
+  ...
+spec:
+  manualSelector: true
+  selector:
+    matchLabels:
+      controller-uid: a8f3d00d-c6d2-11e5-9f87-42010af00002
+  ...
+</code></pre>
+
+<!--
+The new Job itself will have a different uid from `a8f3d00d-c6d2-11e5-9f87-42010af00002`.  Setting
+`manualSelector: true` tells the system to that you know what you are doing and to allow this
+mismatch.
+-->
+
+<p>新的 Job 本身将具有一个与 <code>a8f3d00d-c6d2-11e5-9f87-42010af00002</code> 不通的 uid。设置 <code>manualSelector: true</code> 来告诉系统你知道自己在做什么，并使其允许这种不匹配。</p>
+
+<!--
+## Alternatives
+-->
+
+<h2 id="备选方案">备选方案</h2>
+
+<!--
+### Bare Pods
+-->
+
+<h3 id="裸-pod">裸 pod</h3>
+
+<!--
+When the node that a Pod is running on reboots or fails, the pod is terminated
+and will not be restarted.  However, a Job will create new Pods to replace terminated ones.
+For this reason, we recommend that you use a Job rather than a bare Pod, even if your application
+requires only a single Pod.
+-->
+
+<p>当 pod 所在节点重启或发生故障时，pod 将终止并且不会重启。然后，Job 将创建新的 pod 替换终止的 pod。因此，即使你的应用仅需要一个 pod，我们还是推荐使用 Job 而不是裸 pod。</p>
+
+<!--
+### Replication Controller
+-->
+
+<h3 id="副本控制器">副本控制器</h3>
+
+<!--
+Jobs are complementary to [Replication Controllers](/docs/user-guide/replication-controller).
+A Replication Controller manages Pods which are not expected to terminate (e.g. web servers), and a Job
+manages Pods that are expected to terminate (e.g. batch tasks).
+-->
+
+<p>Job 是<a href="/docs/user-guide/replication-controller">副本控制器</a>的补充。副本控制器管理预期不会终止的 pod（比如 web 服务器），而 Job 管理预期将会终止的 pod（比如批处理任务）。</p>
+
+<!--
+As discussed in [Pod Lifecycle](/docs/concepts/workloads/pods/pod-lifecycle/), `Job` is *only* appropriate
+for pods with `RestartPolicy` equal to `OnFailure` or `Never`.
+(Note: If `RestartPolicy` is not set, the default value is `Always`.)
+-->
+
+<p>正如在 <a href="/docs/concepts/workloads/pods/pod-lifecycle/">Pod 生命周期</a>中所讨论的，<code>Job</code> *仅*适用于具有 <code>RestartPolicy</code> 值为 <code>OnFailure</code> 或 <code>Never</code> 的 pod。（注意：如果 <code>RestartPolicy</code> 未指定，默认值为 <code>Always</code>。）</p>
+
+<!--
+### Single Job starts Controller Pod
+-->
+
+<h3 id="单-job-启动控制-pod">单 Job 启动控制 pod</h3>
+
+<!--
+Another pattern is for a single Job to create a Pod which then creates other Pods, acting as a sort
+of custom controller for those Pods.  This allows the most flexibility, but may be somewhat
+complicated to get started with and offers less integration with Kubernetes.
+-->
+
+<p>单个 Job 的另一种模式是创建一个创建其他 pod 的 pod，充当这些 pod 的一种自定义控制器。这提供了更大的灵活性，但是入门起来可能有点复杂，并且与 Kubernetes 的集成较少。</p>
+
+<!--
+One example of this pattern would be a Job which starts a Pod which runs a script that in turn
+starts a Spark master controller (see [spark example](https://github.com/kubernetes/examples/tree/v1.16.15/staging/spark/README.md)), runs a spark
+driver, and then cleans up.
+-->
+
+<p>这种模式的一个样例是：一个 Job 启动一个 pod 来运行一个脚本，该脚本依次启动 Spark 主控制器（参阅 <a href="https://github.com/kubernetes/examples/tree/v1.16.15/staging/spark/README.md" target="_blank">spark 例子</a>），并运行 spark 驱动，然后进行清理。</p>
+
+<!--
+An advantage of this approach is that the overall process gets the completion guarantee of a Job
+object, but complete control over what Pods are created and how work is assigned to them.
+-->
+
+<p>这种方法的优点是整个过程可以获取 Job 对象的完成保证，不是完全控制 pod 的创建以及如何将工作分配给 pod。</p>
+
+<h2 id="cron-jobs">Cron Jobs</h2>
+
+<!--
+You can use a [`CronJob`](/docs/concepts/workloads/controllers/cron-jobs/) to create a Job that will run at specified times/dates, similar to the Unix tool `cron`.
+-->
+
+<p>你可以使用 <a href="/docs/concepts/workloads/controllers/cron-jobs/"><code>CronJob</code></a> 来创建一个会在指定的时间/日期执行的 Job，类似于 Unix 工具 <code>cron</code>。</p>
+
+
+
+<!--
+---
+reviewers:
+- erictune
+- soltysh
+title: Jobs - Run to Completion
+content_template: templates/concept
+feature:
+  title: Batch execution
+  description: >
+    In addition to services, Kubernetes can manage your batch and CI workloads, replacing containers that fail, if desired.
+weight: 70
+---
+-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+            
+  <h2>反馈</h2>
+  <p class="feedback--prompt">此页是否对您有帮助？ </p>
+  <button class="button feedback--yes">是</button>
+  <button class="button feedback--no">否</button>
+  <p class="feedback--response feedback--response__hidden">
+    感谢反馈。如果您有一个关于如何使用 Kubernetes 的特定的、需要答案的问题，可以访问
+    <a target="_blank" rel="noopener"
+      href="https://stackoverflow.com/questions/tagged/kubernetes">
+      Stack Overflow</a>.
+    在 GitHub 仓库上登记新的问题
+    <a class="feedback--link" target="_blank" rel="noopener"
+      href="https://github.com/kubernetes/website/issues/new?title=Issue%20with%20k8s.io">
+      报告问题</a>
+    或者
+    <a class="feedback--link" target="_blank" rel="noopener"
+      href="https://github.com/kubernetes/website/issues/new?title=Improvement%20for%20k8s.io">
+      提出改进建议</a>.
+  </p>
+  <script>
+    const yes = document.querySelector('.feedback--yes');
+    const no = document.querySelector('.feedback--no');
+    document.querySelectorAll('.feedback--link').forEach(link => {
+      link.href = link.href + window.location.pathname;
+    });
+    const sendFeedback = (value) => {
+      if (!gtag) { console.log('!gtag'); }
+      gtag('event', 'click', {
+        'event_category': 'Helpful',
+        'event_label': window.location.pathname,
+        value
+      });
+    };
+    const disableButtons = () => {
+      yes.disabled = true;
+      yes.classList.add('feedback--button__disabled');
+      no.disabled = true;
+      no.classList.add('feedback--button__disabled');
+    };
+    yes.addEventListener('click', () => {
+      sendFeedback(1);
+      disableButtons();
+      document.querySelector('.feedback--response').classList.remove('feedback--response__hidden');
+    });
+    no.addEventListener('click', () => {
+      sendFeedback(0);
+      disableButtons();
+      document.querySelector('.feedback--response').classList.remove('feedback--response__hidden');
+    });
+  </script>
+
+
+    
+            <div id="pre-footer"> 
+  <hr />
+
+  <div class="issue-button-container">
+    <p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/concepts/workloads/controllers/jobs-run-completion.md?pixel" alt="Analytics" /></a></p>
+    
+    
+    <script type="text/javascript">
+    PDRTJS_settings_8345992 = {
+    "id" : "8345992",
+    "unique_id" : "\/zh\/docs\/concepts\/workloads\/controllers\/jobs-run-completion\/",
+    "title" : "Job 从运行到完成",
+    "permalink" : "https:\/\/kubernetes.io\/zh\/docs\/concepts\/workloads\/controllers\/jobs-run-completion\/"
+    };
+    (function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+    </script>
+    <a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?template=bug-report.md&title=Issue%20with%20' +
+    'k8s.io'+window.location.pathname)" class="button issue">报告 GitHub 问题</a>
+    
+    
+    
+    <a href="https://github.com/kubernetes/website/edit/master/content/zh/docs/concepts/workloads/controllers/jobs-run-completion.md" class="button issue">修改本页面</a>
+    
+  </div>
+  
+
+  <div id="lastedit" class="lastedit issue-button-container">
+    页面最后一次修改于 December 25, 2019 at 8:53 AM PST 由：
+    <a href="https://github.com/kubernetes/website/commit/0f2bd2871bbb2be9c635054e690b92524670f1e7/">zh-trans: merge zh content from release-1.16-temporary into release-1.16 (#18216)</a> (<a href="https://github.com/kubernetes/website/commits/master/content/en/docs/concepts/workloads/controllers/jobs-run-completion.md">页面历史</a>)
+  </div>
+  
+</div>
+
+          </div>
+        </section>
+    </main>
+		<footer>
+    <div class="light-text main-section">
+        <nav>
+            
+            
+            
+            <a href="/zh/docs/home/">主页</a>
+            
+            <a href="/zh/blog/">博客</a>
+            
+            <a href="/zh/partners/">合作伙伴</a>
+            
+            <a href="/zh/community/">社区</a>
+            
+            <a href="/zh/case-studies/">案例分析</a>
+            
+        </nav>
+        <div class="social" role="region" aria-label="Social hyperlinks">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>GitHub</span></a>
+                <a href="https://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="https://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://www.youtube.com/kubernetescommunity" class="youtube"><span>YouTube</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>论坛</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>事件日历</span></a>
+            </div>
+            <div>
+                
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">贡献</a>
+            </div>
+        </div>
+        <div class="miceType center">
+            &copy; 2023 The Kubernetes 作者 | 文档发布基于 <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a> 授权许可</a>
+        </div>
+        <div class="miceType center">
+            Copyright &copy; 2023 Linux 基金会&reg;。保留所有权利。Linux 基金会已注册并使用商标。如需了解 Linux 基金会的商标列表，请访问<a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">商标使用页面</a>
+        </div>
+        <div class="miceType center">
+            ICP license: 京ICP备17074266号-3
+        </div>
+    </div>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()" aria-label="Toggle table of contents visibility"></button>
+
+<script>
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+    <script language="application/javascript">
+      
+      (function addHeadingLinks(){
+        var article = document.getElementById('docsContent');
+        var headings = article.querySelectorAll('h1, h2, h3, h4, h5, h6');
+        headings.forEach(function(heading){
+          if(heading.id){
+            var a = document.createElement('a');
+            a.innerHTML = heading.innerHTML;
+            a.href = '#'+heading.id;
+            a.classList.add('inpage_heading');
+            heading.innerHTML = '';
+            heading.appendChild(a);
+          }
+        });
+      })();
+    </script>
+	</body>
+</html>

@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html id="docs" lang="zh" class="">
+	<head>
+	
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-36037335-10"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-36037335-10');
+</script>
+<meta charset="utf-8">
+<title>文档内容指南 - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/style.03896868dcf2dd803b1af07e10dc058b63ac620a0915c37b5add3dd59431555f.css" integrity="sha256-A4loaNzy3YA7GvB&#43;ENwFi2OsYgoJFcN7Wt091ZQxVV8=">
+
+
+<link rel="stylesheet" href="/css/base_fonts.css">
+<link rel="stylesheet" href="/css/jquery-ui.min.css">
+<link rel="stylesheet" href="/css/callouts.css">
+<link rel="stylesheet" href="/css/custom-jekyll/tags.css">
+
+
+
+<meta name="description" content="">
+<meta property="og:description" content="">
+<meta name="twitter:description" content="">
+<meta property="og:url" content="https://kubernetes.io/zh/docs/contribute/style/content-guide/">
+<meta property="og:title" content="文档内容指南">
+<meta name="twitter:title" content="文档内容指南">
+<meta name="twitter:image" content="https://kubernetes.io/images/favicon.png" />
+
+<meta name="twitter:image:alt" content="Kubernetes">
+
+<meta property="og:image" content="/images/kubernetes-horizontal-color.png">
+
+<meta property="og:type" content="article">
+<script src="/js/anchor-4.1.1.min.js"></script>
+<script src="/js/jquery-3.2.1.min.js"></script>
+<script src="/js/jquery-ui-1.12.1.min.js"></script>
+<script src="/js/bootstrap-4.3.1.min.js"></script>
+<script src="/js/sweetalert-2.1.2.min.js"></script>
+
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/zh/" class="logo" title="Production-Grade Container Orchestration - Kubernetes" aria-label="Kubernetes website"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/zh/docs/" class="active">文档</a></li>
+            
+            <li><a href="/zh/blog/">博客</a></li>
+            
+            <li><a href="/zh/partners/">合作伙伴</a></li>
+            
+            <li><a href="/zh/community/">社区</a></li>
+            
+            <li><a href="/zh/case-studies/">案例分析</a></li>
+            
+            
+            
+             <li>
+                <a href="#">
+                    中文 Chinese <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/docs/contribute/style/content-guide/">English</a></li>
+                
+                </ul>
+            </li>
+
+            <li>
+                <a href="#">
+                    v1.16 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io/zh/docs/contribute/style/content-guide/">v1.20</a></li>
+                
+                    <li><a href="https://v1-19.docs.kubernetes.io/zh/docs/contribute/style/content-guide/">v1.19</a></li>
+                
+                    <li><a href="https://v1-18.docs.kubernetes.io/zh/docs/contribute/style/content-guide/">v1.18</a></li>
+                
+                    <li><a href="https://v1-17.docs.kubernetes.io/zh/docs/contribute/style/content-guide/">v1.17</a></li>
+                
+                    <li><a href="https://v1-16.docs.kubernetes.io/zh/docs/contribute/style/content-guide/">v1.16</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/zh/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>学习 Kubernetes 基础知识</a>
+        
+
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <div class="main-section" data-auto-burger="primary">
+         
+           <div class="nav-box">
+            <h3><a href="/zh/docs/tutorials/hello-minikube/">Get Started</a></h3>
+           <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+
+            </div>
+         
+           <div class="nav-box">
+            <h3><a href="/zh/docs/home/">文档</a></h3>
+           <p>通过演练，示例和参考文档了解如何使用 Kubernetes。你甚至可以<a href="/editdocs/" data-auto-burger-exclude>帮助贡献文档</a>！</p>
+
+            </div>
+         
+           <div class="nav-box">
+            <h3><a href="/zh/blog/">博客</a></h3>
+           <p>阅读关于 kubernetes 和容器规范的最新信息,以及获取最新的技术。</p>
+
+            </div>
+         
+        </div>
+        <div class="main-section" data-auto-burger="primary">
+            <div class="left">
+                <h5 class="github-invite">想要修改 Kubernetes 的核心源代码？</h5>
+                <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>在 GitHub 上查看</a>
+            </div>
+
+            <div class="right">
+                <h5 class="github-invite">了解社区</h5>
+                <div class="social">
+                    <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                    <a href="https://github.com/kubernetes/kubernetes" class="github"><span>GitHub</span></a>
+                    <a href="http://slack.k8s.io/" class="slack"><span>Slack Slack</span></a>
+                    <a href="https://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                    <a href="https://www.youtube.com/kubernetescommunity" class="youtube"><span>YouTube</span></a>
+                    <a href="https://discuss.kubernetes.io" class="mailing-list"><span>论坛</span></a>
+                    <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>事件日历</span></a>
+                </div>
+            </div>
+            <div class="clear" style="clear: both"></div>
+        </div>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h1>为 Kubernetes 文档做贡献</h1>
+<h5></h5>
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/zh/docs/home/">主页</a></li>
+		
+		
+		<li><a href="/zh/docs/setup/">入门</a></li>
+		
+		
+		<li><a href="/zh/docs/concepts/">概念</a></li>
+		
+		
+		<li><a href="/zh/docs/tasks/">任务</a></li>
+		
+		
+		<li><a href="/zh/docs/tutorials/">教程</a></li>
+		
+		
+		<li><a href="/zh/docs/reference/">参考</a></li>
+		
+		
+		<li><a href="/zh/docs/contribute/" class="YAH">贡献</a></li>
+		
+	</ul>
+	<form id="searchBox" action="/docs/search/" role="search">
+		<input type="text" id="search" name="q" placeholder="搜索" aria-label="Search">
+	</form>
+</div>
+
+		</section>
+		
+    
+		
+<section id="deprecationWarning">
+  <main>
+    <div class="content deprecation-warning">
+      <h3>
+	 Kubernetes v1.16
+	  版本的文档已不再维护。您现在看到的版本来自于一份静态的快照。如需查阅最新文档，请点击
+	 <a href="https://kubernetes.io/docs/home/">最新版本。</a>
+      </h3>
+    </div>
+  </main>
+</section>
+
+
+    <main>
+        <section id="encyclopedia">
+          
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+         
+        
+        <a class="item" data-title="贡献" href="/zh/docs/contribute/"></a>
+
+	
+	
+			
+			
+			
+			
+			
+		
+	
+	
+	
+		
+			
+
+<a class="item" data-title="开始贡献" href="/zh/docs/contribute/start/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="中级贡献" href="/zh/docs/contribute/intermediate/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="高级贡献" href="/zh/docs/contribute/advanced/"></a>
+
+		
+	
+		
+			
+<div class="item" data-title="参考文档概述">
+	<div class="container">
+		
+		
+		
+		<a class="item" data-title="参考文档概述" href="/zh/docs/contribute/generate-ref-docs/"></a>
+		
+		
+	
+	
+			
+			
+			
+			
+			
+		
+	
+	
+	
+		
+			
+
+<a class="item" data-title="为 kubectl 命令集生成参考文档" href="/zh/docs/contribute/generate-ref-docs/kubectl/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="为 Kubernetes API 生成参考文档" href="/zh/docs/contribute/generate-ref-docs/kubernetes-api/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="为 Kubernetes 组件和工具生成参考页面" href="/zh/docs/contribute/generate-ref-docs/kubernetes-components/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="为上游 Kubernetes 代码库做出贡献" href="/zh/docs/contribute/generate-ref-docs/contribute-upstream/"></a>
+
+		
+	
+
+	</div>
+</div>
+
+		
+	
+		
+			
+<div class="item" data-title="文档风格概述">
+	<div class="container">
+		
+		
+		
+		<a class="item" data-title="文档风格概述" href="/zh/docs/contribute/style/"></a>
+		
+		
+	
+	
+			
+			
+			
+			
+			
+		
+	
+	
+	
+		
+			
+
+<a class="item" data-title="Content guide" href="/zh/docs/contribute/style/content-guide/"></a>
+
+		
+	
+		
+			
+
+<a class="item" target="_blank" data-title="Style guide <small>(EN)</small>" href="/docs/contribute/style/style-guide/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="撰写新主题" href="/zh/docs/contribute/style/write-new-topic/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="使用页面模板" href="/zh/docs/contribute/style/page-templates/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="内容组织" href="/zh/docs/contribute/style/content-organization/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="定制 Hugo 短代码" href="/zh/docs/contribute/style/hugo-shortcodes/"></a>
+
+		
+	
+
+	</div>
+</div>
+
+		
+	
+		
+			
+
+<a class="item" data-title="参与 SIG Docs" href="/zh/docs/contribute/participating/"></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="本地化 Kubernetes 文档" href="/zh/docs/contribute/localization/"></a>
+
+		
+	
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+
+          <div id="docsContent">
+            
+
+<p>
+  <a href="https://github.com/kubernetes/website/edit/master/content/zh/docs/contribute/style/content-guide.md" id="editPageButton" target="_blank">
+    Edit This Page
+  </a>
+</p>
+
+<h1>文档内容指南</h1>
+
+
+
+<!--
+This page contains guidelines for adding content to the Kubernetes documentation.
+If you have questions about allowed content, join the [Kubernetes Slack](http://slack.k8s.io/) #sig-docs channel and ask! Use your best judgment, and feel free to
+propose changes to this document in a pull request.
+-->
+
+<p>本页包含将内容添加到 Kubernetes 文档的准则。
+如果您对允许的内容有疑问，请加入<a href="http://slack.k8s.io/" target="_blank">Kubernetes Slack</a> #sig-docs 频道并询问！
+用你最好的判断力，随时在 pull request 中对这个文档提交修改。</p>
+
+<!--
+For additional information on creating new content for the Kubernetes
+docs, follow the instructions in the [Style guide](/docs/contribute/style/style-guide).
+-->
+
+<p>更多为 Kubernetes 文档创建新内容的信息，请按照<a href="/docs/contribute/style/style-guide">样式指南</a>中的说明进行操作。</p>
+
+
+
+
+
+
+
+
+
+<ul id="markdown-toc">
+
+
+
+
+
+
+
+
+
+
+<li><a href="#%e8%b4%a1%e7%8c%ae%e5%86%85%e5%ae%b9">贡献内容</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#%e6%8e%a5%e4%b8%8b%e6%9d%a5">接下来</a></li>
+
+
+
+</ul>
+
+
+<!--
+## Contributing content
+-->
+
+<h2 id="贡献内容">贡献内容</h2>
+
+<!--
+The Kubernetes documentation comprises the content of the 
+[kubernetes/website](https://github.com/kubernetes/website) source repository. 
+Located in the `kubernetes/website/content/<language_code>/docs` folder, the 
+majority of the Kubernetes documentation is specific to the [Kubernetes 
+project](https://github.com/kubernetes/kubernetes). The Kubernetes 
+documentation may also include content from projects in the 
+[kubernetes](https://github.com/kubernetes) and 
+[kubernetes-sigs](https://github.com/kubernetes-sigs) GitHub organizations if 
+those projects do not have their own documentation. Linking to active kubernetes, 
+kubernetes-sigs, and (<a class='glossary-tooltip' href='https://cncf.io/' target='_blank'>CNCF<span class='tooltip-text'>云原生计算基金会</span>
+</a>) projects from the Kubernetes documentation is always 
+allowed, but linking to vendor-specific products is not. Check the CNCF project lists 
+([Graduated/Incubating](https://www.cncf.io/projects/), 
+[Sandbox](https://www.cncf.io/sandbox-projects/), 
+[Archived](https://www.cncf.io/archived-projects/)) if you are unsure of a 
+project's CNCF status. 
+-->
+
+<p>Kubernetes 文档包含<a href="https://github.com/kubernetes/website" target="_blank">kubernetes/website</a> 资源存储库的内容。
+位于 <code>kubernetes/website/content/&lt;language_code&gt;/docs</code> 文件夹中，Kubernetes 文档的主要内容都特定于<a href="https://github.com/kubernetes/kubernetes" target="_blank">Kubernetes
+项目</a>。
+如果这些项目没有自己的文档，Kubernetes 文档中也可能包含 <a href="https://github.com/kubernetes" target="_blank">kubernetes</a> 和
+<a href="https://github.com/kubernetes-sigs" target="_blank">kubernetes-sigs</a> 在 GitHub 组织中的项目。
+链接到激活的 kubernetes，Kubernetes 文档中的 kubernetes-sigs 和  (<a class='glossary-tooltip' href='https://cncf.io/' target='_blank'>CNCF<span class='tooltip-text'>云原生计算基金会</span>
+</a>) 项目始终是被允许的，但是不允许链接到特定供应商的产品。
+检查 CNCF 项目列表(<a href="https://www.cncf.io/projects/" target="_blank">已毕业/正在孵化</a>，
+<a href="https://www.cncf.io/sandbox-projects/" target="_blank">沙盒</a>，
+<a href="https://www.cncf.io/archived-projects/" target="_blank">已存档</a>) ，如果您不确定项目 CNCF 的状态。</p>
+
+<!--
+### Dual-sourced content
+-->
+
+<h3 id="双重来源的内容">双重来源的内容</h3>
+
+<!--
+Kubernetes documentation does not include duplicate content sourced from multiple 
+locations (*dual-sourced* content). Dual-sourced content requires duplicated 
+effort from project maintainers and tends to become outdated more quickly. 
+Before adding content, ask yourself this:
+-->
+
+<p>Kubernetes 文档不包含来自多个网站的重复内容(<em>双重来源</em> 内容)。
+双重来源的内容需要重复项目维护者的努力，而且往往会更快过时。
+在添加内容之前，请先问自己一下：
+<!-- 
+- Is the content about an active CNCF project OR a project in the kubernetes or kubernetes-sigs GitHub organizations?
+    - If yes, then:
+        - Does the project have its own documentation?
+            - if yes, link to the project's documention from the Kubernetes documentation 
+            - if no, add the content to the project's repository if possible and then link to it from the Kubernetes documentation
+    - If no, then:
+        - Stop!
+            - Adding content about vendor-specific products is not allowed
+            - Linking to vendor-specific documentation and websites is not allowed
+-->
+- 内容是有关激活的 CNCF 项目或 kubernetes 或 kubernetes-sigs GitHub 组织中的项目的内容？
+    - 如果是，则：
+        - 项目是否有自己的文档？
+            - 如果是，请从 Kubernetes 文档链接到该项目的文档
+            - 如果没有，将内容添加到项目的存储库中，然后从 Kubernetes 文档链接到该存储库
+    - 如果否，则：
+        - 停止！
+            - 禁止添加有关厂商自定义产品的内容
+            - 不允许链接到厂商自定义的文档和网站</p>
+
+<!--
+### What is and isn't allowed
+-->
+
+<h3 id="什么是允许和不允许的">什么是允许和不允许的</h3>
+
+<!--
+There are some scenarios in which the Kubernetes documentation includes content from non-Kubernetes projects. 
+-->
+
+<p>在某些情况下，Kubernetes 文档包含非 Kubernetes 项目的内容。
+<!--
+Below are general categories of non-Kubernetes project content along with guidelines of what is and is not allowed:
+-->
+以下是非 Kubernetes 项目内容的一般类别以及允许和禁止的准则：
+<!--
+1. Instructional content involving non-Kubernetes projects during setup or operation of Kubernetes
+    - Allowed:
+        - Referring to or linking to existing documentation about a CNCF project or a project in the kubernetes or kubernetes-sigs GitHub organizations
+            - Example: for installating Kubernetes in a learning environment, including a prerequisite stating that successful installation and configuration of minikube is required and linking to the relevant minikube documentation
+        - Adding content for kubernetes or kubernetes-sigs projects that don't have their own instructional content
+            - Example: including [kubadm](https://github.com/kubernetes/kubeadm) installation and troubleshooting instructions   
+    - Not Allowed:
+        - Adding content that duplicates documentation in another repository
+            - Examples: 
+                - Including minikube installation and configuration instructions; minikube has its own [documentation](https://minikube.sigs.k8s.io/docs/) that provides those instructions
+                - Including instructions for installing Docker, CRI-O, containerd, and other container runtimes on various operating systems
+                - Including instructions for installing Kubernetes on production environments using various projects:
+                    - Kubernetes Rebar Integrated Bootstrap (KRIB) is a vendor-specific project and content belongs in the vendor's documentation
+                    - [Kubernetes Operations (kops)](https://github.com/kubernetes/kops) has installation instructions and tutorials in its GitHub repository
+                    - [Kubespray](https://kubespray.io) has its own documenation
+        - Adding a tutorial that explains how to perform a task using a vendor-specific product or an open source project that is not a CNCF project or a project in the kubernetes or kubnetes-sigs GitHub organizations
+        - Adding a tutorial on how to use a CNCF project or a project in the kubernetes or kubnetes-sigs GitHub organizations if the project has its own documentation
+-->
+1. 在 Kubernetes 的设置或操作过程中涉及非 Kubernetes 项目的教学内容
+    - 允许：
+        - 引用或链接到有关 CNCF 项目或 kubernetes 或 kubernetes-sigs GitHub 组织中的项目的现有文档
+            - 示例：用于在学习环境中安装 Kubernetes ，包括成功安装和配置 minikube 并链接到相关 minikube 文档这个先决条件。<br />
+        - 为没有自己的教学内容的 kubernetes 或 kubernetes-sigs 项目添加内容
+            - 示例：包括 <a href="https://github.com/kubernetes/kubeadm" target="_blank">kubadm</a> 安装和故障排除说明
+    - 不允许:
+        - 添加在其他存储库中的文档重复的内容
+            - 例子：
+                - 包括 minikube 安装和配置说明； minikube 有它自己的<a href="https://minikube.sigs.k8s.io/docs/" target="_blank">文件</a> 提供了这些说明
+                - 包括有关在各种操作系统上安装 Docker， CRI-O， 容器化和其他容器运行时的说明
+                - 包括有关使用各种项目在生产环境中安装 Kubernetes 的说明：
+                    - Kubernetes 钢筋集成引导程序（KRIB）是厂商自定义类型的项目，其内容属于厂商的文档
+                    - <a href="https://github.com/kubernetes/kops" target="_blank">Kubernetes 操作 (kops)</a> 在其 GitHub 存储库中具有安装说明和教程
+                    - <a href="https://kubespray.io" target="_blank">Kubespray</a> 有自己的文档
+        - 添加一个教程来说明如何使用厂商自定义产品来执行任务，或不是 CNCF 项目或 kubernetes 或 kubnetes-sigs GitHub 组织中的项目的开源项目来执行任务
+        - 添加了有关如何使用 CNCF 项目或 kubernetes 或kubnetes-sigs GitHub 组织中的项目的教程，如果该项目具有自己的文档
+&lt;!&ndash;
+1. Detailed technical content about how to use a non-Kubernetes project or how that project is designed</p>
+
+<pre><code>Adding this type of content to the Kubernetes documentation is not allowed. 
+</code></pre>
+
+<p>&ndash;&gt;
+1. 有关如何使用非 Kubernetes 项目或如何设计该项目的详细技术内容</p>
+
+<pre><code>不允许将这种类型的内容添加到 Kubernetes 文档中。
+</code></pre>
+
+<!--
+1. Content that describes a non-Kubernetes project
+    - Allowed:    
+        - Adding a brief introductory paragraph about a CNCF project or a project in the kubernetes or kubernetes-sigs GitHub organizations; the paragraph may contain links to the project  
+    - Not Allowed:    
+        - Adding content describing a vendor-specific product
+        - Adding content describing an open source project that is not a CNCF project or a project in the kubernetes or kubnetes-sigs GitHub organizations
+        - Adding content that duplicates documentation from another project, regardless of source repository
+            - Example: adding [Kubernetes in Docker (KinD)](https://kind.sigs.k8s.io) documentation to the Kubernetes documentation
+            - Example: adding [Kubernetes in Docker (KinD)](https://kind.sigs.k8s.io) documentation to the Kubernetes documentation
+-->
+
+<ol>
+<li>描述非 Kubernetes 项目的内容
+
+<ul>
+<li>允许：<br />
+
+<ul>
+<li>添加有关 CNCF 项目或 kubernetes 或 kubernetes-sigs GitHub 组织中的项目的简短介绍性段落；段落可能包含项目链接</li>
+</ul></li>
+<li>不允许：<br />
+
+<ul>
+<li>添加描述厂商自定义产品的内容</li>
+<li>添加内容描述开源项目，该项目不是 CNCF 项目，也不是 kubernetes 或 kubnetes-sigs GitHub 组织中的项目</li>
+<li>添加从其他项目中的文档重复的内容，不考虑源存储库
+
+<ul>
+<li>示例：将<a href="https://kind.sigs.k8s.io" target="_blank">Docker (KinD) 中的 Kubernetes</a> 文档添加到 Kubernetes 文档中
+&lt;!&ndash;</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li>Content that simply links to information about a non-Kubernetes project
+
+<ul>
+<li>Allowed:<br />
+
+<ul>
+<li>Linking to projects in the kubernetes and kubernetes-sigs GitHub organizations
+
+<ul>
+<li>Example: linking to Kubernetes in Docker (KinD) <a href="https://kind.sigs.k8s.io/docs/user/quick-start" target="_blank">documentation</a>, which resides in the kubernetes-sigs GitHub organization</li>
+</ul></li>
+<li>Linking to active CNCF projects
+
+<ul>
+<li>Example: linking to the Prometheus <a href="https://prometheus.io/docs/introduction/overview/" target="_blank">documentation</a>; Prometheus is an active CNCF project</li>
+</ul></li>
+</ul></li>
+<li>Not Allowed:<br />
+
+<ul>
+<li>Linking to vendor-specific products</li>
+<li>Linking to archived CNCF projects</li>
+<li>Linking to inactive projects in the kubernetes and kubernetes-sigs GitHub organizations</li>
+<li>Linking to open source projects that are not CNCF projects or do not reside in the kubernetes or kubernetes-sigs GitHub organizations
+&ndash;&gt;</li>
+</ul></li>
+</ul></li>
+<li>仅链接到有关非 Kubernetes 项目的信息的内容
+
+<ul>
+<li>允许：<br />
+
+<ul>
+<li>链接到 kubernetes 和 kubernetes-sigs GitHub 组织中的项目
+
+<ul>
+<li>示例：链接到 Docker (KinD) 中的 Kubernetes<a href="https://kind.sigs.k8s.io/docs/user/quick-start" target="_blank">文档</a>，该文件位于 kubernetes-sigs GitHub 组织中</li>
+</ul></li>
+<li>链接到有效的 CNCF 项目
+
+<ul>
+<li>示例：链接到 Prometheus <a href="https://prometheus.io/docs/introduction/overview/" target="_blank">文档</a>； Prometheus 是一个被激活的 CNCF 项目</li>
+</ul></li>
+</ul></li>
+<li>不允许：<br />
+
+<ul>
+<li>链接到厂商自定义产品</li>
+<li>链接到已归档的 CNCF 项目</li>
+<li>链接到 kubernetes 和 kubernetes-sigs GitHub 组织中的非活动项目</li>
+<li>链接到不是 CNCF 项目或不在 kubernetes 或 kubernetes-sigs GitHub 组织中的开源项目
+&lt;!&ndash;</li>
+</ul></li>
+</ul></li>
+<li>Content about training courses
+
+<ul>
+<li>Allowed:<br />
+
+<ul>
+<li>Linking to vendor-neutral Kubernetes training courses offered by the <a href="https://www.cncf.io/" target="_blank">CNCF</a>, the <a href="https://www.linuxfoundation.org/" target="_blank">Linux Foundation</a>, and the <a href="https://linuxacademy.com/" target="_blank">Linux Academy</a>, which is a partner of the Linux Foundation
+
+<ul>
+<li>Example: linking to Linux Academy courses such as <a href="https://linuxacademy.com/course/kubernetes-quick-start/" target="_blank">Kubernetes Quick Start</a> and <a href="https://linuxacademy.com/course/kubernetes-security/" target="_blank">Kubernetes Security</a></li>
+</ul></li>
+</ul></li>
+<li>Not Allowed:<br />
+
+<ul>
+<li>Linking to online training outside of the CNCF, the Linux Foundation, or the Linux Academy; the Kubernetes documentation does not link to third-party content<br />
+
+<ul>
+<li>Example: linking to Kubernetes tutorials or courses on Medium, KodeKloud, Udacity, Coursera, learnk8s, and similar websites</li>
+</ul></li>
+<li>Linking to vendor-specific tutorials regardless of the training provider
+
+<ul>
+<li>Example: linking to Linux Academy courses such as <a href="https://linuxacademy.com/google-cloud-platform/training/course/name/google-kubernetes-engine-deep-dive" target="_blank">Google Kubernetes Engine Deep Dive</a> and <a href="https://linuxacademy.com/course/amazon-eks-deep-dive/" target="_blank">Amazon EKS Deep Dive</a>
+&ndash;&gt;</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li>有关培训课程的内容
+
+<ul>
+<li>允许：<br />
+
+<ul>
+<li>链接到<a href="https://www.cncf.io/" target="_blank">CNCF</a>， <a href="https://www.linuxfoundation.org/" target="_blank">Linux 基金会</a>，和<a href="https://linuxacademy.com/" target="_blank">Linux 学会</a>,提供的和厂商自定义的 Kubernete 培训课程，他是 Linux 基金会的合作伙伴。
+
+<ul>
+<li>示例：链接到 Linux 学院课程，例如<a href="https://linuxacademy.com/course/kubernetes-quick-start/" target="_blank">Kubernetes 快速入门</a> 和 <a href="https://linuxacademy.com/course/kubernetes-security/" target="_blank">Kubernetes 安全</a></li>
+</ul></li>
+</ul></li>
+<li>不允许：<br />
+
+<ul>
+<li>链接到 CNCF，Linux 基金会或 Linux 学院之外的在线培训；Kubernetes 文档未链接到第三方内容
+
+<ul>
+<li>示例：链接到 Medium，KodeKloud，Udacity，Coursera，learnk8s 和类似网站上的 Kubernetes 教程或课程</li>
+</ul></li>
+<li>链接到特定于厂商自定义的教程，与培训提供者无关
+
+<ul>
+<li>示例：链接到 Linux 学院课程，例如<a href="https://linuxacademy.com/google-cloud-platform/training/course/name/google-kubernetes-engine-deep-dive" target="_blank">Google Kubernetes 引擎深度学习</a> 和 <a href="https://linuxacademy.com/course/amazon-eks-deep-dive/" target="_blank">亚马逊 EKS 深潜</a></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ol>
+
+<!--
+If you have questions about allowed content, join the [Kubernetes Slack](http://slack.k8s.io/) #sig-docs channel and ask! 
+-->
+
+<p>如果您对允许的内容有疑问，加入<a href="http://slack.k8s.io/" target="_blank">Kubernetes Slack</a> #sig-docs 频道并询问！</p>
+
+
+
+<!--
+---
+title: Documentation Content Guide
+linktitle: Content guide
+content_template: templates/concept
+weight: 10
+card:
+  name: contribute
+  weight: 20
+  title: Documentation Content Guide
+---
+-->
+
+
+
+
+
+
+
+
+
+
+<h2 id="接下来">接下来</h2>
+<!--
+* Read the [Style guide](/docs/contribute/style/style-guide).
+-->
+
+<ul>
+<li>阅读<a href="/docs/contribute/style/style-guide">样式指南</a>。</li>
+</ul>
+
+
+
+
+
+
+
+    
+            
+  <h2>反馈</h2>
+  <p class="feedback--prompt">此页是否对您有帮助？ </p>
+  <button class="button feedback--yes">是</button>
+  <button class="button feedback--no">否</button>
+  <p class="feedback--response feedback--response__hidden">
+    感谢反馈。如果您有一个关于如何使用 Kubernetes 的特定的、需要答案的问题，可以访问
+    <a target="_blank" rel="noopener"
+      href="https://stackoverflow.com/questions/tagged/kubernetes">
+      Stack Overflow</a>.
+    在 GitHub 仓库上登记新的问题
+    <a class="feedback--link" target="_blank" rel="noopener"
+      href="https://github.com/kubernetes/website/issues/new?title=Issue%20with%20k8s.io">
+      报告问题</a>
+    或者
+    <a class="feedback--link" target="_blank" rel="noopener"
+      href="https://github.com/kubernetes/website/issues/new?title=Improvement%20for%20k8s.io">
+      提出改进建议</a>.
+  </p>
+  <script>
+    const yes = document.querySelector('.feedback--yes');
+    const no = document.querySelector('.feedback--no');
+    document.querySelectorAll('.feedback--link').forEach(link => {
+      link.href = link.href + window.location.pathname;
+    });
+    const sendFeedback = (value) => {
+      if (!gtag) { console.log('!gtag'); }
+      gtag('event', 'click', {
+        'event_category': 'Helpful',
+        'event_label': window.location.pathname,
+        value
+      });
+    };
+    const disableButtons = () => {
+      yes.disabled = true;
+      yes.classList.add('feedback--button__disabled');
+      no.disabled = true;
+      no.classList.add('feedback--button__disabled');
+    };
+    yes.addEventListener('click', () => {
+      sendFeedback(1);
+      disableButtons();
+      document.querySelector('.feedback--response').classList.remove('feedback--response__hidden');
+    });
+    no.addEventListener('click', () => {
+      sendFeedback(0);
+      disableButtons();
+      document.querySelector('.feedback--response').classList.remove('feedback--response__hidden');
+    });
+  </script>
+
+
+    
+            <div id="pre-footer"> 
+  <hr />
+
+  <div class="issue-button-container">
+    <p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/contribute/style/content-guide.md?pixel" alt="Analytics" /></a></p>
+    
+    
+    <script type="text/javascript">
+    PDRTJS_settings_8345992 = {
+    "id" : "8345992",
+    "unique_id" : "\/zh\/docs\/contribute\/style\/content-guide\/",
+    "title" : "文档内容指南",
+    "permalink" : "https:\/\/kubernetes.io\/zh\/docs\/contribute\/style\/content-guide\/"
+    };
+    (function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+    </script>
+    <a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?template=bug-report.md&title=Issue%20with%20' +
+    'k8s.io'+window.location.pathname)" class="button issue">报告 GitHub 问题</a>
+    
+    
+    
+    <a href="https://github.com/kubernetes/website/edit/master/content/zh/docs/contribute/style/content-guide.md" class="button issue">修改本页面</a>
+    
+  </div>
+  
+
+  <div id="lastedit" class="lastedit issue-button-container">
+    页面最后一次修改于 June 09, 2020 at 10:31 PM PST 由：
+    <a href="https://github.com/kubernetes/website/commit/41e4d9aa751fd0c41bd1aaf3946d6f8297dc0a86/">Create content-guide.md</a> (<a href="https://github.com/kubernetes/website/commits/master/content/en/docs/contribute/style/content-guide.md">页面历史</a>)
+  </div>
+  
+</div>
+
+          </div>
+        </section>
+    </main>
+		<footer>
+    <div class="light-text main-section">
+        <nav>
+            
+            
+            
+            <a href="/zh/docs/home/">主页</a>
+            
+            <a href="/zh/blog/">博客</a>
+            
+            <a href="/zh/partners/">合作伙伴</a>
+            
+            <a href="/zh/community/">社区</a>
+            
+            <a href="/zh/case-studies/">案例分析</a>
+            
+        </nav>
+        <div class="social" role="region" aria-label="Social hyperlinks">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>GitHub</span></a>
+                <a href="https://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="https://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://www.youtube.com/kubernetescommunity" class="youtube"><span>YouTube</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>论坛</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>事件日历</span></a>
+            </div>
+            <div>
+                
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">贡献</a>
+            </div>
+        </div>
+        <div class="miceType center">
+            &copy; 2023 The Kubernetes 作者 | 文档发布基于 <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a> 授权许可</a>
+        </div>
+        <div class="miceType center">
+            Copyright &copy; 2023 Linux 基金会&reg;。保留所有权利。Linux 基金会已注册并使用商标。如需了解 Linux 基金会的商标列表，请访问<a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">商标使用页面</a>
+        </div>
+        <div class="miceType center">
+            ICP license: 京ICP备17074266号-3
+        </div>
+    </div>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()" aria-label="Toggle table of contents visibility"></button>
+
+<script>
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+    <script language="application/javascript">
+      
+      (function addHeadingLinks(){
+        var article = document.getElementById('docsContent');
+        var headings = article.querySelectorAll('h1, h2, h3, h4, h5, h6');
+        headings.forEach(function(heading){
+          if(heading.id){
+            var a = document.createElement('a');
+            a.innerHTML = heading.innerHTML;
+            a.href = '#'+heading.id;
+            a.classList.add('inpage_heading');
+            heading.innerHTML = '';
+            heading.appendChild(a);
+          }
+        });
+      })();
+    </script>
+	</body>
+</html>
